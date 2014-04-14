@@ -43,14 +43,21 @@ class Etoile():
     	self.nombreUsine = None
     	self.quantiteVaisseau = None
     	self.typeEtoile = typeEtoile
-    	construireUsine()
+    	initialiserEtoile()
 
-    def construireUsine(self):
+    def initialiserEtoile(self):
     	if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
     		self.nombreUsine = 10
     		self.quantiteVaisseau = 100
     		self.niveauIntelligence = NiveauIntelligence.troisieme
+    	elif self.typeEtoile == TypeEtoile.gubru or self.typeEtoile == TypeEtoile.humain or self.typeEtoile == TypeEtoile.czin or self.typeEtoile == TypeEtoile.indep :
+    		self.nombreUsine = random.randrange(6)
 
+    def creerVaisseau(self):
+    	for x in range(0,self.nombreUsine):
+    		self.quantiteVaisseau += random.randrange(6)
+
+    
 
 class Flotte():
     pass
