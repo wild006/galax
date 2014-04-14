@@ -16,9 +16,27 @@ class NiveauIntelligence(Enum):
     deuxieme = 3
     troisieme = 4
 
+class Race(Enum):
+	humain = 1
+	gubru = 2
+	czin = 3
+
 class Modele():
     def __init__(self, parent):
         self.parent = parent
+
+
+
+    def infoEtoile(self, Etoile, Race):
+    	if Race == Race.humain:
+    		if Etoile.IntelligenceHumain == NiveauIntelligence.aucun :
+    			return None
+    		elif Etoile.IntelligenceHumain == NiveauIntelligence.premier :
+    			return Etoile.nombreVaisseau
+    		elif Etoile.IntelligenceHumain == NiveauIntelligence.deuxieme :
+    			return (Etoile.nombreVaisseau, Etoile.nombreUsine)
+    		elif Etoile.IntelligenceHumain == NiveauIntelligence.troisieme :
+    			return Etoile
  
 class Jeu():
     def __init__(self):
@@ -38,18 +56,27 @@ class Gubru():
     pass
 
 class Etoile():
-    def __init__(self, typeEtoile):
-    	self.niveauIntelligence = 0
+    def __init__(self, typeEtoileAttribue):
+    	self.IntelligenceHumain = NiveauIntelligence.aucun
+    	self.IntelligenceGubru = NiveauIntelligence.aucun
+    	self.IntelligenceCzin = NiveauIntelligence.aucun
+    	self.posX = None
+    	self.posY = None
     	self.nombreUsine = None
-    	self.quantiteVaisseau = None
-    	self.typeEtoile = typeEtoile
+    	self.nombreVaisseau = None
+    	self.typeEtoile = typeEtoileAttribue
     	initialiserEtoile()
 
     def initialiserEtoile(self):
     	if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
     		self.nombreUsine = 10
     		self.quantiteVaisseau = 100
-    		self.niveauIntelligence = NiveauIntelligence.troisieme
+    		if self.typeEtoile == TypeEtoile.mereHumain:
+    			self.IntelligenceHumain = NiveauIntelligence.troisieme
+    		elif self.typeEtoile == TypeEtoile.mereCzin:
+    			self.IntelligenceCzin = NiveauIntelligence.troisieme
+    		elif self.typeEtoile == TypeEtoile.mereGubru:
+    			self.IntelligenceGubru = NiveauIntelligence.troisieme
     	elif self.typeEtoile == TypeEtoile.gubru or self.typeEtoile == TypeEtoile.humain or self.typeEtoile == TypeEtoile.czin or self.typeEtoile == TypeEtoile.indep :
     		self.nombreUsine = random.randrange(6)
 
