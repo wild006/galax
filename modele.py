@@ -2,13 +2,13 @@ import random
 from enum import Enum
 
 class TypeEtoile(Enum):
-   	mereHumain = 1
-    mereGubru = 2
-    mereCzin = 3
-    indep = 4
-    humain = 5
-    gubru = 6
-    czin = 7
+	mereHumain = 1
+	mereGubru = 2
+	mereCzin = 3
+	indep = 4
+	humain = 5
+	gubru = 6
+	czin = 7
 
 class NiveauIntelligence(Enum):
     aucun = 1
@@ -24,8 +24,7 @@ class Race(Enum):
 class Modele():
     def __init__(self, parent):
         self.parent = parent
-
-
+        self.nbEtoiles = 40
 
     def infoEtoile(self, Etoile, Race):
     	if Race == Race.humain:
@@ -40,20 +39,33 @@ class Modele():
  
 class Jeu():
     def __init__(self):
-        pass
+        self.czin = Czin(self)
+        self.gubru = Gubru(self)
+        self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
 
 class Humain():
     pass
 
 class Czin():
-    def __init__(self):
-        pass
-    
+    def __init__(self, parent):
+        self.parent = parent #De type Jeu
+        self.distanceGrappe = 4
+        self.nbVaisseauxParAttaque = 4
+        self.forceAttaqueBasique = 20
+        
     def calculerGrappes(self):
-        pass
+        for etoile1 in self.parent.listeEtoiles:
+            for etoile2 in self.parent.listeEtoiles:
+                distance = ((etoile1.posX - etoile2.posX)**2 + (etoile1.posY - etoile2.posY)**2)**0.5
+                if distance <= distanceGrappe:
+                    s = distanceGrappe - distance +1
+                    etoile1.valeurGrappe *= s
 
 class Gubru():
-    pass
+    def __init__(self, parent):
+        self.parent = parent #De type Jeu
+        self.forceAttaqueBasique = 10
+        self.nbVaisseauxParAttaque = 5
 
 class Etoile():
     def __init__(self, typeEtoileAttribue):
@@ -62,6 +74,7 @@ class Etoile():
     	self.IntelligenceCzin = NiveauIntelligence.aucun
     	self.posX = None
     	self.posY = None
+    	self.valeurGrappe = 0 #Pour la strategie des Czin
     	self.nombreUsine = None
     	self.nombreVaisseau = None
     	self.typeEtoile = typeEtoileAttribue
