@@ -43,6 +43,9 @@ class Jeu():
         self.gubru = Gubru(self)
         self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
 
+    def initialiserToutesEtoiles(self, Modele):
+
+
 class Humain():
     pass
 
@@ -79,6 +82,7 @@ class Etoile():
     	self.nombreVaisseau = None
     	self.typeEtoile = typeEtoileAttribue
     	initialiserEtoile()
+    	initialiserPosition()
 
     def initialiserEtoile(self):
     	if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
@@ -92,6 +96,10 @@ class Etoile():
     			self.IntelligenceGubru = NiveauIntelligence.troisieme
     	elif self.typeEtoile == TypeEtoile.gubru or self.typeEtoile == TypeEtoile.humain or self.typeEtoile == TypeEtoile.czin or self.typeEtoile == TypeEtoile.indep :
     		self.nombreUsine = random.randrange(6)
+
+    def initialiserPosition(self):
+    	self.posX = random.randrange(40) #le 40 est une fausse donner, doit etre changer
+    	self.posY = random.randrange(40) #meme chose ici
 
     def creerVaisseau(self):
     	for x in range(0,self.nombreUsine):
