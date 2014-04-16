@@ -19,6 +19,11 @@ class Race():
 	humain = 1
 	gubru = 2
 	czin = 3
+    
+class ModeCzin():
+    rassemblementForces = 1
+    etablirBase = 2
+    conquerirGrappe = 3
 
 class Modele():
 	def __init__(self, parent):
@@ -68,22 +73,33 @@ class Humain():
 		pass
 
 class Czin():
-	def __init__(self, parent):
-		self.parent = parent #De type Jeu
-		self.distanceGrappe = 4
-		self.nbVaisseauxParAttaque = 4
-		self.forceAttaqueBasique = 20
-		
-	def calculerGrappes(self):
-		for etoile1 in self.parent.listeEtoiles:
-			for etoile2 in self.parent.listeEtoiles:
-				distance = ((etoile1.posX - etoile2.posX)**2 + (etoile1.posY - etoile2.posY)**2)**0.5
-				if distance <= distanceGrappe:#self.distanceGrappe?
-					s = distanceGrappe - distance +1
-					etoile1.valeurGrappe *= s
-
+    def __init__(self, parent, etoileMere):
+        self.parent = parent #De type Jeu
+        self.listeFlottes = [] #Toutes les flottes des Czin
+        self.base = etoileMere
+        #self.etoileMere = etoileMere
+        self.distanceGrappe = 4
+        self.nbVaisseauxParAttaque = 4
+        self.forceAttaqueBasique = 20
+        self.distanceRassemblement = 6 #en annees
+        self.mode = ModeCzin.rassemblementForces #Mode de depart
+        
+    def calculerGrappes(self):
+        for etoile1 in self.parent.listeEtoiles:
+            for etoile2 in self.parent.listeEtoiles:
+                distance = ((etoile1.posX - etoile2.posX)**2 + (etoile1.posY - etoile2.posY)**2)**0.5
+                if distance <= self.distanceGrappe:
+                    s = self.distanceGrappe - distance +1
+                    etoile1.valeurGrappe *= s
+    
+    def calculerForceAttaque(self):
+        return self.parent.tempsCourant * 
+    def calculerMode(self):
+        #rassemblementForces
+        #if self.mode = ModeCzin.rassemblementForces and 
+   
 class Gubru():
-	def __init__(self, parent):
+	def __init__(self, parent, etoileMere):
 		self.parent = parent #De type Jeu
 		self.forceAttaqueBasique = 10
 		self.nbVaisseauxParAttaque = 5
@@ -118,7 +134,7 @@ class Etoile():
 	
 
 class Flotte():
-	def __init__(self,etoilePartante,etoileArrive,nombreVaisseau): #Vérifier les valeurs de x et y
+	def __init__(self,etoilePartante,etoileArrive,nombreVaisseau): #Verifier les valeurs de x et y
 		self.positionInitialeX=etoilePartante.posX
 		self.positionInitialeY=etoilePartante.posY
 		self.positionFinalX=etoileArrive.posX
