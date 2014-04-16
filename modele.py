@@ -108,4 +108,30 @@ class Etoile():
     
 
 class Flotte():
-    pass
+    def __init__(self,parent):
+        self.positionInitialeX=x
+        self.positionInitialeY=y
+        self.positionFinalX=x
+        self.positionFinalY=y
+        self.distanceX=0
+        self.distanceY=0
+        self.nbAnnee=0
+        self.flotteVaisseau
+
+
+    def calculerTempsVoyage(self):
+        self.positionInitialeX-self.positionFinalX=distanceX
+        self.positionInitialeY-self.positionFinalY=distanceY
+
+        if distanceX <=2 and distanceY <=2:
+            nbAnnee = (distanceX / 2)+(distanceY / 2)
+        else:
+            nbAnnee = 1 + (((distanceX - 2) / 3) + ((distanceY - 2) / 3))
+
+
+    def attaquer(self):
+        if flotteVaisseau=positionFinalX and flotteVaisseau=positionFinalY:
+            if Etoile.nombreVaisseau>=1:
+                
+
+
