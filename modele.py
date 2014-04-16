@@ -46,17 +46,22 @@ class Jeu():
     def initialiserToutesEtoiles(self, Modele):
         pass
 
-
+#Besoin dune variable pour le temps qui sincremente
 class Humain():
     def __init__(self,parent):
+        self.estHumain#besoin de verification pour determiner si humain ou non
+        self.enVoyage#selon le choix du joueur a verifier
         
     def deplacementFlotte(self):
-        for x in Jeu.listeEtoiles:
+        for x in self.parent.listeEtoiles:
             if Etoile.IntelligenceHumain==NiveauIntelligence.troisieme:
-                if :
+                if self.estHumain:
+                    Flotte.calculerTempsVoyage(self)
+                    Flotte.vaisseauDefenseur=Flotte.vaisseauDefenseur-self.enVoyage
+                    
         
     def choixdeplacementFlotte(self):
-        
+        pass
 
 class Czin():
     def __init__(self, parent):
@@ -69,7 +74,7 @@ class Czin():
         for etoile1 in self.parent.listeEtoiles:
             for etoile2 in self.parent.listeEtoiles:
                 distance = ((etoile1.posX - etoile2.posX)**2 + (etoile1.posY - etoile2.posY)**2)**0.5
-                if distance <= distanceGrappe:
+                if distance <= distanceGrappe:#self.distanceGrappe?
                     s = distanceGrappe - distance +1
                     etoile1.valeurGrappe *= s
 
@@ -125,7 +130,7 @@ class Flotte():
         self.distanceX=0
         self.distanceY=0
         self.nbAnnee=0
-        self.flotteVaisseau=None
+        self.flotteVaisseau=None#self.flotteVaisseau=flotteVaisseau(self,x,y)?
         self.vaisseauDefenseur=Etoile.nombreVaisseau
         self.vaisseauAttaquant=None
         self.probabiliteEliminer=None
@@ -133,17 +138,17 @@ class Flotte():
 
 
     def calculerTempsVoyage(self):
-        self.positionInitialeX-self.positionFinalX=distanceX
-        self.positionInitialeY-self.positionFinalY=distanceY
+        self.distanceX=self.positionInitialeX-self.positionFinalX
+        self.distanceY=self.positionInitialeY-self.positionFinalY
 
-        if distanceX <=2 and distanceY <=2:
-            nbAnnee = (distanceX / 2)+(distanceY / 2)
+        if self.distanceX <=2 and self.distanceY <=2:
+            self.nbAnnee = (self.distanceX / 2)+(self.distanceY / 2)
         else:
-            nbAnnee = 1 + (((distanceX - 2) / 3) + ((distanceY - 2) / 3))
+            self.nbAnnee = 1 + (((self.distanceX - 2) / 3) + ((self.distanceY - 2) / 3))
 
 
     def attaquer(self):
-        if self.flotteVaisseau=positionFinalX and positionFinalY:
+        if self.flotteVaisseau==(self.positionFinalX and self.positionFinalY):
             if Etoile.nombreVaisseau>=1:
                 if self.vaisseauAttaquant < self.vaisseauDefenseur:
                     if self.force<5:
