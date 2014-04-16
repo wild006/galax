@@ -33,10 +33,12 @@ class Modele():
 class Jeu():
 	def __init__(self, parent):
 		self.parent = parent
+		self.tempsCourant = 0 #Temps qui va s'incrementer en cours de partie
 		self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
-		initialiserToutesEtoiles(self.parent)
-		#self.czin = Czin(self)
-		#self.gubru = Gubru(self)
+		self.initialiserToutesEtoiles(self.parent)
+		#Pour TEST SEULEMENT
+		self.czin = Czin(self,Etoile(TypeEtoile.mereCzin,self))
+		self.gubru = Gubru(self,Etoile(TypeEtoile.mereGubru,self))
 
 	def initialiserToutesEtoiles(self, Modele):
 		#Creer les objets Czin et Gubru
@@ -101,11 +103,23 @@ class Czin():
                     s = self.distanceGrappe - distance +1
                     etoile1.valeurGrappe *= s
     
+    def calculerBase(self):
+    	for etoile in self.parent.listeEtoiles:
+    		if etoile.valeurGrappe == 0:
+    			etoile.valeurBase = 0
+    		else:
+    			distanceBase = self.parent.calculerDisatnce(self.base, etoile)
+    			etoile.valeurBase = etoile.valeurGrappe-3*distanceBase
+       	#A FAIRE: Update la base
+       	
     def calculerForceAttaque(self):
-        return self.parent.tempsCourant * 
+        return self.parent.tempsCourant * self.nbVaisseauxParAttaque * self.forceAttaqueBasique
+       
     def calculerMode(self):
         #rassemblementForces
-        #if self.mode = ModeCzin.rassemblementForces and 
+        if self.mode == ModeCzin.rassemblementForces and self.base.nbVaisseaux >= (self.calculerForceAttaque*3):
+        	self.mode = ModeCzin.etablirBase
+        #A FAIRE: les 2 autres modes
 
 class Gubru():
 	def __init__(self, parent, etoileMere):
@@ -120,6 +134,7 @@ class Etoile():#Modifier par Julien
 		self.posX = None
 		self.posY = None
 		self.valeurGrappe = 0 #Pour la strategie des Czin
+		self.valeurBase = 0 #Pour la strategie des Czin
 		self.nombreUsine = None
 		self.nombreVaisseau = None
 		self.typeEtoile = typeEtoileAttribue
