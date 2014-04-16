@@ -19,7 +19,7 @@ class Race():
 	humain = 1
 	gubru = 2
 	czin = 3
-    
+
 class ModeCzin():
     rassemblementForces = 1
     etablirBase = 2
@@ -32,13 +32,21 @@ class Modele():
  
 class Jeu():
 	def __init__(self, parent):
-		self.czin = Czin(self)
-		self.gubru = Gubru(self)
 		self.parent = parent
 		self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
+		initialiserToutesEtoiles(self.parent)
+		#self.czin = Czin(self)
+		#self.gubru = Gubru(self)
 
 	def initialiserToutesEtoiles(self, Modele):
-		pass
+		#Creer les objets Czin et Gubru
+		
+		#Initialise les etoiles-meres de chaque race
+		self.listeEtoiles.append(Etoile(TypeEtoile.mereHumain,self))
+		self.listeEtoiles.append(Etoile(TypeEtoile.mereGubru,self))
+		self.listeEtoiles.append(Etoile(TypeEtoile.mereCzin,self))
+		while len(self.listeEtoiles) < self.parent.nbEtoiles:
+			self.listeEtoiles.append(Etoile(TypeEtoile.indep,self))
 	
 	def infoEtoile(self, etoileChoisi):    # MODIFIER PAR JULIEN POUR CREER UNE ETOILE AVEC LES INFORMATIONS NECESSAIRES
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
@@ -58,6 +66,7 @@ class Jeu():
 #Besoin dune variable pour le temps qui sincremente
 class Humain():
 	def __init__(self,parent):
+		self.parent = parent
 		self.estHumain#besoin de verification pour determiner si humain ou non
 		self.enVoyage#selon le choix du joueur a verifier
 		
@@ -97,15 +106,16 @@ class Czin():
     def calculerMode(self):
         #rassemblementForces
         #if self.mode = ModeCzin.rassemblementForces and 
-   
+
 class Gubru():
 	def __init__(self, parent, etoileMere):
 		self.parent = parent #De type Jeu
 		self.forceAttaqueBasique = 10
 		self.nbVaisseauxParAttaque = 5
 
-class Etoile():
-	def __init__(self, typeEtoileAttribue):
+class Etoile():#Modifier par Julien
+	def __init__(self, typeEtoileAttribue,parent):
+		self.jeu = parent
 		self.IntelligenceHumain = NiveauIntelligence.aucun
 		self.posX = None
 		self.posY = None
@@ -124,8 +134,22 @@ class Etoile():
 			self.nombreUsine = random.randrange(6)
 
 	def initialiserPosition(self):
-		self.posX = random.randrange(40) #le 40 est une fausse donner, doit etre changer
-		self.posY = random.randrange(40) #meme chose ici
+		xx = random.randrange(20)
+		yy = random.randrange(20)
+		tempPosEtoile = [[xx, yy]]
+		while len(self.jeu.listeEtoiles) < self.jeu.parent.nbEtoiles:
+			x = random.randrange(20)
+			y = random.randrange(20)
+			if [x,y] not in tempPosEtoile:
+				if self.jeu.listeEtoiles:
+					for etoile in self.jeu.listeEtoiles:
+						if x != etoile.posX and y != etoile.posY:
+							self.posX = x
+							self.posY = y
+							break
+				else:
+					self.posX = x
+					self.posY = y
 
 	def creerVaisseau(self):
 		for x in range(0,self.nombreUsine):
@@ -134,7 +158,7 @@ class Etoile():
 	
 
 class Flotte():
-	def __init__(self,etoilePartante,etoileArrive,nombreVaisseau): #Verifier les valeurs de x et y
+	def __init__(self,etoilePartante,etoileArrive,nombreVaisseau): 
 		self.positionInitialeX=etoilePartante.posX
 		self.positionInitialeY=etoilePartante.posY
 		self.positionFinalX=etoileArrive.posX
