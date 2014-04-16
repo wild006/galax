@@ -1,7 +1,6 @@
 import random
-from enum import Enum
 
-class TypeEtoile(Enum):
+class TypeEtoile():
     mereHumain = 1
     mereGubru = 2
     mereCzin = 3
@@ -10,13 +9,13 @@ class TypeEtoile(Enum):
     gubru = 6
     czin = 7
 
-class NiveauIntelligence(Enum):
+class NiveauIntelligence():
     aucun = 1
     premier = 2
     deuxieme = 3
     troisieme = 4
 
-class Race(Enum):
+class Race():
     humain = 1
     gubru = 2
     czin = 3
@@ -131,7 +130,7 @@ class Flotte():
         self.distanceY=0
         self.nbAnnee=0
         self.flotteVaisseau=None#self.flotteVaisseau=flotteVaisseau(self,x,y)?
-        self.vaisseauDefenseur=Etoile.nombreVaisseau
+        #self.vaisseauDefenseur=Etoile.nombreVaisseau
         self.vaisseauAttaquant=None
         self.probabiliteEliminer=None
         self.force=self.vaisseauDefenseur/self.vaisseauAttaquant
@@ -147,9 +146,9 @@ class Flotte():
             self.nbAnnee = 1 + (((self.distanceX - 2) / 3) + ((self.distanceY - 2) / 3))
 
 
-    def attaquer(self):
+    def attaquer(self, etoile):
         if self.flotteVaisseau==(self.positionFinalX and self.positionFinalY):
-            if Etoile.nombreVaisseau>=1:
+            if etoile.nombreVaisseau>=1:
                 if self.vaisseauAttaquant < self.vaisseauDefenseur:
                     if self.force<5:
                         self.probabiliteEliminer=self.force/10
@@ -158,14 +157,14 @@ class Flotte():
                             self.probabiliteEliminer=(3*self.force+35)/100
                         else:
                             self.probabiliteEliminer=0.95
-                    while (self.vaisseauAttaquant !=0 or self.vaisseauDefenseur !=0)
-                        for x in range Etoile.nombreVaisseau:
+                    while self.vaisseauAttaquant !=0 or self.vaisseauDefenseur !=0:
+                        for x in range(etoile.nombreVaisseau):
                             self.probabiliteEliminer=random.randrange(10)
                             if self.probabiliteEliminer>=7:
                                 self.vaisseauAttaquant-=1
-                        for y in range self.vaisseauAttaquant:
+                        for y in range(self.vaisseauAttaquant):
                             self.probabiliteEliminer=random.randrange(10)
-                            if self.probabiliteEliminer>=1#Chiffre a verifier
+                            if self.probabiliteEliminer>=1:#Chiffre a verifier
                                 self.vaisseauDefenseur-=1
                 
 
