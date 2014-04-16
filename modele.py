@@ -24,25 +24,31 @@ class Modele():
 	def __init__(self, parent):
 		self.parent = parent
 		self.nbEtoiles = 40
-
-	def infoEtoile(self, Etoile):    # A MODIFIER POUR CREATION NOUVELLE ETOILE
-		if Etoile.IntelligenceHumain == NiveauIntelligence.aucun :
-			return None
-		elif Etoile.IntelligenceHumain == NiveauIntelligence.premier :
-			return Etoile.nombreVaisseau
-		elif Etoile.IntelligenceHumain == NiveauIntelligence.deuxieme :
-			return (Etoile.nombreVaisseau, Etoile.nombreUsine)
-		elif Etoile.IntelligenceHumain == NiveauIntelligence.troisieme :
-			return Etoile
  
 class Jeu():
-	def __init__(self):
+	def __init__(self, parent):
 		self.czin = Czin(self)
 		self.gubru = Gubru(self)
+		self.parent = parent
 		self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
 
 	def initialiserToutesEtoiles(self, Modele):
 		pass
+	
+	def infoEtoile(self, etoileChoisi):    # MODIFIER PAR JULIEN POUR CREER UNE ETOILE AVEC LES INFORMATIONS NECESSAIRES
+		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
+			return Etoile(TypeEtoile.indep)
+		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
+			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile)
+			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
+			return nouvelleEtoile
+		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.deuxieme :
+			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile)
+			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
+			nouvelleEtoile.nombreUsine = etoileChoisi.nombreUsine
+			return nouvelleEtoile
+		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.troisieme :
+			return etoileChoisi
 
 #Besoin dune variable pour le temps qui sincremente
 class Humain():
@@ -58,7 +64,7 @@ class Humain():
 					Flotte.vaisseauDefenseur=Flotte.vaisseauDefenseur-self.enVoyage
 					
 		
-	def choixdeplacementFlotte(self):
+	def choixDeplacementFlotte(self):
 		pass
 
 class Czin():
@@ -91,8 +97,6 @@ class Etoile():
 		self.nombreUsine = None
 		self.nombreVaisseau = None
 		self.typeEtoile = typeEtoileAttribue
-		initialiserEtoile()
-		initialiserPosition()
 
 	def initialiserEtoile(self):
 		if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
@@ -114,15 +118,16 @@ class Etoile():
 	
 
 class Flotte():
-	def __init__(self,parent):
-		self.positionInitialeX=x
-		self.positionInitialeY=y
-		self.positionFinalX=x
-		self.positionFinalY=y
+	def __init__(self,etoilePartante,etoileArrive,nombreVaisseau): #Vérifier les valeurs de x et y
+		self.positionInitialeX=etoilePartante.posX
+		self.positionInitialeY=etoilePartante.posY
+		self.positionFinalX=etoileArrive.posX
+		self.positionFinalY=etoileArrive.posY
 		self.distanceX=0
 		self.distanceY=0
 		self.nbAnnee=0
-		self.flotteVaisseau=None#self.flotteVaisseau=flotteVaisseau(self,x,y)?
+		self.nombreVaisseauDansFlotte=nombreVaisseau
+		#self.flotteVaisseau=flotteVaisseau(self,x,y)?
 		#self.vaisseauDefenseur=Etoile.nombreVaisseau
 		self.vaisseauAttaquant=None
 		self.probabiliteEliminer=None
