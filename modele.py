@@ -64,6 +64,10 @@ class Jeu():
 			return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.troisieme :
 			return etoileChoisi
+	
+	@staticmethod
+	def calculerDistance(self, point1X, point1Y, point2X, point2Y):
+		return ((point1X - point2X)**2 + (point1Y - point2Y)**2)**0.5
 
 #Besoin dune variable pour le temps qui sincremente
 class Humain():
@@ -86,7 +90,7 @@ class Humain():
 class Czin():
     def __init__(self, parent, etoileMere):
         self.parent = parent #De type Jeu
-        self.listeFlottes = [] #Toutes les flottes des Czin
+        self.flottes = [] #Toutes les flottes des Czin
         self.base = etoileMere
         #self.etoileMere = etoileMere
         self.distanceGrappe = 4
@@ -98,7 +102,7 @@ class Czin():
     def calculerGrappes(self):
         for etoile1 in self.parent.listeEtoiles:
             for etoile2 in self.parent.listeEtoiles:
-                distance = ((etoile1.posX - etoile2.posX)**2 + (etoile1.posY - etoile2.posY)**2)**0.5
+                distance = Jeu.calculerDistance(self, etoile1.posX, etoile1.posY, etoile2.posX, etoile1.posY)
                 if distance <= self.distanceGrappe:
                     s = self.distanceGrappe - distance +1
                     etoile1.valeurGrappe *= s
@@ -108,7 +112,7 @@ class Czin():
     		if etoile.valeurGrappe == 0:
     			etoile.valeurBase = 0
     		else:
-    			distanceBase = self.parent.calculerDisatnce(self.base, etoile)
+    			distanceBase = Jeu.calculerDistance(self, self.base.posX, self.base.posY, etoile.posX, etoile.posY)
     			etoile.valeurBase = etoile.valeurGrappe-3*distanceBase
        	#A FAIRE: Update la base
        	
@@ -126,6 +130,29 @@ class Gubru():
 		self.parent = parent #De type Jeu
 		self.forceAttaqueBasique = 10
 		self.nbVaisseauxParAttaque = 5
+		self.etoileMere = etoileMere
+		self.flottes = [] #Toutes les flottes des Czin
+		
+	def calculerForceAttaque(self):
+		forceAttaque = parent.tempsCourant*self.nbVaisseauxParAttaque+self.forceAttaqueBasique
+		if forceAttaque < self.forceAttaqueBasique*2:
+			forceAttaque = self.forceAttaqueBasique*2
+		return forceAttaque
+	
+	def calculerEtoilePlusProche(self, etoileDepart): #Retourne l'etoile la plus proche qui n'est pas au Gubru
+		distanceMin = 0
+		etoilePlusProche = etoileDepart
+		for etoileArrivee in self.parent.listeEtoiles:
+			if etoileArrivee.typeEtoile != TypeEtoile.gubru or etoileArrivee.typeEtoile != TypeEtoile.mereGubru:
+				distance = Jeu.calculerDistance(self, etoileDepart.posX, etoileDepart.posY, etoileArrivee.posX, etoileArrivee.posY)
+				if distanceMin > distance:
+					distanceMin = distance
+					etoilePlusProche = etoileArrivee
+		return etoilePlusProche
+	
+	def creationFlottes(self): #Pour l'etoileMere
+		while self.etoileMere.nombreVaisseau > self.calculerForceAttaque() + self.forceAttaqueBasique:
+			self.flottes.append(etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),self.calculerForceAttaque))
 
 class Etoile():#Modifier par Julien
 	def __init__(self, typeEtoileAttribue,parent):
@@ -169,15 +196,18 @@ class Etoile():#Modifier par Julien
 	def creerVaisseau(self):
 		for x in range(0,self.nombreUsine):
 			self.quantiteVaisseau += random.randrange(6)
-
+	
+	def creationFlotte(self, etoileArrivee, nbVaisseaux):
+		pass #A FAIRE: retourne une flotte et enleve le nbvaisseaux a l'etoile
+	
 	
 
 class Flotte():
-	def __init__(self,etoilePartante,etoileArrive,nombreVaisseau): 
-		self.positionInitialeX=etoilePartante.posX
-		self.positionInitialeY=etoilePartante.posY
-		self.positionFinalX=etoileArrive.posX
-		self.positionFinalY=etoileArrive.posY
+	def __init__(self,etoileDepart,etoileArrivee,nombreVaisseau): 
+		self.positionInitialeX=etoileDepart.posX
+		self.positionInitialeY=etoileDepart.posY
+		self.positionFinalX=etoileArrivee.posX
+		self.positionFinalY=etoileArrivee.posY
 		self.distanceX=0
 		self.distanceY=0
 		self.nbAnnee=0
@@ -192,7 +222,8 @@ class Flotte():
 	def calculerTempsVoyage(self):
 		self.distanceX=self.positionInitialeX-self.positionFinalX
 		self.distanceY=self.positionInitialeY-self.positionFinalY
-
+		#A FAIRE : Calculer selon calculerDistance dans Jeu !
+		
 		if self.distanceX <=2 and self.distanceY <=2:
 			self.nbAnnee = (self.distanceX / 2)+(self.distanceY / 2)
 		else:
