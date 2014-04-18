@@ -29,6 +29,8 @@ class Modele():
 	def __init__(self, parent):
 		self.parent = parent
 		self.nbEtoiles = 40
+		self.grandeurJeuX = 20
+		self.grandeurJeuY = 20
  
 class Jeu():
 	def __init__(self, parent):
@@ -123,6 +125,10 @@ class Czin():
         #rassemblementForces
         if self.mode == ModeCzin.rassemblementForces and self.base.nbVaisseaux >= (self.calculerForceAttaque*3):
         	self.mode = ModeCzin.etablirBase
+        elif self.mode == ModeCzin.etablirBase: #A FAIRE: changer la condition selon deplacement
+        	pass
+        elif self.mode == ModeCzin.conquerirGrappe and len(self.flottes) == 0:
+        	self.mode = ModeCzin.rassemblementForces
         #A FAIRE: les 2 autres modes
 
 class Gubru():
