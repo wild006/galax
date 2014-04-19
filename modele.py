@@ -139,8 +139,16 @@ class Gubru():
 		self.forceAttaqueBasique = 10
 		self.nbVaisseauxParAttaque = 5
 		self.etoileMere = etoileMere
-		self.flottes = [] #Toutes les flottes des Czin
+		self.flottes = [] #Toutes les flottes des Gubru
 		
+	def choixDeplacementFlottes(self):
+		self.creationFlottesEtoileMere()
+		for etoile in self.parent.listeEtoiles:
+			if etoile.typeEtoile == TypeEtoile.gubru:
+				print("nombre vaisseau" , etoile.nombreVaisseau)
+				if etoile.nombreVaisseau > 25:
+					self.flottes.append(etoile.creationFlotte(self.etoileMere, etoile.nombreVaisseau - 15))
+	
 	def calculerForceAttaque(self):
 		forceAttaque = self.parent.tempsCourant*self.nbVaisseauxParAttaque+self.forceAttaqueBasique
 		if forceAttaque < self.forceAttaqueBasique*2:
@@ -158,7 +166,7 @@ class Gubru():
 					etoilePlusProche = etoileArrivee
 		return etoilePlusProche
 	
-	def creationFlottes(self): #Pour l'etoileMere
+	def creationFlottesEtoileMere(self): #Pour l'etoileMere
 		while self.etoileMere.nombreVaisseau > self.calculerForceAttaque() + self.forceAttaqueBasique:
 			self.flottes.append(self.etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),self.calculerForceAttaque()))
 
