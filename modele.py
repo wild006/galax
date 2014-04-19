@@ -38,17 +38,19 @@ class Jeu():
 		self.tempsCourant = 0 #Temps qui va s'incrementer en cours de partie
 		self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
 		self.initialiserToutesEtoiles(self.parent)
-		#Pour TEST SEULEMENT
-		self.czin = Czin(self,Etoile(TypeEtoile.mereCzin,self))
-		self.gubru = Gubru(self,Etoile(TypeEtoile.mereGubru,self))
 
 	def initialiserToutesEtoiles(self, Modele):
-		#Creer les objets Czin et Gubru
-		
-		#Initialise les etoiles-meres de chaque race
+		#Initialise les etoiles-meres de chaque race et cree les objets Czin et Gubru
 		self.listeEtoiles.append(Etoile(TypeEtoile.mereHumain,self))
-		self.listeEtoiles.append(Etoile(TypeEtoile.mereGubru,self))
-		self.listeEtoiles.append(Etoile(TypeEtoile.mereCzin,self))
+		#Gubru
+		etoileMereGubru = Etoile(TypeEtoile.mereGubru,self)
+		self.listeEtoiles.append(etoileMereGubru)
+		self.gubru = Gubru(self,etoileMereGubru)
+		#Czin
+		etoileMereCzin = Etoile(TypeEtoile.mereCzin,self)
+		self.listeEtoiles.append(etoileMereCzin)
+		self.czin = Czin(self,etoileMereCzin)
+		
 		while len(self.listeEtoiles) < self.parent.nbEtoiles:
 			self.listeEtoiles.append(Etoile(TypeEtoile.indep,self))
 	
@@ -68,7 +70,7 @@ class Jeu():
 			return etoileChoisi
 	
 	@staticmethod
-	def calculerDistance(self, point1X, point1Y, point2X, point2Y):
+	def calculerDistance(point1X, point1Y, point2X, point2Y):
 		return ((point1X - point2X)**2 + (point1Y - point2Y)**2)**0.5
 
 #Besoin dune variable pour le temps qui sincremente
@@ -146,11 +148,11 @@ class Gubru():
 		return forceAttaque
 	
 	def calculerEtoilePlusProche(self, etoileDepart): #Retourne l'etoile la plus proche qui n'est pas au Gubru
-		distanceMin = 0
+		distanceMin = Jeu.calculerDistance(0,0,self.parent.parent.grandeurJeuX+1, self.parent.parent.grandeurJeuY+1)
 		etoilePlusProche = etoileDepart
 		for etoileArrivee in self.parent.listeEtoiles:
-			if etoileArrivee.typeEtoile != TypeEtoile.gubru or etoileArrivee.typeEtoile != TypeEtoile.mereGubru:
-				distance = Jeu.calculerDistance(self, etoileDepart.posX, etoileDepart.posY, etoileArrivee.posX, etoileArrivee.posY)
+			if etoileArrivee.typeEtoile != TypeEtoile.gubru and etoileArrivee.typeEtoile != TypeEtoile.mereGubru:
+				distance = Jeu.calculerDistance(etoileDepart.posX, etoileDepart.posY, etoileArrivee.posX, etoileArrivee.posY)
 				if distanceMin > distance:
 					distanceMin = distance
 					etoilePlusProche = etoileArrivee
@@ -171,6 +173,8 @@ class Etoile():#Modifier par Julien
 		self.nombreUsine = None
 		self.nombreVaisseau = None
 		self.typeEtoile = typeEtoileAttribue
+		self.initialiserEtoile()
+		self.initialiserPosition()
 
 	def initialiserEtoile(self):
 		if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
@@ -181,23 +185,20 @@ class Etoile():#Modifier par Julien
 		elif self.typeEtoile == TypeEtoile.gubru or self.typeEtoile == TypeEtoile.humain or self.typeEtoile == TypeEtoile.czin or self.typeEtoile == TypeEtoile.indep :
 			self.nombreUsine = random.randrange(6)
 
-	def initialiserPosition(self):
-		xx = random.randrange(20)
-		yy = random.randrange(20)
-		tempPosEtoile = [[xx, yy]]
-		while len(self.jeu.listeEtoiles) < self.jeu.parent.nbEtoiles:
-			x = random.randrange(20)
-			y = random.randrange(20)
-			if [x,y] not in tempPosEtoile:
-				if self.jeu.listeEtoiles:
-					for etoile in self.jeu.listeEtoiles:
-						if x != etoile.posX and y != etoile.posY:
-							self.posX = x
-							self.posY = y
-							break
-				else:
-					self.posX = x
-					self.posY = y
+	def initialiserPosition(self):#A FAIRE: Peut-etre ajouter que les etoiles meres sont loin l'une de l'autre
+		valide = False
+		while not valide:
+			self.posX = random.randrange(self.jeu.parent.grandeurJeuX)
+			self.posY = random.randrange(self.jeu.parent.grandeurJeuY)
+			if self.jeu.listeEtoiles:
+				for etoile in self.jeu.listeEtoiles:
+					if self.posX == etoile.posX and self.posY == etoile.posY:
+						valide = False
+						break
+					else:
+						valide = True
+			else:
+				valide = True #S'il y a aucune etoile dans la liste
 
 	def creerVaisseau(self):
 		for x in range(0,self.nombreUsine):
@@ -205,7 +206,6 @@ class Etoile():#Modifier par Julien
 	
 	def creationFlotte(self, etoileArrivee, nbVaisseaux):
 		pass #A FAIRE: retourne une flotte et enleve le nbvaisseaux a l'etoile
-	
 	
 
 class Flotte():
