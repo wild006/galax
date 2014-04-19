@@ -106,17 +106,17 @@ class Czin():
     def calculerGrappes(self):
         for etoile1 in self.parent.listeEtoiles:
             for etoile2 in self.parent.listeEtoiles:
-                distance = Jeu.calculerDistance(self, etoile1.posX, etoile1.posY, etoile2.posX, etoile1.posY)
+                distance = Jeu.calculerDistance(etoile1.posX, etoile1.posY, etoile2.posX, etoile1.posY)
                 if distance <= self.distanceGrappe:
-                    s = self.distanceGrappe - distance +1
-                    etoile1.valeurGrappe *= s
+                	s = self.distanceGrappe - distance +1
+                	etoile1.valeurGrappe += s*s
     
     def calculerBase(self):
     	for etoile in self.parent.listeEtoiles:
     		if etoile.valeurGrappe == 0:
     			etoile.valeurBase = 0
     		else:
-    			distanceBase = Jeu.calculerDistance(self, self.base.posX, self.base.posY, etoile.posX, etoile.posY)
+    			distanceBase = Jeu.calculerDistance(self.base.posX, self.base.posY, etoile.posX, etoile.posY)
     			etoile.valeurBase = etoile.valeurGrappe-3*distanceBase
        	#A FAIRE: Update la base
        	

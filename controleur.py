@@ -8,9 +8,10 @@ class Controleur():
         
         #POUR TEST SEULEMENT (ATTENTION CODE LAID :D !)
         self.j = Jeu(self.m)
+        self.j.czin.calculerGrappes()
         i = 1
         for etoile in self.j.listeEtoiles:
-            print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile)
+            print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe)
             i+=1
         etoileProche = self.j.gubru.calculerEtoilePlusProche(self.j.gubru.etoileMere)
         print("Etoile proche ",etoileProche.posX, " ", etoileProche.posY, " ", etoileProche.typeEtoile)
