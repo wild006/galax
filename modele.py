@@ -106,17 +106,17 @@ class Czin():
     def calculerGrappes(self):
         for etoile1 in self.parent.listeEtoiles:
             for etoile2 in self.parent.listeEtoiles:
-                distance = Jeu.calculerDistance(self, etoile1.posX, etoile1.posY, etoile2.posX, etoile1.posY)
+                distance = Jeu.calculerDistance(etoile1.posX, etoile1.posY, etoile2.posX, etoile1.posY)
                 if distance <= self.distanceGrappe:
-                    s = self.distanceGrappe - distance +1
-                    etoile1.valeurGrappe *= s
+                	s = self.distanceGrappe - distance +1
+                	etoile1.valeurGrappe += s*s
     
     def calculerBase(self):
     	for etoile in self.parent.listeEtoiles:
     		if etoile.valeurGrappe == 0:
     			etoile.valeurBase = 0
     		else:
-    			distanceBase = Jeu.calculerDistance(self, self.base.posX, self.base.posY, etoile.posX, etoile.posY)
+    			distanceBase = Jeu.calculerDistance(self.base.posX, self.base.posY, etoile.posX, etoile.posY)
     			etoile.valeurBase = etoile.valeurGrappe-3*distanceBase
        	#A FAIRE: Update la base
        	
@@ -142,7 +142,7 @@ class Gubru():
 		self.flottes = [] #Toutes les flottes des Czin
 		
 	def calculerForceAttaque(self):
-		forceAttaque = parent.tempsCourant*self.nbVaisseauxParAttaque+self.forceAttaqueBasique
+		forceAttaque = self.parent.tempsCourant*self.nbVaisseauxParAttaque+self.forceAttaqueBasique
 		if forceAttaque < self.forceAttaqueBasique*2:
 			forceAttaque = self.forceAttaqueBasique*2
 		return forceAttaque
@@ -160,7 +160,7 @@ class Gubru():
 	
 	def creationFlottes(self): #Pour l'etoileMere
 		while self.etoileMere.nombreVaisseau > self.calculerForceAttaque() + self.forceAttaqueBasique:
-			self.flottes.append(etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),self.calculerForceAttaque))
+			self.flottes.append(self.etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),self.calculerForceAttaque()))
 
 class Etoile():#Modifier par Julien
 	def __init__(self, typeEtoileAttribue,parent):
@@ -179,7 +179,7 @@ class Etoile():#Modifier par Julien
 	def initialiserEtoile(self):
 		if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
 			self.nombreUsine = 10
-			self.quantiteVaisseau = 100
+			self.nombreVaisseau = 100
 			if self.typeEtoile == TypeEtoile.mereHumain:
 				self.IntelligenceHumain = NiveauIntelligence.troisieme
 		elif self.typeEtoile == TypeEtoile.gubru or self.typeEtoile == TypeEtoile.humain or self.typeEtoile == TypeEtoile.czin or self.typeEtoile == TypeEtoile.indep :
@@ -204,8 +204,10 @@ class Etoile():#Modifier par Julien
 		for x in range(0,self.nombreUsine):
 			self.quantiteVaisseau += random.randrange(6)
 	
-	def creationFlotte(self, etoileArrivee, nbVaisseaux):
-		pass #A FAIRE: retourne une flotte et enleve le nbvaisseaux a l'etoile
+	def creationFlotte(self, etoileArrivee, nbVaisseau):
+		self.nombreVaisseau -= nbVaisseau
+		return Flotte(self, etoileArrivee, nbVaisseau)
+		#A FAIRE: Voir si il y a assez de vaisseaux sur l'etoile... (controle)
 	
 
 class Flotte():
@@ -217,12 +219,12 @@ class Flotte():
 		self.distanceX=0
 		self.distanceY=0
 		self.nbAnnee=0
-		self.nombreVaisseauDansFlotte=nombreVaisseau
+		self.nombreVaisseau=nombreVaisseau
 		#self.flotteVaisseau=flotteVaisseau(self,x,y)?
 		#self.vaisseauDefenseur=Etoile.nombreVaisseau
 		self.vaisseauAttaquant=None
 		self.probabiliteEliminer=None
-		self.force=self.vaisseauDefenseur/self.vaisseauAttaquant
+		#self.force=self.vaisseauDefenseur/self.vaisseauAttaquant
 
 
 	def calculerTempsVoyage(self):
