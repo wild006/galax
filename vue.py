@@ -1,5 +1,4 @@
 from tkinter import *
-from modele import *
 
 class Vue():
     def __init__(self, parent):
@@ -111,15 +110,11 @@ class Vue():
         self.cadreLobby.pack_forget()
         self.cadrePartie.pack()
         
-        tablo=[40]
-        Jeu.listeEtoiles=[]
+        self.parent.commencerPartie()
         
-        
-        for i in tablo:#problem ici pour faire apparaitre les etoiles dans le canvas
-            Jeu.initialiserToutesEtoiles(self, Modele)
+        for i in self.parent.getListeEtoile():#problem ici pour faire apparaitre les etoiles dans le canvas
             labelEtoileJeu=Label(self.canevas,text="*")
-            labelEtoileJeu.pack()
-        #tablo=Jeu.listeEtoiles
+            labelEtoileJeu.pack() #A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
        
         
     #def callback(event):    capturing click in a window

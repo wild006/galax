@@ -5,7 +5,9 @@ class Controleur():
     def __init__(self):
         self.m = Modele(self)
         self.v = Vue(self)
-        
+        self.v.root.mainloop()
+    
+    def commencerPartie(self):
         #POUR TEST SEULEMENT (ATTENTION CODE LAID :D !)
         self.j = Jeu(self.m)
         
@@ -31,6 +33,9 @@ class Controleur():
             for flotte in self.j.gubru.flottes:
                 print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau)
             self.j.tempsCourant +=1
+    
+    def getListeEtoile(self):
+        return self.j.listeEtoiles
             
 #----Main----
 
