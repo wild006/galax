@@ -1,4 +1,5 @@
 from tkinter import *
+from modele import *
 
 class Vue():
     def __init__(self, parent):
@@ -18,7 +19,7 @@ class Vue():
         b4=Button(self.cadreLobby,text="Quitter",width=15)
         b4.pack()
         self.cadreLobby.pack()
-        
+
         
     def initPartie(self):
         self.cadrePartie=Frame(self.root)
@@ -39,7 +40,7 @@ class Vue():
         SliderDeplacement.pack()
            
         labelInfo=Label(self.cadreInfo,text="Informations",relief=SOLID,width=15)
-        labelInfo.pack(pady=8)
+        labelInfo.pack(pady=16)
         labelHumain=Label(self.cadreInfo,text="Humain",relief=GROOVE,width=15)
         labelHumain.pack()
         labelGubru=Label(self.cadreInfo,text="Gubru",relief=GROOVE,width=15)
@@ -49,10 +50,27 @@ class Vue():
         labelIndep=Label(self.cadreInfo,text="Ind\xE9pendant",relief=GROOVE,width=15)
         labelIndep.pack()
         
+        labelEtoile=Label(self.cadreInfo,text="Etoiles",relief=SOLID,width=15)
+        labelEtoile.pack(pady=16)
+        labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
+        labelProprio.pack()
+        labelVaisseau=Label(self.cadreInfo,text="Nb Vaisseau(x)",relief=GROOVE,width=15)
+        labelVaisseau.pack()
+        labelManu=Label(self.cadreInfo,text="Nb Manufacture(s)",relief=GROOVE,width=15)
+        labelManu.pack()
         
-        labelHumain=Label(self.cadreInfo)
-        labelHumain.pack(pady=8)
+        labelDestination=Label(self.cadreInfo,text="Destination",relief=SOLID,width=15)
+        labelDestination.pack(pady=16)
+        labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
+        labelProprio.pack()
+        labelVaisseau=Label(self.cadreInfo,text="Nb Vaisseau(x)",relief=GROOVE,width=15)
+        labelVaisseau.pack()
+        labelManu=Label(self.cadreInfo,text="Nb Manufacture(s)",relief=GROOVE,width=15)
+        labelManu.pack()
         
+        
+        labelInfoResultat=Label(self.cadreInfoResultat)
+        labelInfoResultat.pack(pady=16)
         labelHumainResultat=Label(self.cadreInfoResultat,text="45",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelHumainResultat.pack()
         labelGubruResultat=Label(self.cadreInfoResultat,text="22",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
@@ -62,21 +80,8 @@ class Vue():
         labelIndepResultat=Label(self.cadreInfoResultat,text="0",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelIndepResultat.pack()
         
-        labelEtoile=Label(self.cadreInfo,text="Etoiles",relief=SOLID,width=15)
-        labelEtoile.pack(pady=8)
-        labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
-        labelProprio.pack()
-        labelVaisseau=Label(self.cadreInfo,text="Nb Vaisseau(x)",relief=GROOVE,width=15)
-        labelVaisseau.pack()
-        labelManu=Label(self.cadreInfo,text="Nb Manufacture(s)",relief=GROOVE,width=15)
-        labelManu.pack()
-        
-        
-        labelHumain=Label(self.cadreInfo)
-        labelHumain.pack(pady=8)
-        
-        labelEtoileResultat=Label(self.cadreInfoResultat)#changer text pour les fonctions qui montre le resultat
-        labelEtoileResultat.pack()
+        labelEtoileResultat=Label(self.cadreInfoResultat)
+        labelEtoileResultat.pack(pady=16)
         labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelProprioResultat.pack()
         labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
@@ -84,28 +89,16 @@ class Vue():
         labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelManuResultat.pack()
         
-        labelDestination=Label(self.cadreInfo,text="Destination",relief=SOLID,width=15)
-        labelDestination.pack(pady=8)
-        labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
-        labelProprio.pack()
-        labelVaisseau=Label(self.cadreInfo,text="Nb Vaisseau(x)",relief=GROOVE,width=15)
-        labelVaisseau.pack()
-        labelManu=Label(self.cadreInfo,text="Nb Manufacture(s)",relief=GROOVE,width=15)
-        labelManu.pack()
-        
-        labelHumain=Label(self.cadreInfo)
-        labelHumain.pack(pady=8)
-        
-        labelHumain=Label(self.cadreInfo)
-        labelHumain.pack(pady=8)
-        labelDestinationResultat=Label(self.cadreInfoResultat)#changer text pour les fonctions qui montre le resultat
-        labelDestinationResultat.pack()
+        labelDestinationResultat=Label(self.cadreInfoResultat)
+        labelDestinationResultat.pack(pady=16)
         labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelProprioResultat.pack()
         labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelVaisseauResultat.pack()
         labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
         labelManuResultat.pack()
+        
+        
         
         b1=Button(self.cadreFlotte,text="Faire D\xE9placement")
         b1.pack()
@@ -118,7 +111,17 @@ class Vue():
         self.cadreLobby.pack_forget()
         self.cadrePartie.pack()
         
-    
+        tablo=[40]
+        Jeu.listeEtoiles=[]
+        
+        
+        for i in tablo:#problem ici pour faire apparaitre les etoiles dans le canvas
+            Jeu.initialiserToutesEtoiles(self, Modele)
+            labelEtoileJeu=Label(self.canevas,text="*")
+            labelEtoileJeu.pack()
+        #tablo=Jeu.listeEtoiles
+       
+        
     #def callback(event):    capturing click in a window
         #print "clicked at", event.x, event.y
         #frame = Frame(root, width=100, height=100)
