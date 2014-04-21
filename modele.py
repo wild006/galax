@@ -74,13 +74,19 @@ class Jeu():
 		self.czin.calculerMode()
 		self.czin.calculerBase()
 		self.czin.calculerGrappes()
-		self.tempsCourant += 0.1
-		for flotte in self.humain.flottes:
-			pass
-		for flotte in self.gubru.flottes:
-			pass
-		for flotte in self.czin.flottes:
-			pass
+		for x in range(10):
+			self.tempsCourant += 0.1
+			for flotte in self.humain.flottes:
+				flotte.nbAnnee -= 0.1
+				if flotte.nbAnnee == 0:
+
+			for flotte in self.gubru.flottes:
+				pass
+			for flotte in self.czin.flottes:
+				pass
+
+	def attaqueEnCours(self, flotteAttaquante):
+
 
 	
 	@staticmethod
@@ -237,18 +243,18 @@ class Flotte():
 	def __init__(self,etoileDepart,etoileArrivee,nombreVaisseau): 
 		self.positionInitialeX=etoileDepart.posX
 		self.positionInitialeY=etoileDepart.posY
-		self.raceOrigine=etoileDepart.typeEtoile
 		self.positionFinalX=etoileArrivee.posX
 		self.positionFinalY=etoileArrivee.posY
+		self.etoileArrivee=etoileArrivee
+		self.raceOrigine=etoileDepart.typeEtoile
 		self.distanceX=0
 		self.distanceY=0
 		self.nbAnnee=0
 		self.nombreVaisseau=nombreVaisseau
-		#self.flotteVaisseau=flotteVaisseau(self,x,y)?
-		#self.vaisseauDefenseur=Etoile.nombreVaisseau
-		self.vaisseauAttaquant=None
+		self.nombreVaisseauDefenseur=None
 		self.probabiliteEliminer=None
-		#self.force=self.vaisseauDefenseur/self.vaisseauAttaquant
+		self.force=self.nombreVaisseauDefenseur/self.nombreVaisseau
+		#self.flotteVaisseau=flotteVaisseau(self,x,y)?
 
 
 	def calculerTempsVoyage(self):
@@ -262,26 +268,26 @@ class Flotte():
 			self.nbAnnee = 1 + (((self.distanceX - 2) / 3) + ((self.distanceY - 2) / 3))
 
 
-	def attaquer(self, etoile):
-		if self.flotteVaisseau==(self.positionFinalX and self.positionFinalY):
-			if etoile.nombreVaisseau>=1:
-				if self.vaisseauAttaquant < self.vaisseauDefenseur:
-					if self.force<5:
-						self.probabiliteEliminer=self.force/10
+	def attaquer(self):
+
+		if self.etoileArrivee.nombreVaisseau>=1:
+			if self.nombreVaisseau < self.nombreVaisseauDefenseur:
+				if self.force<5:
+					self.probabiliteEliminer=self.force/10
+				else:
+					if self.force<20:
+						self.probabiliteEliminer=(3*self.force+35)/100
 					else:
-						if self.force<20:
-							self.probabiliteEliminer=(3*self.force+35)/100
-						else:
-							self.probabiliteEliminer=0.95
-					while self.vaisseauAttaquant !=0 or self.vaisseauDefenseur !=0:
-						for x in range(etoile.nombreVaisseau):
-							self.probabiliteEliminer=random.randrange(10)
-							if self.probabiliteEliminer>=7:
-								self.vaisseauAttaquant-=1
-						for y in range(self.vaisseauAttaquant):
-							self.probabiliteEliminer=random.randrange(10)
-							if self.probabiliteEliminer>=1:#Chiffre a verifier
-								self.vaisseauDefenseur-=1
+						self.probabiliteEliminer=0.95
+				while self.nombreVaisseau !=0 or self.nombreVaisseauDefenseur !=0:
+					for x in range(self.nombreVaisseauDefenseur):
+						self.probabiliteEliminer=random.randrange(10)
+						if self.probabiliteEliminer>=7:
+							self.nombreVaisseau-=1
+					for y in range(self.nombreVaisseau):
+						self.probabiliteEliminer=random.randrange(10)
+						if self.probabiliteEliminer>=1:#Chiffre a verifier
+							self.nombreVaisseauDefenseur-=1
 				
 
 
