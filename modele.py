@@ -68,6 +68,20 @@ class Jeu():
 			return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.troisieme :
 			return etoileChoisi
+
+	def changementDeTour(self):
+		self.gubru.choixDeplacementFlottes()
+		self.czin.calculerMode()
+		self.czin.calculerBase()
+		self.czin.calculerGrappes()
+		self.tempsCourant += 0.1
+		for flotte in self.humain.flottes:
+			pass
+		for flotte in self.gubru.flottes:
+			pass
+		for flotte in self.czin.flottes:
+			pass
+
 	
 	@staticmethod
 	def calculerDistance(point1X, point1Y, point2X, point2Y):
@@ -77,6 +91,7 @@ class Jeu():
 class Humain():
 	def __init__(self,parent):
 		self.parent = parent
+		self.flottes = []
 		self.estHumain#besoin de verification pour determiner si humain ou non
 		self.enVoyage#selon le choix du joueur a verifier
 		
@@ -166,11 +181,11 @@ class Gubru():
 					etoilePlusProche = etoileArrivee
 		return etoilePlusProche
 	
-	def creationFlottesEtoileMere(self): #Pour l'etoileMere
+	def creationFlottesEtoileMere(self): #Pour l'etoile Mere/ Utiliser dans la fonction de deplacement des flottes
 		while self.etoileMere.nombreVaisseau > self.calculerForceAttaque() + self.forceAttaqueBasique:
 			self.flottes.append(self.etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),self.calculerForceAttaque()))
 
-class Etoile():#Modifier par Julien
+class Etoile():
 	def __init__(self, typeEtoileAttribue,parent):
 		self.jeu = parent
 		self.IntelligenceHumain = NiveauIntelligence.aucun
@@ -222,6 +237,7 @@ class Flotte():
 	def __init__(self,etoileDepart,etoileArrivee,nombreVaisseau): 
 		self.positionInitialeX=etoileDepart.posX
 		self.positionInitialeY=etoileDepart.posY
+		self.raceOrigine=etoileDepart.typeEtoile
 		self.positionFinalX=etoileArrivee.posX
 		self.positionFinalY=etoileArrivee.posY
 		self.distanceX=0
