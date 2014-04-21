@@ -11,9 +11,9 @@ class Controleur():
         #POUR TEST SEULEMENT (ATTENTION CODE LAID :D !)
         self.j = Jeu(self.m)
         
-        for etoile in self.j.listeEtoiles:
-            if etoile.typeEtoile == TypeEtoile.mereCzin:
-                etoile.typeEtoile = TypeEtoile.gubru
+        #for etoile in self.j.listeEtoiles:
+         #   if etoile.typeEtoile == TypeEtoile.mereCzin:
+          #      etoile.typeEtoile = TypeEtoile.gubru
         
         self.j.czin.calculerGrappes()
         i = 1

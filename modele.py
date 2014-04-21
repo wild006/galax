@@ -31,6 +31,8 @@ class Modele():
 		self.nbEtoiles = 40
 		self.grandeurJeuX = 20
 		self.grandeurJeuY = 20
+		self.espacementEtoileMereX = 5
+		self.espacementEtoileMereY = 5
  
 class Jeu():
 	def __init__(self, parent):
@@ -296,10 +298,10 @@ class Etoile():
 				for etoile in self.jeu.listeEtoiles:
 					if etoile.typeEtoile == TypeEtoile.mereHumain or etoile.typeEtoile == TypeEtoile.mereCzin or etoile.typeEtoile == TypeEtoile.mereGubru :
 						if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
-	                		if etoile.posX - self.posX <= 5 or etoile.posX - self.posX >= -5:  
-	                    		if etoile.posY - self.posY <= 5 or etoile.posY - self.posY >= -5:
-	                    			valide = False
-	                    			break
+							if abs(etoile.posX - self.posX) <= self.jeu.parent.espacementEtoileMereX:  
+								if abs(etoile.posY - self.posY) <= self.jeu.parent.espacementEtoileMereY:
+									valide = False
+									break
 					if self.posX == etoile.posX and self.posY == etoile.posY:
 						valide = False
 						break
@@ -336,8 +338,12 @@ class Flotte():
 		#self.flotteVaisseau=flotteVaisseau(self,x,y)?
 
 	def calculerTempsVoyage(self):
-		self.nbAnnee = Jeu.calculerDistance(self.positionInitialeX, self.positionInitialeY, self.positionFinalX, self.positionFinalY)
-	
+		distance = Jeu.calculerDistance(self.positionInitialeX, self.positionInitialeY, self.positionFinalX, self.positionFinalY)
+		if distance <= 2:
+			self.nbAnnee = distance/2
+		else:
+			self.nbAnnee = 1 + ((distance-2)/3)
+		
 	def attaquer(self, flotteEnnemi, attaquant):
 		if attaquant == True: # attaquant
 			prob = 0.3 #Chiffre a verifier
