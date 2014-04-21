@@ -15,7 +15,8 @@ class Controleur():
          #   if etoile.typeEtoile == TypeEtoile.mereCzin:
           #      etoile.typeEtoile = TypeEtoile.gubru
         
-        self.j.czin.calculerGrappes()
+       # self.j.czin.calculerGrappes()
+        self.j.czin.essaimerGrappes()
         i = 1
         for etoile in self.j.listeEtoiles:
             print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
@@ -28,7 +29,7 @@ class Controleur():
         #    print(flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau)
         #Mettre une etoile a Gubru pour test
         print(len(self.j.gubru.flottes))
-        for i in range(10):
+        for i in range(1):
           #  self.j.gubru.choixDeplacementFlottes()
             for flotte in self.j.gubru.flottes:
                 print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
