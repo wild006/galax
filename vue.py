@@ -21,6 +21,7 @@ class Vue():
 
         
     def initPartie(self):
+        self.parent.commencerPartie()
         self.cadrePartie=Frame(self.root)
         self.cadreJeu=Frame(self.cadrePartie)
         self.cadreFlotte=Frame(self.cadrePartie)
@@ -107,11 +108,12 @@ class Vue():
         b3=Button(self.cadreCommande,text="Quitter",width=12,command=self.initFermer)
         b3.pack()
         
-        self.parent.commencerPartie()
-        tabloJeu=[]
-        for i in self.parent.getListeEtoile():#problem ici pour faire apparaitre les etoiles dans le canvas
-            tabloJeu[i.posX][i.posY]=labelEtoileJeu=Label(self.canevas,text="*")
-            labelEtoileJeu.pack()#A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
+        #self.canevas.create_oval(0, 0, 100, 100)
+        #print(self.parent.getListeEtoile())
+        for etoile in self.parent.getListeEtoile():#problem ici pour faire apparaitre les etoiles dans le canvas
+            self.canevas.create_oval(etoile.posX*20, etoile.posY*20, etoile.posX*20+10, etoile.posY*20 +10)
+            #A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
+            #A FAIRE: BIEN AFFICHER LES ETOILES
         
         self.cadreLobby.pack_forget()
         self.cadrePartie.pack()
