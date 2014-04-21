@@ -72,27 +72,44 @@ class Jeu():
 
 	def changementDeTour(self):
 		self.gubru.choixDeplacementFlottes()
-		self.czin.calculerMode()
-		self.czin.calculerBase()
-		self.czin.calculerGrappes()
+		#self.czin.calculerMode()
+		#self.czin.calculerBase()
+		#self.czin.calculerGrappes()
+		
+		
 		for x in range(10):
 			self.tempsCourant += 0.1
+			flotteASupp = []
 			for flotte in self.humain.flottes:
 				flotte.nbAnnee -= 0.1
 				if flotte.nbAnnee <= 0:
 					if flotte.etoileArrivee.nombreVaisseau>=1: #Combat
-						if self.attaqueEnCours(flotte) == flotte:
-							self.humain.flottes.remove(flotte)
-						else:
+						if self.attaqueEnCours(flotte) != flotte:
 							flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
+							flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+					else:
+						flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
+						flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+						
+					flotteASupp.append(flotte)
+			self.supprimerFlottes(flotteASupp, self.humain.flottes)
+			
+			flotteASupp =[]
 			for flotte in self.gubru.flottes:
 				flotte.nbAnnee -= 0.1
 				if flotte.nbAnnee <= 0:
 					if flotte.etoileArrivee.nombreVaisseau>=1: #Combat
-						if self.attaqueEnCours(flotte) == flotte:
-							self.gubru.flottes.remove(flotte)
-						else:
+						if self.attaqueEnCours(flotte) != flotte:
 							flotte.etoileArrivee.typeEtoile = TypeEtoile.gubru
+							flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+					else:
+						flotte.etoileArrivee.typeEtoile = TypeEtoile.gubru
+						flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+			
+					flotteASupp.append(flotte)
+			self.supprimerFlottes(flotteASupp, self.gubru.flottes)
+			
+			flotteASupp =[]	
 			for flotte in self.czin.flottes:
 				flotte.nbAnnee -= 0.1
 				if flotte.nbAnnee <= 0:
@@ -101,12 +118,20 @@ class Jeu():
 							self.czin.flottes.remove(flotte)
 						else:
 							flotte.etoileArrivee.typeEtoile = TypeEtoile.czin
+							flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+					else:
+						flotte.etoileArrivee.typeEtoile = TypeEtoile.czin
+						flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+							
+					flotteASupp.append(flotte)
+			self.supprimerFlottes(flotteASupp, self.czin.flottes)
+		print("fin changement tour")
 
 	def attaqueEnCours(self, flotteAttaquante):
 		flotteDefense = Flotte(flotteAttaquante.etoileArrivee,flotteAttaquante.etoileArrivee, flotteAttaquante.etoileArrivee.nombreVaisseau) #Flotte temporaire pour combat
 		
 		while flotteAttaquante.nombreVaisseau !=0 or flotteDefense.nombreVaisseau !=0:
-			if self.nombreVaisseau > self.etoileArrivee.nombreVaisseau: #Attaque surprise
+			if flotteAttaquante.nombreVaisseau > flotteDefense.nombreVaisseau: #Attaque surprise
 				r = flotteDefense.nombreVaisseau/flotteAttaquante.nombreVaisseau
 				if r< 0.5:
 					PremierprobabiliteEliminer = force/10
@@ -129,6 +154,12 @@ class Jeu():
 		else:
 			return flotteDefense
 		
+	def supprimerFlottes(self, listeFlottesASupp, listeFlottes ):
+		for flotte in listeFlottesASupp:
+			print("REMOVE DEBUT" , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
+			listeFlottes.remove(flotte)
+			print("REMOVE FIN " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
+			
 	@staticmethod
 	def calculerDistance(point1X, point1Y, point2X, point2Y):
 		return ((point1X - point2X)**2 + (point1Y - point2Y)**2)**0.5
