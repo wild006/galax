@@ -11,11 +11,11 @@ class Vue():
         labelTitre.pack()
         b1=Button(self.cadreLobby,text="Commencer partie",width=15,command=self.initPartie)
         b1.pack()
-        b2=Button(self.cadreLobby,text="Options",width=15)
+        b2=Button(self.cadreLobby,text="Options",width=15,command=self.initOption)
         b2.pack()
-        b3=Button(self.cadreLobby,text="HighScore",width=15)
+        b3=Button(self.cadreLobby,text="HighScore",width=15,command=self.initHighScore)
         b3.pack()
-        b4=Button(self.cadreLobby,text="Quitter",width=15)
+        b4=Button(self.cadreLobby,text="Quitter",width=15,command=self.initFermer)
         b4.pack()
         self.cadreLobby.pack()
 
@@ -104,18 +104,21 @@ class Vue():
         
         b2=Button(self.cadreCommande,text="Prochain Tour",width=12)
         b2.pack()
-        b3=Button(self.cadreCommande,text="Quitter",width=12)
+        b3=Button(self.cadreCommande,text="Quitter",width=12,command=self.initFermer)
         b3.pack()
+        
+        self.parent.commencerPartie()
+        tabloJeu=[]
+        for i in self.parent.getListeEtoile():#problem ici pour faire apparaitre les etoiles dans le canvas
+            tabloJeu[i.posX][i.posY]=labelEtoileJeu=Label(self.canevas,text="*")
+            labelEtoileJeu.pack()#A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
         
         self.cadreLobby.pack_forget()
         self.cadrePartie.pack()
         
-        self.parent.commencerPartie()
         
-        for i in self.parent.getListeEtoile():#problem ici pour faire apparaitre les etoiles dans le canvas
-            labelEtoileJeu=Label(self.canevas,text="*")
-            labelEtoileJeu.pack() #A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
        
+
         
     #def callback(event):    capturing click in a window
         #print "clicked at", event.x, event.y
@@ -123,11 +126,60 @@ class Vue():
         #frame.bind("<Button-1>", callback)
         #frame.pack()
         
-
-class Execution():
-    def __init__(self):
-        self.vue=Vue(self)
-        self.vue.root.mainloop()
+    def initOption(self):
+        self.canevas=Canvas(self.root,width=800,height=600,bg="white")
         
-if __name__=='__main__':
-    e=Execution()
+        labelDifficulte=Label(self.canevas,text="Difficult\xE9e",relief=SOLID,width=15)
+        labelDifficulte.pack(padx=5,side=LEFT)
+        labelFacile=Label(self.canevas,text="Facile",relief=GROOVE,width=15)#remplacer par un boutton
+        labelFacile.pack(padx=1,side=LEFT)
+        labelIntermediaire=Label(self.canevas,text="Interm\xE9diaire",relief=GROOVE,width=15)#remplacer par un boutton
+        labelIntermediaire.pack(padx=1,side=LEFT)
+        labelDifficile=Label(self.canevas,text="Difficile",relief=GROOVE,width=15)#remplacer par un boutton
+        labelDifficile.pack(padx=1,side=LEFT)
+        
+        b=Button(self.canevas,text="Quitter",width=15,command=self.initFermer)
+        b.pack()
+        
+        self.cadreLobby.pack_forget()
+        self.canevas.pack()
+        
+    def initHighScore(self):
+        self.cadrePartieHighScore=Frame(self.root)
+        self.cadreHighScore=Frame(self.cadrePartieHighScore)
+        self.cadreNom=Frame(self.cadrePartieHighScore)
+        self.cadreTitre=Frame(self.cadrePartieHighScore)
+        self.cadreQuitter=Frame(self.cadrePartieHighScore)
+        self.cadreTitre.grid(column=1,row=0)
+        self.cadreNom.grid(column=0,row=1)
+        self.cadreHighScore.grid(column=2,row=1)
+        self.cadreQuitter.grid(column=1,row=2)
+        self.canevas=Canvas(self.cadreTitre,width=800,height=600,bg="white")
+        self.canevas.pack()
+
+        
+        labelTitre=Label(self.canevas,text="HIGHSCORE",bg="red",width=20)
+        labelTitre.pack()
+        
+        labelNom=Label(self.cadreNom,text="NOM",bg="blue",fg="white",relief=SOLID,width=12)
+        labelNom.pack(pady=8)
+        
+        for i in range (0,5):
+            labelNomScore=Label(self.cadreNom,text="NOM D'UN JOUEUR",relief=GROOVE,width=12)#inserer la fonction pour les noms
+            labelNomScore.pack()
+            
+        labelHighScore=Label(self.cadreHighScore,text="SCORE",bg="blue",fg="white",relief=SOLID,width=12)
+        labelHighScore.pack(pady=8)
+        
+        for i in range (0,5):
+            labelScore=Label(self.cadreHighScore,text="SCORE DU JOUEUR",relief=GROOVE,width=12)#inserer la fonction pour les scores
+            labelScore.pack()
+            
+        b=Button(self.cadreQuitter,text="Quitter",width=15,command=self.initFermer)
+        b.pack()
+        
+        self.cadreLobby.pack_forget()
+        self.cadrePartieHighScore.pack()
+
+    def initFermer(self):
+        self.root.destroy()
