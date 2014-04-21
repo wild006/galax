@@ -130,6 +130,8 @@ class Jeu():
 			self.supprimerFlottes(flotteASupp, self.czin.flottes)
 		print("fin changement tour")
 		#A FAIRE: Mettre a jour les etoiles (creation de vaisseaux par manufactures)
+		for etoile in listeEtoiles:
+			etoile.creerVaisseau()
 
 	def attaqueEnCours(self, flotteAttaquante):
 		flotteDefense = Flotte(flotteAttaquante.etoileArrivee,flotteAttaquante.etoileArrivee, flotteAttaquante.etoileArrivee.nombreVaisseau) #Flotte temporaire pour combat
