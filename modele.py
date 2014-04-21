@@ -55,7 +55,7 @@ class Jeu():
 		while len(self.listeEtoiles) < self.parent.nbEtoiles:
 			self.listeEtoiles.append(Etoile(TypeEtoile.indep,self))
 	
-	def infoEtoile(self, etoileChoisi):    # MODIFIER PAR JULIEN POUR CREER UNE ETOILE AVEC LES INFORMATIONS NECESSAIRES
+	def infoEtoile(self, etoileChoisi):    
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
 			return Etoile(TypeEtoile.indep)
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
@@ -294,6 +294,12 @@ class Etoile():
 			self.posY = random.randrange(self.jeu.parent.grandeurJeuY)
 			if self.jeu.listeEtoiles:
 				for etoile in self.jeu.listeEtoiles:
+					if etoile.typeEtoile == TypeEtoile.mereHumain or etoile.typeEtoile == TypeEtoile.mereCzin or etoile.typeEtoile == TypeEtoile.mereGubru :
+						if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
+	                		if etoile.posX - self.posX <= 5 or etoile.posX - self.posX >= -5:  
+	                    		if etoile.posY - self.posY <= 5 or etoile.posY - self.posY >= -5:
+	                    			valide = False
+	                    			break
 					if self.posX == etoile.posX and self.posY == etoile.posY:
 						valide = False
 						break
