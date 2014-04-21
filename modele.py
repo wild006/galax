@@ -42,6 +42,7 @@ class Jeu():
 	def initialiserToutesEtoiles(self, Modele):
 		#Initialise les etoiles-meres de chaque race et cree les objets Czin et Gubru
 		self.listeEtoiles.append(Etoile(TypeEtoile.mereHumain,self))
+		self.humain = Humain(self)
 		#Gubru
 		etoileMereGubru = Etoile(TypeEtoile.mereGubru,self)
 		self.listeEtoiles.append(etoileMereGubru)
@@ -78,17 +79,56 @@ class Jeu():
 			self.tempsCourant += 0.1
 			for flotte in self.humain.flottes:
 				flotte.nbAnnee -= 0.1
-				if flotte.nbAnnee == 0:
-
+				if flotte.nbAnnee <= 0:
+					if flotte.etoileArrivee.nombreVaisseau>=1: #Combat
+						if self.attaqueEnCours(flotte) == flotte:
+							self.humain.flottes.remove(flotte)
+						else:
+							flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
 			for flotte in self.gubru.flottes:
-				pass
+				flotte.nbAnnee -= 0.1
+				if flotte.nbAnnee <= 0:
+					if flotte.etoileArrivee.nombreVaisseau>=1: #Combat
+						if self.attaqueEnCours(flotte) == flotte:
+							self.gubru.flottes.remove(flotte)
+						else:
+							flotte.etoileArrivee.typeEtoile = TypeEtoile.gubru
 			for flotte in self.czin.flottes:
-				pass
+				flotte.nbAnnee -= 0.1
+				if flotte.nbAnnee <= 0:
+					if flotte.etoileArrivee.nombreVaisseau>=1: #Combat
+						if self.attaqueEnCours(flotte) == flotte:
+							self.czin.flottes.remove(flotte)
+						else:
+							flotte.etoileArrivee.typeEtoile = TypeEtoile.czin
 
 	def attaqueEnCours(self, flotteAttaquante):
-
-
-	
+		flotteDefense = Flotte(flotteAttaquante.etoileArrivee,flotteAttaquante.etoileArrivee, flotteAttaquante.etoileArrivee.nombreVaisseau) #Flotte temporaire pour combat
+		
+		while flotteAttaquante.nombreVaisseau !=0 or flotteDefense.nombreVaisseau !=0:
+			if self.nombreVaisseau > self.etoileArrivee.nombreVaisseau: #Attaque surprise
+				r = flotteDefense.nombreVaisseau/flotteAttaquante.nombreVaisseau
+				if r< 0.5:
+					PremierprobabiliteEliminer = force/10
+				elif r< 0.20:
+					probabiliteAttaquePremier = (3* force+35)/100
+				else:
+					probabiliteAttaquePremier= 0.95
+					
+				prob = random.randrange(10)
+				if probabiliteAttaquePremier*10 <= probabiliteAttaquePremier:
+					flotteAttaquante.attaquer(flotteDefense,True)
+					flotteDefense.attaquer(flotteAttaquante,False)
+				else:
+					flotteDefense.attaquer(flotteAttaquante,False)
+					flotteAttaquante.attaquer(flotteDefense,True)
+		
+		#Retourne le perdant
+		if flotteAttaquante.nombreVaisseau == 0:
+			return flotteAttaquante
+		else:
+			return flotteDefense
+		
 	@staticmethod
 	def calculerDistance(point1X, point1Y, point2X, point2Y):
 		return ((point1X - point2X)**2 + (point1Y - point2Y)**2)**0.5
@@ -98,8 +138,10 @@ class Humain():
 	def __init__(self,parent):
 		self.parent = parent
 		self.flottes = []
-		self.estHumain#besoin de verification pour determiner si humain ou non
-		self.enVoyage#selon le choix du joueur a verifier
+		
+		#A FAIRE DANS LA VUE ???
+		#self.estHumain#besoin de verification pour determiner si humain ou non
+		#self.enVoyage#selon le choix du joueur a verifier
 		
 	def deplacementFlotte(self):
 		for x in self.parent.listeEtoiles:
@@ -146,7 +188,7 @@ class Czin():
        
     def calculerMode(self):
         #rassemblementForces
-        if self.mode == ModeCzin.rassemblementForces and self.base.nbVaisseaux >= (self.calculerForceAttaque*3):
+        if self.mode == ModeCzin.rassemblementForces and self.base.nombreVaisseau >= (self.calculerForceAttaque()*3):
         	self.mode = ModeCzin.etablirBase
         elif self.mode == ModeCzin.etablirBase: #A FAIRE: changer la condition selon deplacement
         	pass
@@ -200,7 +242,7 @@ class Etoile():
 		self.valeurGrappe = 0 #Pour la strategie des Czin
 		self.valeurBase = 0 #Pour la strategie des Czin
 		self.nombreUsine = None
-		self.nombreVaisseau = None
+		self.nombreVaisseau = 0
 		self.typeEtoile = typeEtoileAttribue
 		self.initialiserEtoile()
 		self.initialiserPosition()
@@ -251,43 +293,22 @@ class Flotte():
 		self.distanceY=0
 		self.nbAnnee=0
 		self.nombreVaisseau=nombreVaisseau
-		self.nombreVaisseauDefenseur=None
-		self.probabiliteEliminer=None
-		self.force=self.nombreVaisseauDefenseur/self.nombreVaisseau
+		#self.nombreVaisseauDefenseur=None
+		self.calculerTempsVoyage()
+		#self.force=self.nombreVaisseauDefenseur/self.nombreVaisseau
 		#self.flotteVaisseau=flotteVaisseau(self,x,y)?
 
-
 	def calculerTempsVoyage(self):
-		self.distanceX=self.positionInitialeX-self.positionFinalX
-		self.distanceY=self.positionInitialeY-self.positionFinalY
-		#A FAIRE : Calculer selon calculerDistance dans Jeu !
-		
-		if self.distanceX <=2 and self.distanceY <=2:
-			self.nbAnnee = (self.distanceX / 2)+(self.distanceY / 2)
+		self.nbAnnee = Jeu.calculerDistance(self.positionInitialeX, self.positionInitialeY, self.positionFinalX, self.positionFinalY)
+	
+	def attaquer(self, flotteEnnemi, attaquant):
+		if attaquant == True: # attaquant
+			prob = 0.3 #Chiffre a verifier
 		else:
-			self.nbAnnee = 1 + (((self.distanceX - 2) / 3) + ((self.distanceY - 2) / 3))
-
-
-	def attaquer(self):
-
-		if self.etoileArrivee.nombreVaisseau>=1:
-			if self.nombreVaisseau < self.nombreVaisseauDefenseur:
-				if self.force<5:
-					self.probabiliteEliminer=self.force/10
-				else:
-					if self.force<20:
-						self.probabiliteEliminer=(3*self.force+35)/100
-					else:
-						self.probabiliteEliminer=0.95
-				while self.nombreVaisseau !=0 or self.nombreVaisseauDefenseur !=0:
-					for x in range(self.nombreVaisseauDefenseur):
-						self.probabiliteEliminer=random.randrange(10)
-						if self.probabiliteEliminer>=7:
-							self.nombreVaisseau-=1
-					for y in range(self.nombreVaisseau):
-						self.probabiliteEliminer=random.randrange(10)
-						if self.probabiliteEliminer>=1:#Chiffre a verifier
-							self.nombreVaisseauDefenseur-=1
-				
+			prob = 0.7
+			for vaisseau in range(self.nombreVaisseau):
+				probabiliteEliminer =random.randrange(10)
+				if probabiliteEliminer >= prob:
+					flotteEnnemi.nombreVaisseau -=1		
 
 

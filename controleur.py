@@ -28,11 +28,13 @@ class Controleur():
         #    print(flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau)
         #Mettre une etoile a Gubru pour test
    
-        for i in range(2):
+        for i in range(10):
             self.j.gubru.choixDeplacementFlottes()
             for flotte in self.j.gubru.flottes:
-                print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau)
-            self.j.tempsCourant +=1
+                print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
+            self.j.changementDeTour()
+            
+        
     
     def getListeEtoile(self):
         return self.j.listeEtoiles
