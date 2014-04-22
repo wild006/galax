@@ -73,8 +73,10 @@ class Jeu():
 			return etoileChoisi
 
 	def changementDeTour(self):
+		print("gubru")
 		self.gubru.choixDeplacementFlottes()
-		self.czin.choixDeplacementFlottes()
+		print("Czin")
+		#self.czin.choixDeplacementFlottes()
 		#self.czin.calculerMode()
 		#self.czin.calculerBase()
 		#self.czin.calculerGrappes()
@@ -83,6 +85,7 @@ class Jeu():
 		for x in range(10):
 			self.tempsCourant += 0.1
 			flotteASupp = []
+			print("Combat humain")
 			for flotte in self.humain.flottes:
 				flotte.nbAnnee -= 0.1
 				if flotte.nbAnnee <= 0:
@@ -97,6 +100,7 @@ class Jeu():
 					flotteASupp.append(flotte)
 			self.supprimerFlottes(flotteASupp, self.humain.flottes)
 			
+			print("Combat gubru")
 			flotteASupp =[]
 			for flotte in self.gubru.flottes:
 				flotte.nbAnnee -= 0.1
@@ -112,6 +116,7 @@ class Jeu():
 					flotteASupp.append(flotte)
 			self.supprimerFlottes(flotteASupp, self.gubru.flottes)
 			
+			print("Combat czin")
 			flotteASupp =[]	
 			for flotte in self.czin.flottes:
 				flotte.nbAnnee -= 0.1
@@ -130,29 +135,34 @@ class Jeu():
 			self.supprimerFlottes(flotteASupp, self.czin.flottes)
 		print("fin changement tour")
 		#A FAIRE: Mettre a jour les etoiles (creation de vaisseaux par manufactures)
-		for etoile in listeEtoiles:
+		for etoile in self.listeEtoiles:
 			etoile.creerVaisseau()
 
 	def attaqueEnCours(self, flotteAttaquante):
 		flotteDefense = Flotte(flotteAttaquante.etoileArrivee,flotteAttaquante.etoileArrivee, flotteAttaquante.etoileArrivee.nombreVaisseau) #Flotte temporaire pour combat
-		
-		while flotteAttaquante.nombreVaisseau !=0 or flotteDefense.nombreVaisseau !=0:
+		print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
+		while  flotteAttaquante.nombreVaisseau > 0 and flotteDefense.nombreVaisseau > 0:
+			print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
 			if flotteAttaquante.nombreVaisseau > flotteDefense.nombreVaisseau: #Attaque surprise
 				r = flotteDefense.nombreVaisseau/flotteAttaquante.nombreVaisseau
 				if r< 0.5:
-					PremierprobabiliteEliminer = force/10
+					probabiliteAttaquePremier = r/10
 				elif r< 0.20:
-					probabiliteAttaquePremier = (3* force+35)/100
+					probabiliteAttaquePremier = (3* r+35)/100
 				else:
 					probabiliteAttaquePremier= 0.95
 					
 				prob = random.randrange(10)
+				print("prob de : ",prob)
 				if probabiliteAttaquePremier*10 <= probabiliteAttaquePremier:
 					flotteAttaquante.attaquer(flotteDefense,True)
 					flotteDefense.attaquer(flotteAttaquante,False)
 				else:
 					flotteDefense.attaquer(flotteAttaquante,False)
 					flotteAttaquante.attaquer(flotteDefense,True)
+			else:
+				flotteDefense.attaquer(flotteAttaquante,False)
+				flotteAttaquante.attaquer(flotteDefense,True)
 		
 		#Retourne le perdant
 		if flotteAttaquante.nombreVaisseau == 0:
@@ -361,7 +371,7 @@ class Etoile():
 
 	def creerVaisseau(self):
 		for x in range(0,self.nombreUsine):
-			self.quantiteVaisseau += random.randrange(6)
+			self.nombreVaisseau += random.randrange(6)
 	
 	def creationFlotte(self, etoileArrivee, nbVaisseau):
 		self.nombreVaisseau -= nbVaisseau
@@ -395,11 +405,12 @@ class Flotte():
 		
 	def attaquer(self, flotteEnnemi, attaquant):
 		if attaquant == True: # attaquant
-			prob = 0.3 #Chiffre a verifier
+			prob = 0.5 #Chiffre a verifier
 		else:
 			prob = 0.7
-			for vaisseau in range(self.nombreVaisseau):
+			for vaisseau in range(int(self.nombreVaisseau)):
 				probabiliteEliminer =random.randrange(10)
+				print("probabiliteEliminer : ", probabiliteEliminer," ", attaquant)
 				if probabiliteEliminer >= prob:
 					flotteEnnemi.nombreVaisseau -=1		
 

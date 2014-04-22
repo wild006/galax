@@ -29,14 +29,15 @@ class Controleur():
         #    print(flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau)
         #Mettre une etoile a Gubru pour test
         print(len(self.j.gubru.flottes))
-        #for i in range(1):
-          #  self.j.gubru.choixDeplacementFlottes()
-         #   for flotte in self.j.gubru.flottes:
-          #      print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
-           # self.j.changementDeTour()
+        for i in range(10):
+         #   self.j.gubru.choixDeplacementFlottes()
+            self.j.changementDeTour()
+            for flotte in self.j.gubru.flottes:
+                print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
+            
         
         #print(len(self.j.gubru.flottes))
-       # print("FIN")
+        print("FIN")
         #for flotte in self.j.gubru.flottes:
          #   print("FIN !!! temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
 
