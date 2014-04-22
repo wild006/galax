@@ -45,27 +45,27 @@ class Jeu():
 		#Initialise les etoiles-meres de chaque race et cree les objets Czin et Gubru
 		self.listeEtoiles.append(Etoile(TypeEtoile.mereHumain,self))
 		self.humain = Humain(self)
-		#Gubru
-		etoileMereGubru = Etoile(TypeEtoile.mereGubru,self)
-		self.listeEtoiles.append(etoileMereGubru)
-		self.gubru = Gubru(self,etoileMereGubru)
 		#Czin
 		etoileMereCzin = Etoile(TypeEtoile.mereCzin,self)
 		self.listeEtoiles.append(etoileMereCzin)
 		self.czin = Czin(self,etoileMereCzin)
+		#Gubru
+		etoileMereGubru = Etoile(TypeEtoile.mereGubru,self)
+		self.listeEtoiles.append(etoileMereGubru)
+		self.gubru = Gubru(self,etoileMereGubru)
 		
 		while len(self.listeEtoiles) < self.parent.nbEtoiles:
 			self.listeEtoiles.append(Etoile(TypeEtoile.indep,self))
 	
 	def infoEtoile(self, etoileChoisi):    
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
-			return Etoile(TypeEtoile.indep)
+			return Etoile(TypeEtoile.indep, self)
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
-			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile)
+			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
 			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
 			return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.deuxieme :
-			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile)
+			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
 			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
 			nouvelleEtoile.nombreUsine = etoileChoisi.nombreUsine
 			return nouvelleEtoile
@@ -76,14 +76,14 @@ class Jeu():
 		print("gubru")
 		self.gubru.choixDeplacementFlottes()
 		print("Czin")
-		#self.czin.choixDeplacementFlottes()
+		self.czin.choixDeplacementFlottes()
 		#self.czin.calculerMode()
 		#self.czin.calculerBase()
 		#self.czin.calculerGrappes()
 		
 		
 		for x in range(10):
-			self.tempsCourant += 0.1
+			#self.tempsCourant += 0.1
 			flotteASupp = []
 			print("Combat humain")
 			for flotte in self.humain.flottes:
@@ -134,6 +134,7 @@ class Jeu():
 					flotteASupp.append(flotte)
 			self.supprimerFlottes(flotteASupp, self.czin.flottes)
 		print("fin changement tour")
+		self.tempsCourant +=1
 		#A FAIRE: Mettre a jour les etoiles (creation de vaisseaux par manufactures)
 		for etoile in self.listeEtoiles:
 			etoile.creerVaisseau()
@@ -173,7 +174,10 @@ class Jeu():
 	def supprimerFlottes(self, listeFlottesASupp, listeFlottes ):
 		for flotte in listeFlottesASupp:
 			print("REMOVE DEBUT" , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
-			listeFlottes.remove(flotte)
+			try:
+				listeFlottes.remove(flotte)
+			except:
+				print("Flotte deja supp...") #FLOTTE DEJA SUPPRIMER !
 			print("REMOVE FIN " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
 			
 	@staticmethod
@@ -209,6 +213,7 @@ class Czin():
         self.mode = ModeCzin.rassemblementForces #Mode de depart
         
     def choixDeplacementFlottes(self):
+    	self.calculerGrappes()
     	if self.base.typeEtoile != TypeEtoile.czin:
     		self.base = self.etoileMere
     	if self.mode == ModeCzin.rassemblementForces:
@@ -289,6 +294,8 @@ class Gubru():
 		self.flottes = [] #Toutes les flottes des Gubru
 		
 	def choixDeplacementFlottes(self):
+		#if self.etoileMere != TypeEtoile.mereGubru:
+			#self.etoileMere = 
 		self.creationFlottesEtoileMere()
 		for etoile in self.parent.listeEtoiles:
 			if etoile.typeEtoile == TypeEtoile.gubru:
@@ -339,7 +346,7 @@ class Etoile():
 			if self.typeEtoile == TypeEtoile.mereHumain:
 				self.IntelligenceHumain = NiveauIntelligence.troisieme
 		elif self.typeEtoile == TypeEtoile.gubru or self.typeEtoile == TypeEtoile.humain or self.typeEtoile == TypeEtoile.czin or self.typeEtoile == TypeEtoile.indep :
-			self.nombreUsine = random.randrange(6)
+			self.nombreUsine = random.randrange(1,6)
 
 	def initialiserPosition(self):#A FAIRE: Peut-etre ajouter que les etoiles meres sont loin l'une de l'autre
 		valide = False

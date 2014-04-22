@@ -1,4 +1,6 @@
 from tkinter import *
+import math
+from PIL import Image, ImageTk 
 
 class Vue():
     def __init__(self, parent):
@@ -33,11 +35,11 @@ class Vue():
         self.cadreInfo.grid(column=1,row=0)
         self.cadreInfoResultat.grid(column=2,row=0)#appelle des functions pour resultat 
         self.cadreCommande.grid(column=1,row=1)
-        self.canevas=Canvas(self.cadreJeu,width=800,height=600,bg="white")
+        self.canevas=Canvas(self.cadreJeu,width=800,height=800,bg="black")
         self.canevas.pack()
         
-        SliderDeplacement = Scale(self.cadreFlotte,orient=HORIZONTAL,length=400,width=20,sliderlength=10,from_=0,to=500)
-        SliderDeplacement.pack()
+        self.sliderDeplacement = Scale(self.cadreFlotte,orient=HORIZONTAL,length=400,width=20,sliderlength=10,from_=0,to=0)
+        self.sliderDeplacement.pack()
            
         labelInfo=Label(self.cadreInfo,text="Informations",relief=SOLID,width=15)
         labelInfo.pack(pady=16)
@@ -71,59 +73,102 @@ class Vue():
         
         labelInfoResultat=Label(self.cadreInfoResultat)
         labelInfoResultat.pack(pady=16)
-        labelHumainResultat=Label(self.cadreInfoResultat,text="45",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelHumainResultat.pack()
-        labelGubruResultat=Label(self.cadreInfoResultat,text="22",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelGubruResultat.pack()
-        labelCzinResultat=Label(self.cadreInfoResultat,text="35",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelCzinResultat.pack()
-        labelIndepResultat=Label(self.cadreInfoResultat,text="0",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelIndepResultat.pack()
+        self.labelHumainResultat=Label(self.cadreInfoResultat,text="45",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelHumainResultat.pack()
+        self.labelGubruResultat=Label(self.cadreInfoResultat,text="22",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelGubruResultat.pack()
+        self.labelCzinResultat=Label(self.cadreInfoResultat,text="35",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelCzinResultat.pack()
+        self.labelIndepResultat=Label(self.cadreInfoResultat,text="0",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelIndepResultat.pack()
         
         labelEtoileResultat=Label(self.cadreInfoResultat)
         labelEtoileResultat.pack(pady=16)
-        labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelProprioResultat.pack()
-        labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelVaisseauResultat.pack()
-        labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelManuResultat.pack()
+        self.labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelProprioResultat.pack()
+        self.labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelVaisseauResultat.pack()
+        self.labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelManuResultat.pack()
         
         labelDestinationResultat=Label(self.cadreInfoResultat)
         labelDestinationResultat.pack(pady=16)
-        labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelProprioResultat.pack()
-        labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelVaisseauResultat.pack()
-        labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-        labelManuResultat.pack()
+        self.labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelProprioResultat.pack()
+        self.labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelVaisseauResultat.pack()
+        self.labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelManuResultat.pack()
         
-        
-        
+        self.canevas.bind("<Button-1>", self.clickCanevas)
+        self.labelTemps = Label(self.cadreCommande,text=self.parent.getTemps(),relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+        self.labelTemps.pack()
         b1=Button(self.cadreFlotte,text="Faire D\xE9placement")
         b1.pack()
         
-        b2=Button(self.cadreCommande,text="Prochain Tour",width=12)
+        b2=Button(self.cadreCommande,text="Prochain Tour",width=12, command= self.prochainTour)
         b2.pack()
         b3=Button(self.cadreCommande,text="Quitter",width=12,command=self.initFermer)
         b3.pack()
         
         #self.canevas.create_oval(0, 0, 100, 100)
         #print(self.parent.getListeEtoile())
-        for etoile in self.parent.getListeEtoile():#problem ici pour faire apparaitre les etoiles dans le canvas
-            self.canevas.create_oval(etoile.posX*20, etoile.posY*20, etoile.posX*20+10, etoile.posY*20 +10)
+        self.updateEtoile()
+            #self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+10,etoile.posY*(800/self.parent.getGrandeurJeuY())+10,image=photo)
+            #(etoile.posX*(800/self.parent.getGrandeurJeuX())+10, etoile.posY*(800/self.parent.getGrandeurJeuY())+10, etoile.posX*(800/self.parent.getGrandeurJeuX())+20, etoile.posY*(800/self.parent.getGrandeurJeuY()) +20)
             #A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
             #A FAIRE: BIEN AFFICHER LES ETOILES
         
         self.cadreLobby.pack_forget()
         self.cadrePartie.pack()
-        
-        
+    
+    def prochainTour(self):
+        self.parent.changementTour()    
+        self.labelTemps.config(text=self.parent.getTemps())
+        self.updateEtoile()
+    
+    def updateEtoile(self):
+        try:
+            self.canevas.delete("etoile")
+        except:
+            pass
+        compteur = 0
+        self.photo = []
+        for etoile in self.parent.getListeEtoile():
+            #print(self.canevas.winfo_width())
+            #print(self.canevas.winfo_height())
+            if etoile.typeEtoile == 2 or etoile.typeEtoile == 6:
+                image = Image.open("etoile_gubru.jpg")
+            elif etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
+                image = Image.open("etoile_humain.jpg")
+            elif etoile.typeEtoile == 3 or etoile.typeEtoile == 7:
+                image = Image.open("etoile_czin.jpg")
+            elif etoile.typeEtoile == 4:
+                image = Image.open("etoile_ind.jpg")
+            self.photo.append(ImageTk.PhotoImage(image))
+            self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[compteur], tags="etoile")
+            compteur += 1   
+    
+    def clickCanevas(self,event):    #capturing click in a window
+        id = self.canevas.find_withtag("current")
+        etoile = None
+        print(self.canevas.coords(id))
+        try:
+            x = math.floor((self.canevas.coords(id)[0]/(800/self.parent.getGrandeurJeuX())))
+            y = math.floor((self.canevas.coords(id)[1]/(800/self.parent.getGrandeurJeuY())))
+            etoile = self.parent.getInfoEtoile(x,y)
+        except:
+            pass #A FAIRE CHANGER LE FOCUS DEPLACEMNT (DESELECTION D'UNE ETOILE)
+        #x = self.canevas.canvasx(event.x)
+        #y = self.canevas.canvasy(event.y)
        
 
-        
-    #def callback(event):    capturing click in a window
-        #print "clicked at", event.x, event.y
+        if etoile != None:
+            if etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
+                self.sliderDeplacement.config(to=etoile.nombreVaisseau)
+                self.labelProprioResultat.config(text= etoile.typeEtoile)
+    
+            
         #frame = Frame(root, width=100, height=100)
         #frame.bind("<Button-1>", callback)
         #frame.pack()

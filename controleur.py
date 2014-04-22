@@ -16,33 +16,59 @@ class Controleur():
           #      etoile.typeEtoile = TypeEtoile.gubru
         
        # self.j.czin.calculerGrappes()
-        self.j.czin.essaimerGrappes()
-        i = 1
-        for etoile in self.j.listeEtoiles:
-            print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
-            i+=1
-        etoileProche = self.j.gubru.calculerEtoilePlusProche(self.j.gubru.etoileMere)
-        print("Etoile proche ",etoileProche.posX, " ", etoileProche.posY, " ", etoileProche.typeEtoile)
-        print(self.j.gubru.calculerForceAttaque())
+      #  self.j.czin.essaimerGrappes()
+       # i = 1
+      #  for etoile in self.j.listeEtoiles:
+       #     print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
+       #     i+=1
+       # etoileProche = self.j.gubru.calculerEtoilePlusProche(self.j.gubru.etoileMere)
+        #print("Etoile proche ",etoileProche.posX, " ", etoileProche.posY, " ", etoileProche.typeEtoile)
+       # print(self.j.gubru.calculerForceAttaque())
         #self.j.gubru.creationFlottes()
         #for flotte in self.j.gubru.flottes:
         #    print(flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau)
         #Mettre une etoile a Gubru pour test
-        print(len(self.j.gubru.flottes))
-        for i in range(10):
+       # print(len(self.j.gubru.flottes))
+        #for i in range(1):
          #   self.j.gubru.choixDeplacementFlottes()
-            self.j.changementDeTour()
-            for flotte in self.j.gubru.flottes:
-                print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
-            
+         #   self.j.changementDeTour()
+         #   for flotte in self.j.gubru.flottes:
+          #      print("temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
         
         #print(len(self.j.gubru.flottes))
-        print("FIN")
+        #print("FIN")
         #for flotte in self.j.gubru.flottes:
          #   print("FIN !!! temps ", self.j.tempsCourant, " " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
 
     def getListeEtoile(self):
         return self.j.listeEtoiles
+    
+    def getGrandeurJeuX(self):
+        return self.m.grandeurJeuX
+    
+    def getGrandeurJeuY(self):
+        return self.m.grandeurJeuY
+    
+    def getInfoEtoile(self,x,y):
+        etoileRechercher = None
+        for etoile in self.j.listeEtoiles:
+            if x == etoile.posX and y == etoile.posY:
+                etoileRechercher = etoile
+                break
+        if etoileRechercher == None:
+            return None   
+        return self.j.infoEtoile(etoileRechercher)
+    
+    def changementTour(self):
+        self.j.changementDeTour()
+        print("Temps", self.j.tempsCourant)
+        i = 1
+        for etoile in self.j.listeEtoiles:
+            print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
+            i+=1
+    
+    def getTemps(self):
+        return int(self.j.tempsCourant)
             
 #----Main----
 
