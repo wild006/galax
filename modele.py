@@ -190,16 +190,9 @@ class Humain():
 		#self.estHumain#besoin de verification pour determiner si humain ou non
 		#self.enVoyage#selon le choix du joueur a verifier
 		
-	def deplacementFlotte(self):
-		for x in self.parent.listeEtoiles:
-			if Etoile.IntelligenceHumain==NiveauIntelligence.troisieme:
-				if self.estHumain:
-					Flotte.calculerTempsVoyage(self)
-					Flotte.vaisseauDefenseur=Flotte.vaisseauDefenseur-self.enVoyage
-					
-		
-	def choixDeplacementFlotte(self):
-		pass
+	def deplacementFlotte(self, etoileDepart, etoileChoisi, nombreVaisseau):
+		self.flottes.append(Flotte(etoileDepart,etoileChoisi,nombreVaisseau))
+
 
 class Czin():
     def __init__(self, parent, etoileMere):
