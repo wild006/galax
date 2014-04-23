@@ -79,7 +79,7 @@ class Vue():
 		labelIndep=Label(self.cadreInfo,text="Ind\xE9pendant",relief=GROOVE,width=15)
 		labelIndep.grid(column=0,row=5)
 		
-		labelEtoile=Label(self.cadreInfo,text="Etoiles",relief=SOLID,width=15)
+		labelEtoile=Label(self.cadreInfo,text="Etoiles",relief=SOLID,width=15)#e accent aigue majuscule
 		labelEtoile.grid(column=0,row=6,pady=16)
 		labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
 		labelProprio.grid(column=0,row=7)
@@ -100,35 +100,35 @@ class Vue():
 		
 		labelInfoResultat=Label(self.cadreInfo)
 		labelInfoResultat.grid(column=1,row=1,pady=16)
-		self.labelHumainResultat=Label(self.cadreInfo,text="45",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelHumainResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
 		self.labelHumainResultat.grid(column=1,row=2)
-		self.labelGubruResultat=Label(self.cadreInfo,text="22",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelGubruResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
 		self.labelGubruResultat.grid(column=1,row=3)
-		self.labelCzinResultat=Label(self.cadreInfo,text="35",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelCzinResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
 		self.labelCzinResultat.grid(column=1,row=4)
-		self.labelIndepResultat=Label(self.cadreInfo,text="0",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelIndepResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
 		self.labelIndepResultat.grid(column=1,row=5)
 		
 		labelEtoileResultat=Label(self.cadreInfo)
 		labelEtoileResultat.grid(column=1,row=6,pady=16)
-		self.labelEtoileProprioResultat=Label(self.cadreInfo,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelEtoileProprioResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelEtoileProprioResultat.grid(column=1,row=7)
-		self.labelEtoileVaisseauResultat=Label(self.cadreInfo,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelEtoileVaisseauResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelEtoileVaisseauResultat.grid(column=1,row=8)
-		self.labelEtoileManuResultat=Label(self.cadreInfo,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelEtoileManuResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelEtoileManuResultat.grid(column=1,row=9)
 		
 		labelDestinationResultat=Label(self.cadreInfo)
 		labelDestinationResultat.grid(column=1,row=10,pady=16)
-		self.labelDestinationProprioResultat=Label(self.cadreInfo,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelDestinationProprioResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelDestinationProprioResultat.grid(column=1,row=11)
-		self.labelDestinationVaisseauResultat=Label(self.cadreInfo,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelDestinationVaisseauResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelDestinationVaisseauResultat.grid(column=1,row=12)
-		self.labelDestinationManuResultat=Label(self.cadreInfo,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelDestinationManuResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelDestinationManuResultat.grid(column=1,row=13)
 		
 		self.canevas.bind("<Button-1>", self.clickCanevas)
-		self.labelTemps = Label(self.cadreCommande,text=self.parent.getTemps(),relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelTemps = Label(self.cadreCommande,text=self.parent.getTemps(),relief=GROOVE,width=15)
 		self.labelTemps.pack()
 		b1=Button(self.cadreFlotte,text="Faire D\xE9placement")
 		b1.pack()
@@ -189,8 +189,13 @@ class Vue():
 		if etoile==None :
 			self.etoileDepart=None
 			self.etoileArrivee=None
+			#verifier si etoileDepart est = a none
 		elif etoile.typeEtoile==1 or etoile.typeEtoile==5:
-			self.etoileDepart=etoile
+			if self.etoileDepart == None:#premier click
+				self.etoileDepart=etoile
+			else:#deuxieme click
+				self.etoileArrivee = etoile
+				
 			self.sliderDeplacement.config(to=etoile.nombreVaisseau)
 			self.labelEtoileProprioResultat.config(text= "Humain")
 			self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
@@ -202,20 +207,57 @@ class Vue():
 			elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
 				self.parent.Humain.deplacementFlotte(etoileDepart,etoileArrivee,self.sliderDeplacement.get())
 				
-		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 or etoile.typeEtoile==3 or etoile.typeEtoile==7 or etoile.typeEtoile==4:
-			self.etoileDepart=None
-			self.etoileArrivee=None
+				
+		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
+			self.labelEtoileProprioResultat.config(text= "Gubru")
+			if etoile.nombreVaisseau==None:
+				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
+			else:
+				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+			if etoile.nombreUsine==None:
+				self.labelEtoileManuResultat.config(text="Aucune Info.")
+			else:
+				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			#self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)#niveau d'intelligence
+			#self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+				self.labelDestinationProprioResultat.config(text=etoile.typeEtoile)
+			#self.etoileDepart=None
+			#self.etoileArrivee=None
+			
+			
+		elif etoile.typeEtoile==3 or etoile.typeEtoile==7:
+			self.labelEtoileProprioResultat.config(text= "Czin")
+			if etoile.nombreVaisseau==None:
+				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
+			else:
+				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+			if etoile.nombreUsine==None:
+				self.labelEtoileManuResultat.config(text="Aucune Info.")
+			else:
+				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			#self.etoileDepart=None
+			#self.etoileArrivee=None
+			
+			
+		elif etoile.typeEtoile==4:
+			self.labelEtoileProprioResultat.config(text= "Ind\xE9pendant")
+			if etoile.nombreVaisseau==None:
+				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
+			else:
+				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+			if etoile.nombreUsine==None:
+				self.labelEtoileManuResultat.config(text="Aucune Info.")
+			else:
+				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			#self.etoileDepart=None
+			#self.etoileArrivee=None
 			
 				
 		#A FAIRE CHANGER LE FOCUS DEPLACEMNT (DESELECTION D'UNE ETOILE)
 		#x = self.canevas.canvasx(event.x)
 		#y = self.canevas.canvasy(event.y)
 	   
-
-			#if etoile != None:
-				#if etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
-					#self.sliderDeplacement.config(to=etoile.nombreVaisseau)
-					#self.labelProprioResultat.config(text= etoile.typeEtoile)
 	
 			
 		#frame = Frame(root, width=100, height=100)
