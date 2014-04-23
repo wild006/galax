@@ -40,18 +40,24 @@ class Vue():
 		
 	def initPartie(self):
 		self.parent.commencerPartie()
+		self.etoileDepart=None
+		self.etoileArrivee=None
 		self.cadrePartie=Frame(self.root)
 		self.cadreJeu=Frame(self.cadrePartie)
 		self.cadreFlotte=Frame(self.cadrePartie)
 		self.cadreInfo=Frame(self.cadrePartie)
 		self.cadreCommande=Frame(self.cadrePartie)
-		self.cadreInfoResultat=Frame(self.cadrePartie)
+		self.cadreInfo=Frame(self.cadrePartie)
 		self.cadreJeu.grid(column=0,row=0)
 		self.cadreFlotte.grid(column=0,row=1)
-		self.cadreInfo.grid(column=1,row=0)
-		self.cadreInfoResultat.grid(column=2,row=0)#appelle des functions pour resultat 
-		self.cadreCommande.grid(column=1,row=1)
+		self.cadreInfo.grid(column=1,row=0,sticky=N)
+		#self.cadreInfo.grid(column=2,row=0)#appelle des functions pour resultat 
+		self.cadreCommande.grid(column=1,row=1,columnspan=2)
 		self.canevas=Canvas(self.cadreJeu,width=800,height=800,bg="black")
+		
+		self.backgroundCanevas=Image.open("background.jpg")#Agrandir selon la fenetre
+		self.background_image=ImageTk.PhotoImage(self.backgroundCanevas)
+		self.canevas.create_image(0,0,image=self.background_image,anchor=NW)
 		self.canevas.pack()
 		
 		self.sliderDeplacement = Scale(self.cadreFlotte,orient=HORIZONTAL,length=400,width=20,sliderlength=10,from_=0,to=0)
@@ -60,66 +66,66 @@ class Vue():
 		self.logoGalax = Image.open("logo.jpg") 
 		self.photoGalax = ImageTk.PhotoImage(self.logoGalax)
 		self.labelLogo = Label(self.cadreInfo,image=self.photoGalax)
-		self.labelLogo.pack()
+		self.labelLogo.grid(column=0,row=0,columnspan=2)
 		
 		labelInfo=Label(self.cadreInfo,text="Informations",relief=SOLID,width=15)
-		labelInfo.pack(pady=16)
+		labelInfo.grid(column=0,row=1,pady=16)
 		labelHumain=Label(self.cadreInfo,text="Humain",relief=GROOVE,width=15)
-		labelHumain.pack()
+		labelHumain.grid(column=0,row=2)
 		labelGubru=Label(self.cadreInfo,text="Gubru",relief=GROOVE,width=15)
-		labelGubru.pack()
+		labelGubru.grid(column=0,row=3)
 		labelCzin=Label(self.cadreInfo,text="Czin",relief=GROOVE,width=15)
-		labelCzin.pack()
+		labelCzin.grid(column=0,row=4)
 		labelIndep=Label(self.cadreInfo,text="Ind\xE9pendant",relief=GROOVE,width=15)
-		labelIndep.pack()
+		labelIndep.grid(column=0,row=5)
 		
 		labelEtoile=Label(self.cadreInfo,text="Etoiles",relief=SOLID,width=15)
-		labelEtoile.pack(pady=16)
+		labelEtoile.grid(column=0,row=6,pady=16)
 		labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
-		labelProprio.pack()
+		labelProprio.grid(column=0,row=7)
 		labelVaisseau=Label(self.cadreInfo,text="Nb Vaisseau(x)",relief=GROOVE,width=15)
-		labelVaisseau.pack()
+		labelVaisseau.grid(column=0,row=8)
 		labelManu=Label(self.cadreInfo,text="Nb Manufacture(s)",relief=GROOVE,width=15)
-		labelManu.pack()
+		labelManu.grid(column=0,row=9)
 		
 		labelDestination=Label(self.cadreInfo,text="Destination",relief=SOLID,width=15)
-		labelDestination.pack(pady=16)
+		labelDestination.grid(column=0,row=10,pady=16)
 		labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
-		labelProprio.pack()
+		labelProprio.grid(column=0,row=11)
 		labelVaisseau=Label(self.cadreInfo,text="Nb Vaisseau(x)",relief=GROOVE,width=15)
-		labelVaisseau.pack()
+		labelVaisseau.grid(column=0,row=12)
 		labelManu=Label(self.cadreInfo,text="Nb Manufacture(s)",relief=GROOVE,width=15)
-		labelManu.pack()
+		labelManu.grid(column=0,row=13)
 		
 		
-		labelInfoResultat=Label(self.cadreInfoResultat)
-		labelInfoResultat.pack(pady=16)
-		self.labelHumainResultat=Label(self.cadreInfoResultat,text="45",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelHumainResultat.pack()
-		self.labelGubruResultat=Label(self.cadreInfoResultat,text="22",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelGubruResultat.pack()
-		self.labelCzinResultat=Label(self.cadreInfoResultat,text="35",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelCzinResultat.pack()
-		self.labelIndepResultat=Label(self.cadreInfoResultat,text="0",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelIndepResultat.pack()
+		labelInfoResultat=Label(self.cadreInfo)
+		labelInfoResultat.grid(column=1,row=1,pady=16)
+		self.labelHumainResultat=Label(self.cadreInfo,text="45",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelHumainResultat.grid(column=1,row=2)
+		self.labelGubruResultat=Label(self.cadreInfo,text="22",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelGubruResultat.grid(column=1,row=3)
+		self.labelCzinResultat=Label(self.cadreInfo,text="35",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelCzinResultat.grid(column=1,row=4)
+		self.labelIndepResultat=Label(self.cadreInfo,text="0",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelIndepResultat.grid(column=1,row=5)
 		
-		labelEtoileResultat=Label(self.cadreInfoResultat)
-		labelEtoileResultat.pack(pady=16)
-		self.labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelProprioResultat.pack()
-		self.labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelVaisseauResultat.pack()
-		self.labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelManuResultat.pack()
+		labelEtoileResultat=Label(self.cadreInfo)
+		labelEtoileResultat.grid(column=1,row=6,pady=16)
+		self.labelEtoileProprioResultat=Label(self.cadreInfo,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelEtoileProprioResultat.grid(column=1,row=7)
+		self.labelEtoileVaisseauResultat=Label(self.cadreInfo,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelEtoileVaisseauResultat.grid(column=1,row=8)
+		self.labelEtoileManuResultat=Label(self.cadreInfo,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelEtoileManuResultat.grid(column=1,row=9)
 		
-		labelDestinationResultat=Label(self.cadreInfoResultat)
-		labelDestinationResultat.pack(pady=16)
-		self.labelProprioResultat=Label(self.cadreInfoResultat,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelProprioResultat.pack()
-		self.labelVaisseauResultat=Label(self.cadreInfoResultat,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelVaisseauResultat.pack()
-		self.labelManuResultat=Label(self.cadreInfoResultat,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
-		self.labelManuResultat.pack()
+		labelDestinationResultat=Label(self.cadreInfo)
+		labelDestinationResultat.grid(column=1,row=10,pady=16)
+		self.labelDestinationProprioResultat=Label(self.cadreInfo,text="42",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelDestinationProprioResultat.grid(column=1,row=11)
+		self.labelDestinationVaisseauResultat=Label(self.cadreInfo,text="15",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelDestinationVaisseauResultat.grid(column=1,row=12)
+		self.labelDestinationManuResultat=Label(self.cadreInfo,text="1",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelDestinationManuResultat.grid(column=1,row=13)
 		
 		self.canevas.bind("<Button-1>", self.clickCanevas)
 		self.labelTemps = Label(self.cadreCommande,text=self.parent.getTemps(),relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
@@ -179,18 +185,37 @@ class Vue():
 			y = math.floor((self.canevas.coords(id)[1]/(800/self.parent.getGrandeurJeuY())))
 			etoile = self.parent.getInfoEtoile(x,y)
 		except:
-			#if etoile.posX != x:
-			#	if etoile.posY != y:
-					
-			pass #A FAIRE CHANGER LE FOCUS DEPLACEMNT (DESELECTION D'UNE ETOILE)
+			pass
+		if etoile==None :
+			self.etoileDepart=None
+			self.etoileArrivee=None
+		elif etoile.typeEtoile==1 or etoile.typeEtoile==5:
+			self.etoileDepart=etoile
+			self.sliderDeplacement.config(to=etoile.nombreVaisseau)
+			self.labelEtoileProprioResultat.config(text= "Humain")
+			self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+			self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			if self.etoileArrivee==None:
+				self.etoileDepart=None
+			elif self.etoileArrivee==self.etoileDepart:
+				self.etoileArrivee=None
+			elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
+				self.parent.Humain.deplacementFlotte(etoileDepart,etoileArrivee,self.sliderDeplacement.get())
+				
+		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 or etoile.typeEtoile==3 or etoile.typeEtoile==7 or etoile.typeEtoile==4:
+			self.etoileDepart=None
+			self.etoileArrivee=None
+			
+				
+		#A FAIRE CHANGER LE FOCUS DEPLACEMNT (DESELECTION D'UNE ETOILE)
 		#x = self.canevas.canvasx(event.x)
 		#y = self.canevas.canvasy(event.y)
 	   
 
-		if etoile != None:
-			if etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
-				self.sliderDeplacement.config(to=etoile.nombreVaisseau)
-				self.labelProprioResultat.config(text= etoile.typeEtoile)
+			#if etoile != None:
+				#if etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
+					#self.sliderDeplacement.config(to=etoile.nombreVaisseau)
+					#self.labelProprioResultat.config(text= etoile.typeEtoile)
 	
 			
 		#frame = Frame(root, width=100, height=100)
@@ -223,44 +248,46 @@ class Vue():
 		
 	def initHighScore(self):
 		self.cadrePartieHighScore=Frame(self.root)
-		self.cadreHighScore=Frame(self.cadrePartieHighScore)
-		self.cadreNom=Frame(self.cadrePartieHighScore)
-		self.cadreTitre=Frame(self.cadrePartieHighScore)
-		self.cadreQuitter=Frame(self.cadrePartieHighScore)
-		self.cadreTitre.grid(column=1,row=0)
-		self.cadreNom.grid(column=0,row=1)
-		self.cadreHighScore.grid(column=2,row=1)
-		self.cadreQuitter.grid(column=1,row=2)
-		self.canevas=Canvas(self.cadreTitre,width=800,height=600,bg="white")
+		#=======================================================================
+		# self.cadreHighScore=Frame(self.cadrePartieHighScore)
+		# self.cadreNom=Frame(self.cadrePartieHighScore)
+		# self.cadreTitre=Frame(self.cadrePartieHighScore)
+		# self.cadreQuitter=Frame(self.cadrePartieHighScore)
+		# self.cadreTitre.grid(column=1,row=0)
+		# self.cadreNom.grid(column=0,row=1)
+		# self.cadreHighScore.grid(column=2,row=1)
+		# self.cadreQuitter.grid(column=1,row=2)
+		#=======================================================================
+		#self.canevas=Canvas(self.cadrePartieHighScore,width=800,height=600,bg="white")
 		self.logoGalax = Image.open("logo.jpg") 
 		self.photoGalax = ImageTk.PhotoImage(self.logoGalax)
-		self.labelLogo = Label(self.root,image=self.photoGalax)
-		self.labelLogo.pack()
-		self.canevas.pack()
+		self.labelLogo = Label(self.cadrePartieHighScore,image=self.photoGalax)
+		self.labelLogo.grid(column=0,row=0,columnspan=2)
+		#self.canevas.grid(column=0,row=0,columnspan=2)
 		
 
 		
-		labelTitre=Label(self.canevas,text="HIGHSCORE",bg="red",width=20)
-		labelTitre.pack()
+		labelTitre=Label(self.cadrePartieHighScore,text="HIGHSCORE",bg="red",width=20)
+		labelTitre.grid(column=0,row=1,columnspan=2)
 		
-		labelNom=Label(self.cadreNom,text="NOM",bg="blue",fg="white",relief=SOLID,width=12)
-		labelNom.pack(pady=8)
-		
-		for i in range (0,5):
-			labelNomScore=Label(self.cadreNom,text="NOM D'UN JOUEUR",relief=GROOVE,width=12)#inserer la fonction pour les noms
-			labelNomScore.pack()
-			
-		labelHighScore=Label(self.cadreHighScore,text="SCORE",bg="blue",fg="white",relief=SOLID,width=12)
-		labelHighScore.pack(pady=8)
+		labelNom=Label(self.cadrePartieHighScore,text="NOM",bg="blue",fg="white",relief=SOLID,width=18)
+		labelNom.grid(column=0,row=2,pady=8)
 		
 		for i in range (0,5):
-			labelScore=Label(self.cadreHighScore,text="SCORE DU JOUEUR",relief=GROOVE,width=12)#inserer la fonction pour les scores
-			labelScore.pack()
+			labelNomScore=Label(self.cadrePartieHighScore,text="NOM D'UN JOUEUR",relief=GROOVE,width=18)#inserer la fonction pour les noms
+			labelNomScore.grid(column=0,row=3+i)
 			
-		b=Button(self.cadreQuitter,text="Quitter",width=15,command=self.initFermer)
-		b.pack()
-		b1=Button(self.cadreQuitter,text="Menu Principal",width=15,command=self.initMenu)
-		b1.pack()
+		labelHighScore=Label(self.cadrePartieHighScore,text="SCORE",bg="blue",fg="white",relief=SOLID,width=18)
+		labelHighScore.grid(column=1,row=2,pady=8)
+		
+		for i in range (0,5):
+			labelScore=Label(self.cadrePartieHighScore,text="SCORE DU JOUEUR",relief=GROOVE,width=18)#inserer la fonction pour les scores
+			labelScore.grid(column=1,row=3+i)
+			
+		b=Button(self.cadrePartieHighScore,text="Quitter",width=15,command=self.initFermer)
+		b.grid(column=0,row=9,columnspan=2)
+		b1=Button(self.cadrePartieHighScore,text="Menu Principal",width=15,command=self.initMenu)
+		b1.grid(column=0,row=10,columnspan=2)
 		
 		self.cadreLobby.pack_forget()
 		self.cadrePartieHighScore.pack()
@@ -269,7 +296,8 @@ class Vue():
 		self.root.destroy()
 		
 	def initMenu(self):#Petit bug pour le retour au menu principal
-		self.canevas.pack_forget()
+		#self.canevas.pack_forget()
 		self.cadrePartieHighScore.pack_forget()
-		self.initLobby()
+		self.cadreLobby.pack()
+		#self.initLobby()
 		
