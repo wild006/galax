@@ -2,6 +2,7 @@ from tkinter import *
 import math
 from PIL import Image, ImageTk 
 
+
 class Vue():
     def __init__(self, parent):
         self.parent = parent
@@ -9,8 +10,16 @@ class Vue():
         self.initLobby()
     def initLobby(self):
         self.cadreLobby=Frame(self.root)
-        labelTitre=Label(self.cadreLobby,text="GALAX",bg="red",width=20)
-        labelTitre.pack()
+        self.cadreMain=Frame(self.cadreLobby)
+        self.cadreMain.grid(column=1,row=0)
+        #labelTitre=Label(self.cadreLobby,text="GALAX",bg="red",width=20)
+        #labelTitre.pack()
+        self.logo = Image.open("logodone1.jpg") 
+        self.photo = ImageTk.PhotoImage(self.logo)
+        self.canevas=Canvas(self.cadreMain,width=800,height=800)
+        self.canevas.create_image(400,300,image=self.photo)
+        self.canevas.pack()
+        
         b1=Button(self.cadreLobby,text="Commencer partie",width=15,command=self.initPartie)
         b1.pack()
         b2=Button(self.cadreLobby,text="Options",width=15,command=self.initOption)
@@ -20,6 +29,17 @@ class Vue():
         b4=Button(self.cadreLobby,text="Quitter",width=15,command=self.initFermer)
         b4.pack()
         self.cadreLobby.pack()
+
+
+ 
+ 
+#===============================================================================
+# canvas = Tk.Canvas() 
+# canvas.create_image(200,500, image=photo)
+# canvas.pack() 
+#===============================================================================
+
+
 
         
     def initPartie(self):
