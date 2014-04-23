@@ -64,12 +64,18 @@ class Controleur():
         print("Temps", self.j.tempsCourant)
         i = 1
         for etoile in self.j.listeEtoiles:
-            print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
-            i+=1
+            #print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
+            #i+=1
+            if etoile.typeEtoile == 1:
+                print("Humain  ", "nbVaisseaux:", etoile.nombreVaisseau)
+            elif etoile.typeEtoile == 2:
+                print("Gubru  " ,"Position: ", "[", etoile.posX, ",", etoile.posY, "]","nbVaisseaux:", etoile.nombreVaisseau)
+            elif etoile.typeEtoile == 3:
+                print("Czin  " ,"Position: ", "[", etoile.posX, ",", etoile.posY, "]","nbVaisseaux:", etoile.nombreVaisseau)
         for flotte in self.j.czin.flottes:
-            print("Czin ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
+            print("Czin ", " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
         for flotte in self.j.gubru.flottes:
-            print("Gubru ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee:", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
+            print("Gubru ", " annee:", flotte.nbAnnee, "Position: ", "[", flotte.etoileArrivee.posX, ",", flotte.etoileArrivee.posY, "]","nbVaisseaux:", flotte.nombreVaisseau)
         print("MODE CZIN: ", self.j.czin.mode)
          
     def getTemps(self):

@@ -44,19 +44,28 @@ class Jeu():
 	def initialiserToutesEtoiles(self, Modele):
 		#Initialise les etoiles-meres de chaque race et cree les objets Czin et Gubru
 		etoileMereHumain = Etoile(TypeEtoile.mereHumain,self)
+		etoileMereHumain.initialiserEtoile()
+		etoileMereHumain.initialiserPosition()
 		self.listeEtoiles.append(etoileMereHumain)
 		self.humain = Humain(etoileMereHumain, self)
 		#Czin
 		etoileMereCzin = Etoile(TypeEtoile.mereCzin,self)
+		etoileMereCzin.initialiserEtoile()
+		etoileMereCzin.initialiserPosition()
 		self.listeEtoiles.append(etoileMereCzin)
 		self.czin = Czin(self,etoileMereCzin)
 		#Gubru
 		etoileMereGubru = Etoile(TypeEtoile.mereGubru,self)
+		etoileMereGubru.initialiserEtoile()
+		etoileMereGubru.initialiserPosition()
 		self.listeEtoiles.append(etoileMereGubru)
 		self.gubru = Gubru(self,etoileMereGubru)
 		
 		while len(self.listeEtoiles) < self.parent.nbEtoiles:
-			self.listeEtoiles.append(Etoile(TypeEtoile.indep,self))
+			etoileTemp = Etoile(TypeEtoile.indep,self)
+			etoileTemp.initialiserEtoile()
+			etoileTemp.initialiserPosition()
+			self.listeEtoiles.append(etoileTemp)
 	
 	def infoEtoile(self, etoileChoisi):	
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
@@ -74,9 +83,9 @@ class Jeu():
 			return etoileChoisi
 
 	def changementDeTour(self):
-		print("gubru")
+		#print("gubru")
 		self.gubru.choixDeplacementFlottes()
-		print("Czin")
+		#print("Czin")
 		self.czin.choixDeplacementFlottes()
 		#self.czin.calculerMode()
 		#self.czin.calculerBase()
@@ -139,11 +148,13 @@ class Jeu():
 						if flotte.etoileArrivee.typeEtoile != TypeEtoile.mereCzin:
 							flotte.etoileArrivee.typeEtoile = TypeEtoile.czin
 						flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
-						print("AJOUTE ", flotte.nombreVaisseau , " a ", flotte.etoileArrivee.nombreVaisseau)
+						#print("AJOUTE ", flotte.nombreVaisseau , " a ", flotte.etoileArrivee.nombreVaisseau)
 							
 					flotteASupp.append(flotte)
 			self.supprimerFlottes(flotteASupp, self.czin.flottes)
 		print("fin changement tour")
+		print(" ")
+		print(" ")
 		self.tempsCourant +=1
 		#Savoir si c'est la fin de la partie
 		self.mortHumaine = True
@@ -164,9 +175,9 @@ class Jeu():
 
 	def attaqueEnCours(self, flotteAttaquante):
 		flotteDefense = Flotte(flotteAttaquante.etoileArrivee,flotteAttaquante.etoileArrivee, flotteAttaquante.etoileArrivee.nombreVaisseau) #Flotte temporaire pour combat
-		print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
+		#print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
 		while  flotteAttaquante.nombreVaisseau > 0 and flotteDefense.nombreVaisseau > 0:
-			print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
+			#print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
 			if flotteAttaquante.nombreVaisseau > flotteDefense.nombreVaisseau: #Attaque surprise
 				r = flotteDefense.nombreVaisseau/flotteAttaquante.nombreVaisseau
 				if r< 0.5:
@@ -202,12 +213,12 @@ class Jeu():
 		
 	def supprimerFlottes(self, listeFlottesASupp, listeFlottes ):
 		for flotte in listeFlottesASupp:
-			print("REMOVE DEBUT" , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
+			#print("REMOVE DEBUT" , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
 			try:
 				listeFlottes.remove(flotte)
 			except:
 				print("Flotte deja supp...") #FLOTTE DEJA SUPPRIMER !
-			print("REMOVE FIN " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
+			#print("REMOVE FIN " , flotte.positionInitialeX, " ", flotte.positionInitialeY, " Arrivee ", flotte.positionFinalX, " ", flotte.positionFinalY, " avec ", flotte.nombreVaisseau, flotte.nbAnnee)
 			
 	@staticmethod
 	def calculerDistance(point1X, point1Y, point2X, point2Y):
@@ -243,17 +254,20 @@ class Czin():
 		self.mode = ModeCzin.rassemblementForces #Mode de depart
 		
 	def choixDeplacementFlottes(self):
-		if self.base.typeEtoile != TypeEtoile.czin:
+		if self.base.typeEtoile != TypeEtoile.czin or self.base.typeEtoile != TypeEtoile.mereCzin:
 			self.base = self.etoileMere
 			self.mode = ModeCzin.rassemblementForces
+			print("premier if")
 		if self.etoileMere.typeEtoile != TypeEtoile.mereCzin:
 			self.base.typeEtoile = TypeEtoile.mereCzin
 			self.etoileMere = self.base
+			print("deuxieme if")
 		self.calculerGrappes()
 		if self.mode == ModeCzin.rassemblementForces:
 			self.rassemblementBase()
 		elif self.mode == ModeCzin.etablirBase:
 	   		#if self.enDirection(self.nouvelleBase) == False:
+	   		print("Type (etablir base): ",self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile)
 	   		if self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile == TypeEtoile.czin: #Si on a gagne la base
 	   			self.base = self.nouvelleBase
 	   			self.essaimerGrappes()
@@ -293,7 +307,7 @@ class Czin():
 		for etoile in self.parent.listeEtoiles:
 			if etoile.valeurGrappe == self.base.valeurGrappe and (etoile.typeEtoile != TypeEtoile.czin or etoile.typeEtoile != TypeEtoile.mereCzin):
 				listeEtoileGrappe.append(etoile)
-		print("LISTE ETOIEL", listeEtoileGrappe)
+		print("LISTE ETOILE", listeEtoileGrappe)
 		listeEtoileGrappe = self.calculerDistanceEtoile(self.base, listeEtoileGrappe)
 		forceAttaque = self.calculerForceAttaque()
 		noEtoile = 0
@@ -321,7 +335,7 @@ class Czin():
 		return nouvelleBase
 	   	
 	def calculerForceAttaque(self):
-		return self.parent.tempsCourant * self.nbVaisseauxParAttaque * self.forceAttaqueBasique
+		return self.parent.tempsCourant + self.nbVaisseauxParAttaque * self.forceAttaqueBasique
 		
 	def enDirection(self, etoileArrivee):
 		for flotte in self.flottes:
@@ -347,7 +361,7 @@ class Gubru():
 		self.creationFlottesEtoileMere()
 		for etoile in self.parent.listeEtoiles:
 			if etoile.typeEtoile == TypeEtoile.gubru:
-				print("nombre vaisseau" , etoile.nombreVaisseau)
+				#print("nombre vaisseau" , etoile.nombreVaisseau)
 				if etoile.nombreVaisseau > 25:
 					self.flottes.append(etoile.creationFlotte(self.etoileMere, etoile.nombreVaisseau - 15))
 	
@@ -387,8 +401,6 @@ class Etoile():
 		self.nombreUsine = None
 		self.nombreVaisseau = 0
 		self.typeEtoile = typeEtoileAttribue
-		self.initialiserEtoile()
-		self.initialiserPosition()
 
 	def initialiserEtoile(self):
 		if self.typeEtoile == TypeEtoile.mereHumain or self.typeEtoile == TypeEtoile.mereCzin or self.typeEtoile == TypeEtoile.mereGubru :
