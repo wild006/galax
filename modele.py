@@ -95,7 +95,7 @@ class Jeu():
 		for x in range(10):
 			#self.tempsCourant += 0.1
 			flotteASupp = []
-            #humain
+			#humain
 			for flotte in self.humain.flottes:
 				flotte.nbAnnee -= 0.1
 				if flotte.nbAnnee <= 0:
@@ -104,6 +104,7 @@ class Jeu():
 							if flotte.etoileArrivee.typeEtoile != TypeEtoile.mereHumain:
 								flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
 							flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
+							
 					else:
 						if flotte.etoileArrivee.typeEtoile != TypeEtoile.mereHumain:
 							flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
@@ -189,7 +190,7 @@ class Jeu():
 					
 				prob = random.randrange(10)
 				#print("prob de : ",prob)
-				if probabiliteAttaquePremier*10 <= probabiliteAttaquePremier:
+				if probabiliteAttaquePremier*10 <= prob:
 					flotteAttaquante.attaquer(flotteDefense,True)
 					flotteDefense.attaquer(flotteAttaquante,False)
 					#if flotteDefense.nombreVaisseau > 0:
@@ -254,7 +255,11 @@ class Czin():
 		self.mode = ModeCzin.rassemblementForces #Mode de depart
 		
 	def choixDeplacementFlottes(self):
+		print("MODE CZIN ", self.mode)
+		print("Czin base : ",self.base.posX, " ", self.base.posY)
+		print(" etoile-mere:", self.etoileMere.posX, " ", self.etoileMere.posY)
 		if self.base.typeEtoile != TypeEtoile.czin or self.base.typeEtoile != TypeEtoile.mereCzin:
+			print("CHANGEMENT MODE ON REVIONT !!!!! ", self.base.typeEtoile)
 			self.base = self.etoileMere
 			self.mode = ModeCzin.rassemblementForces
 			print("premier if")
@@ -266,15 +271,16 @@ class Czin():
 		if self.mode == ModeCzin.rassemblementForces:
 			self.rassemblementBase()
 		elif self.mode == ModeCzin.etablirBase:
-	   		#if self.enDirection(self.nouvelleBase) == False:
-	   		print("Type (etablir base): ",self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile)
-	   		if self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile == TypeEtoile.czin: #Si on a gagne la base
-	   			self.base = self.nouvelleBase
-	   			self.essaimerGrappes()
-	   			self.mode = ModeCzin.conquerirGrappe
-	   		else:
-	   			self.base = self.etoileMere
-	   			self.mode = ModeCzin.rassemblementForces
+			print("nouvelleBase : ", self.nouvelleBase)
+			if self.enDirection(self.nouvelleBase) == False:
+				print("Type (etablir base): ",self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile)
+				if self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile == TypeEtoile.czin: #Si on a gagne la base
+					self.base = self.nouvelleBase
+					self.essaimerGrappes()
+					self.mode = ModeCzin.conquerirGrappe
+				else:
+					self.base = self.etoileMere
+					self.mode = ModeCzin.rassemblementForces
 		elif self.mode == ModeCzin.conquerirGrappe:
 	   		if len(self.flottes) == 0:
 	   			self.mode = ModeCzin.rassemblementForces
@@ -289,10 +295,12 @@ class Czin():
 						changementBase = False
 		if changementBase == True:
 			self.base = self.etoileMere
+		print("Czin : ", self.base.nombreVaisseau, " >= ", self.calculerForceAttaque()*3)
 		if self.base.nombreVaisseau >= (self.calculerForceAttaque()*3):
 			self.nouvelleBase = self.calculerBase()
 			self.flottes.append(self.base.creationFlotte(self.nouvelleBase,self.base.nombreVaisseau)) #Faire base temp ???
 			self.mode = ModeCzin.etablirBase
+			print("ETABLIR BASE!")
 	
 	def calculerGrappes(self):
 		for etoile1 in self.parent.listeEtoiles:
@@ -339,7 +347,7 @@ class Czin():
 		
 	def enDirection(self, etoileArrivee):
 		for flotte in self.flottes:
-			if flotte.etoileArrivee == etoileArrivee:
+			if flotte.etoileArrivee.posX == etoileArrivee.posX and flotte.etoileArrivee.posY == etoileArrivee.posY:
 				return True
 		return False
 	
