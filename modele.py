@@ -174,7 +174,7 @@ class Jeu():
 					probabiliteAttaquePremier= 0.95
 					
 				prob = random.randrange(10)
-				print("prob de : ",prob)
+				#print("prob de : ",prob)
 				if probabiliteAttaquePremier*10 <= probabiliteAttaquePremier:
 					flotteAttaquante.attaquer(flotteDefense,True)
 					flotteDefense.attaquer(flotteAttaquante,False)
@@ -260,9 +260,10 @@ class Czin():
     	changementBase = True
     	for etoile in self.parent.listeEtoiles:
     		if etoile.typeEtoile == TypeEtoile.czin:
-    			if Jeu.calculerDistance(self.base.posX, self.base.posY, etoile.posX, etoile.posY):
-    				self.flottes.append(etoile.creationFlotte(self.base, etoile.nombreVaisseau - self.nbVaisseauxLaisser))
-    				changementBase = False
+    			if Jeu.calculerDistance(self.base.posX, self.base.posY, etoile.posX, etoile.posY) > 6:
+    				if etoile.nombreVaisseau > self.nbVaisseauxLaisser:
+    					self.flottes.append(etoile.creationFlotte(self.base, etoile.nombreVaisseau - self.nbVaisseauxLaisser))
+    					changementBase = False
     	if changementBase == True:
     		self.base = self.etoileMere
     	if self.base.nombreVaisseau >= (self.calculerForceAttaque()*3):
@@ -360,8 +361,10 @@ class Gubru():
 	
 	def creationFlottesEtoileMere(self): #Pour l'etoile Mere/ Utiliser dans la fonction de deplacement des flottes
 		print("GUbRU", self.etoileMere.nombreVaisseau, " > ", self.calculerForceAttaque() + self.forceAttaqueBasique)
-		while self.etoileMere.nombreVaisseau > self.calculerForceAttaque() + self.forceAttaqueBasique:
-			self.flottes.append(self.etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),self.calculerForceAttaque()))
+		forceAttaque = self.calculerForceAttaque()
+		while self.etoileMere.nombreVaisseau > forceAttaque + self.forceAttaqueBasique:
+			if forceAttaque > 0:
+				self.flottes.append(self.etoileMere.creationFlotte(self.calculerEtoilePlusProche(self.etoileMere),forceAttaque))
 
 class Etoile():
 	def __init__(self, typeEtoileAttribue,parent):
@@ -449,7 +452,7 @@ class Flotte():
 			prob = 0.7
 			for vaisseau in range(int(self.nombreVaisseau)):
 				probabiliteEliminer =random.randrange(10)
-				print("probabiliteEliminer : ", probabiliteEliminer," ", attaquant)
+				#print("probabiliteEliminer : ", probabiliteEliminer," ", attaquant)
 				if probabiliteEliminer >= prob:
 					flotteEnnemi.nombreVaisseau -=1		
 
