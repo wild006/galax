@@ -40,6 +40,7 @@ class Jeu():
 		self.tempsCourant = 0 #Temps qui va s'incrementer en cours de partie
 		self.listeEtoiles = [] #Liste de toutes les etoiles du jeu
 		self.initialiserToutesEtoiles(self.parent)
+		self.czin.calculerGrappes()
 
 	def initialiserToutesEtoiles(self, Modele):
 		#Initialise les etoiles-meres de chaque race et cree les objets Czin et Gubru
@@ -258,20 +259,27 @@ class Czin():
 		print("MODE CZIN ", self.mode)
 		print("Czin base : ",self.base.posX, " ", self.base.posY)
 		print(" etoile-mere:", self.etoileMere.posX, " ", self.etoileMere.posY)
-		if self.base.typeEtoile != TypeEtoile.czin or self.base.typeEtoile != TypeEtoile.mereCzin:
+		if self.base.typeEtoile != TypeEtoile.czin and self.base.typeEtoile != TypeEtoile.mereCzin:
 			print("CHANGEMENT MODE ON REVIONT !!!!! ", self.base.typeEtoile)
 			self.base = self.etoileMere
 			self.mode = ModeCzin.rassemblementForces
 			print("premier if")
 		if self.etoileMere.typeEtoile != TypeEtoile.mereCzin:
-			self.base.typeEtoile = TypeEtoile.mereCzin
-			self.etoileMere = self.base
+			if base.typeEtoile == TypeEtoile.czin:
+				self.base.typeEtoile = TypeEtoile.mereCzin
+				self.etoileMere = self.base
+			else:#Si on a pu de base et d'etoile mere...
+				for etoile in self.parent.listeEtoiles:#On prend une etoile qu'on a...
+					if etoile.typeEtoile == TypeEtoile.czin:
+						etoile.typeEtoile = TypeEtoile.mereCzin
+						self.etoileMere = self.base
+						break
 			print("deuxieme if")
-		self.calculerGrappes()
+		#self.calculerGrappes()#faire une fois.?.
 		if self.mode == ModeCzin.rassemblementForces:
 			self.rassemblementBase()
 		elif self.mode == ModeCzin.etablirBase:
-			print("nouvelleBase : ", self.nouvelleBase)
+			print("nouvelleBase : ", self.nouvelleBase.posX, " ", self.nouvelleBase.posY)
 			if self.enDirection(self.nouvelleBase) == False:
 				print("Type (etablir base): ",self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile)
 				if self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile == TypeEtoile.czin: #Si on a gagne la base
@@ -305,17 +313,21 @@ class Czin():
 	def calculerGrappes(self):
 		for etoile1 in self.parent.listeEtoiles:
 			for etoile2 in self.parent.listeEtoiles:
-				distance = Jeu.calculerDistance(etoile1.posX, etoile1.posY, etoile2.posX, etoile1.posY)
+				distance = Jeu.calculerDistance(etoile1.posX, etoile1.posY, etoile2.posX, etoile2.posY)
 				if distance <= self.distanceGrappe:
 					s = self.distanceGrappe - distance +1
 					etoile1.valeurGrappe += s*s
+					#etoile2.valeurGrappe += s*s
 	
 	def essaimerGrappes(self):
 		listeEtoileGrappe = [] #Toutes les etoiles de la grappe de la base
 		for etoile in self.parent.listeEtoiles:
-			if etoile.valeurGrappe == self.base.valeurGrappe and (etoile.typeEtoile != TypeEtoile.czin or etoile.typeEtoile != TypeEtoile.mereCzin):
+			#if etoile.valeurGrappe == self.base.valeurGrappe and (etoile.typeEtoile != TypeEtoile.czin or etoile.typeEtoile != TypeEtoile.mereCzin):
+			if Jeu.calculerDistance(etoile.posX, etoile.posY, self.base.posX, self.base.posY) <= self.distanceGrappe and (etoile.typeEtoile != TypeEtoile.czin and etoile.typeEtoile != TypeEtoile.mereCzin):
 				listeEtoileGrappe.append(etoile)
 		print("LISTE ETOILE", listeEtoileGrappe)
+		for etoile in listeEtoileGrappe:
+			print("liste etoile ", etoile.posX, " ", etoile.posY)
 		listeEtoileGrappe = self.calculerDistanceEtoile(self.base, listeEtoileGrappe)
 		forceAttaque = self.calculerForceAttaque()
 		noEtoile = 0
@@ -337,8 +349,8 @@ class Czin():
 				etoile.valeurBase = 0
 			else:
 				distanceBase = Jeu.calculerDistance(self.base.posX, self.base.posY, etoile.posX, etoile.posY)
-				etoile.valeurBase = (etoile.valeurGrappe-3)*distanceBase
-			if etoile.valeurBase > nouvelleBase.valeurBase:
+				etoile.valeurBase = etoile.valeurGrappe-(3*distanceBase)
+			if etoile.valeurBase > nouvelleBase.valeurBase and etoile.typeEtoile != TypeEtoile.czin and etoile.typeEtoile != TypeEtoile.mereCzin:
 				nouvelleBase = etoile
 		return nouvelleBase
 	   	

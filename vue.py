@@ -339,7 +339,10 @@ class Vue():
 		
 	def initMenu(self):#Petit bug pour le retour au menu principal
 		#self.canevas.pack_forget()
-		self.cadrePartieHighScore.pack_forget()
+		try:
+			self.cadrePartieHighScore.pack_forget()
+		except:
+			pass #si on a pas packer highscore...
 		self.cadreLobby.pack()
 		#self.initLobby()
 		

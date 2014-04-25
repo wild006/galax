@@ -64,6 +64,7 @@ class Controleur():
         print("Temps", self.j.tempsCourant)
         i = 1
         for etoile in self.j.listeEtoiles:
+            #print("etoileVAL ", etoile.posX, " ", etoile.posY, " ", etoile.valeurGrappe)
             if etoile.typeEtoile == 1:
                 print("Humain  ", "nbVaisseaux:", etoile.nombreVaisseau)
             elif etoile.typeEtoile == 2:
@@ -74,7 +75,7 @@ class Controleur():
           #  print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
            # i+=1
         for flotte in self.j.czin.flottes:
-            #print("Czin ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
+             print("Czin ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
              print("Czin ", " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
         for flotte in self.j.gubru.flottes:
             #print("Gubru ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee:", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
