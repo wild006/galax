@@ -71,7 +71,8 @@ class Controleur():
                 print("Gubru  " ,"Position: ", "[", etoile.posX, ",", etoile.posY, "]","nbVaisseaux:", etoile.nombreVaisseau)
             elif etoile.typeEtoile == 3:
                 print("Czin  " ,"Position: ", "[", etoile.posX, ",", etoile.posY, "]","nbVaisseaux:", etoile.nombreVaisseau)
-          
+            elif etoile.typeEtoile == 4:
+                print("ind", etoile.nombreVaisseau)
           #  print(i, " ", etoile.posX, " ", etoile.posY, " ", etoile.typeEtoile, " ", etoile.valeurGrappe, " ", etoile.nombreVaisseau)
            # i+=1
         for flotte in self.j.czin.flottes:

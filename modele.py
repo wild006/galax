@@ -177,7 +177,7 @@ class Jeu():
 
 	def attaqueEnCours(self, flotteAttaquante):
 		flotteDefense = Flotte(flotteAttaquante.etoileArrivee,flotteAttaquante.etoileArrivee, flotteAttaquante.etoileArrivee.nombreVaisseau) #Flotte temporaire pour combat
-		#print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
+		print("attaquant", flotteAttaquante.nombreVaisseau, "defense",flotteAttaquante.etoileArrivee.typeEtoile, " ", flotteDefense.nombreVaisseau)
 		while  flotteAttaquante.nombreVaisseau > 0 and flotteDefense.nombreVaisseau > 0:
 			#print("attaquant", flotteAttaquante.nombreVaisseau, "defense", flotteDefense.nombreVaisseau)
 			if flotteAttaquante.nombreVaisseau > flotteDefense.nombreVaisseau: #Attaque surprise
@@ -192,6 +192,7 @@ class Jeu():
 				prob = random.randrange(10)
 				#print("prob de : ",prob)
 				if probabiliteAttaquePremier*10 <= prob:
+					print("ATTAQUE SURPRISE !!!!")
 					flotteAttaquante.attaquer(flotteDefense,True)
 					flotteDefense.attaquer(flotteAttaquante,False)
 					#if flotteDefense.nombreVaisseau > 0:
@@ -207,6 +208,7 @@ class Jeu():
 				#if flotteAttaquante.nombreVaisseau > 0:
 				#	flotteAttaquante.attaquer(flotteDefense,True)
 		
+		print("attaquant", flotteAttaquante.nombreVaisseau, "defense",flotteAttaquante.etoileArrivee.typeEtoile, " ", flotteDefense.nombreVaisseau)
 		#Retourne le perdant
 		if flotteAttaquante.nombreVaisseau <= 0:
 			return flotteAttaquante
@@ -256,42 +258,48 @@ class Czin():
 		self.mode = ModeCzin.rassemblementForces #Mode de depart
 		
 	def choixDeplacementFlottes(self):
-		print("MODE CZIN ", self.mode)
-		print("Czin base : ",self.base.posX, " ", self.base.posY)
-		print(" etoile-mere:", self.etoileMere.posX, " ", self.etoileMere.posY)
-		if self.base.typeEtoile != TypeEtoile.czin and self.base.typeEtoile != TypeEtoile.mereCzin:
-			print("CHANGEMENT MODE ON REVIONT !!!!! ", self.base.typeEtoile)
-			self.base = self.etoileMere
-			self.mode = ModeCzin.rassemblementForces
-			print("premier if")
-		if self.etoileMere.typeEtoile != TypeEtoile.mereCzin:
-			if base.typeEtoile == TypeEtoile.czin:
-				self.base.typeEtoile = TypeEtoile.mereCzin
-				self.etoileMere = self.base
-			else:#Si on a pu de base et d'etoile mere...
-				for etoile in self.parent.listeEtoiles:#On prend une etoile qu'on a...
-					if etoile.typeEtoile == TypeEtoile.czin:
-						etoile.typeEtoile = TypeEtoile.mereCzin
-						self.etoileMere = self.base
-						break
-			print("deuxieme if")
-		#self.calculerGrappes()#faire une fois.?.
-		if self.mode == ModeCzin.rassemblementForces:
-			self.rassemblementBase()
-		elif self.mode == ModeCzin.etablirBase:
-			print("nouvelleBase : ", self.nouvelleBase.posX, " ", self.nouvelleBase.posY)
-			if self.enDirection(self.nouvelleBase) == False:
-				print("Type (etablir base): ",self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile)
-				if self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile == TypeEtoile.czin: #Si on a gagne la base
-					self.base = self.nouvelleBase
-					self.essaimerGrappes()
-					self.mode = ModeCzin.conquerirGrappe
-				else:
-					self.base = self.etoileMere
-					self.mode = ModeCzin.rassemblementForces
-		elif self.mode == ModeCzin.conquerirGrappe:
-	   		if len(self.flottes) == 0:
-	   			self.mode = ModeCzin.rassemblementForces
+		if self.etoileMere !=  None:
+			print("MODE CZIN ", self.mode)
+			print("Czin base : ",self.base.posX, " ", self.base.posY)
+			print(" etoile-mere:", self.etoileMere.posX, " ", self.etoileMere.posY)
+			if self.base.typeEtoile != TypeEtoile.czin or self.base.typeEtoile != TypeEtoile.mereCzin:
+				print("CHANGEMENT MODE ON REVIONT !!!!! ", self.base.typeEtoile)
+				self.base = self.etoileMere
+				self.mode = ModeCzin.rassemblementForces
+				print("premier if")
+			if self.etoileMere.typeEtoile != TypeEtoile.mereCzin:
+				if self.base.typeEtoile == TypeEtoile.czin:
+					self.base.typeEtoile = TypeEtoile.mereCzin
+					self.etoileMere = self.base
+				else:#Si on a pu de base et d'etoile mere...
+					self.etoileMere = None
+					for etoile in self.parent.listeEtoiles:#On prend une etoile qu'on a...
+						if etoile.typeEtoile == TypeEtoile.czin:
+							etoile.typeEtoile = TypeEtoile.mereCzin
+							self.etoileMere = self.base
+							break
+					if self.etoileMere == None:#Il est mort
+						self.base = None
+						self.mode = None
+					
+				print("deuxieme if")
+			#self.calculerGrappes()#faire une fois.?.
+			if self.mode == ModeCzin.rassemblementForces:
+				self.rassemblementBase()
+			elif self.mode == ModeCzin.etablirBase:
+				print("nouvelleBase : ", self.nouvelleBase.posX, " ", self.nouvelleBase.posY)
+				if self.enDirection(self.nouvelleBase) == False:
+					print("Type (etablir base): ",self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile)
+					if self.parent.listeEtoiles[self.parent.listeEtoiles.index(self.nouvelleBase)].typeEtoile == TypeEtoile.czin: #Si on a gagne la base
+						self.base = self.nouvelleBase
+						self.essaimerGrappes()
+						self.mode = ModeCzin.conquerirGrappe
+					else:
+						self.base = self.etoileMere
+						self.mode = ModeCzin.rassemblementForces
+			elif self.mode == ModeCzin.conquerirGrappe:
+		   		if len(self.flottes) == 0:
+		   			self.mode = ModeCzin.rassemblementForces
 	
 	def rassemblementBase(self):
 		changementBase = True
@@ -303,8 +311,8 @@ class Czin():
 						changementBase = False
 		if changementBase == True:
 			self.base = self.etoileMere
-		print("Czin : ", self.base.nombreVaisseau, " >= ", self.calculerForceAttaque()*3)
-		if self.base.nombreVaisseau >= (self.calculerForceAttaque()*3):
+		print("Czin : ", self.base.nombreVaisseau, " >= ", self.calculerForceAttaque()+(self.parent.tempsCourant*6))
+		if self.base.nombreVaisseau >= (self.calculerForceAttaque()+(self.parent.tempsCourant*6)):
 			self.nouvelleBase = self.calculerBase()
 			self.flottes.append(self.base.creationFlotte(self.nouvelleBase,self.base.nombreVaisseau)) #Faire base temp ???
 			self.mode = ModeCzin.etablirBase
@@ -355,7 +363,7 @@ class Czin():
 		return nouvelleBase
 	   	
 	def calculerForceAttaque(self):
-		return self.parent.tempsCourant + self.nbVaisseauxParAttaque * self.forceAttaqueBasique
+		return self.parent.tempsCourant +( self.nbVaisseauxParAttaque * self.forceAttaqueBasique)
 		
 	def enDirection(self, etoileArrivee):
 		for flotte in self.flottes:
@@ -457,8 +465,9 @@ class Etoile():
 			self.nombreVaisseau += random.randrange(6)
 	
 	def creationFlotte(self, etoileArrivee, nbVaisseau):
-		self.nombreVaisseau -= nbVaisseau
-		return Flotte(self, etoileArrivee, nbVaisseau)
+		if self.nombreVaisseau - nbVaisseau >= 0:
+			self.nombreVaisseau -= nbVaisseau
+			return Flotte(self, etoileArrivee, nbVaisseau)
 		#A FAIRE: Voir si il y a assez de vaisseaux sur l'etoile... (controle)
 	
 
