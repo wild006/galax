@@ -43,6 +43,12 @@ class Controleur():
     def getListeEtoile(self):
         return self.j.listeEtoiles
     
+    def getEtoile(self,x,y):
+        for etoile in self.getListeEtoile():
+            if x == etoile.posX and y == etoile.posY:
+                return etoile
+        return None #etoile introuvable !
+    
     def getHumain(self,etoileDepart,etoileChoisi,nombreVaisseau):#Pour le deplacement des flottes dans la vue
         return self.j.humain.deplacementFlotte(etoileDepart, etoileChoisi, nombreVaisseau)
     

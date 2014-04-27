@@ -70,13 +70,41 @@ class Jeu():
 	
 	def infoEtoile(self, etoileChoisi):	
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
-			return Etoile(TypeEtoile.indep, self)
+			if etoileChoisi.typeEtoile == TypeEtoile.czin:
+				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile.posX = etoileChoisi.posX
+				nouvelleEtoile.posY = etoileChoisi.posY
+				return nouvelleEtoile
+			if etoileChoisi.typeEtoile == TypeEtoile.mereCzin:
+				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile.posX = etoileChoisi.posX
+				nouvelleEtoile.posY = etoileChoisi.posY
+				return nouvelleEtoile
+			if etoileChoisi.typeEtoile == TypeEtoile.gubru:
+				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile.posX = etoileChoisi.posX
+				nouvelleEtoile.posY = etoileChoisi.posY
+				return nouvelleEtoile
+			if etoileChoisi.typeEtoile == TypeEtoile.mereGubru:
+				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile.posX = etoileChoisi.posX
+				nouvelleEtoile.posY = etoileChoisi.posY
+				return nouvelleEtoile
+			if etoileChoisi.typeEtoile == TypeEtoile.indep:
+				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile.posX = etoileChoisi.posX
+				nouvelleEtoile.posY = etoileChoisi.posY
+				return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
 			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
+			nouvelleEtoile.posX = etoileChoisi.posX
+			nouvelleEtoile.posY = etoileChoisi.posY
 			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
 			return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.deuxieme :
 			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
+			nouvelleEtoile.posX = etoileChoisi.posX
+			nouvelleEtoile.posY = etoileChoisi.posY
 			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
 			nouvelleEtoile.nombreUsine = etoileChoisi.nombreUsine
 			return nouvelleEtoile
