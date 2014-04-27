@@ -70,7 +70,16 @@ class Jeu():
 	
 	def infoEtoile(self, etoileChoisi):	
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
-			return Etoile(TypeEtoile.indep, self)
+			if etoileChoisi.typeEtoile == TypeEtoile.czin:
+				return Etoile(TypeEtoile.czin, self)
+			if etoileChoisi.typeEtoile == TypeEtoile.mereCzin:
+				return Etoile(TypeEtoile.mereCzin, self)
+			if etoileChoisi.typeEtoile == TypeEtoile.gubru:
+				return Etoile(TypeEtoile.gubru, self)
+			if etoileChoisi.typeEtoile == TypeEtoile.mereGubru:
+				return Etoile(TypeEtoile.mereGubru, self)
+			if etoileChoisi.typeEtoile == TypeEtoile.indep:
+				return Etoile(TypeEtoile.indep, self)
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
 			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
 			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
