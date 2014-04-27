@@ -70,16 +70,7 @@ class Jeu():
 	
 	def infoEtoile(self, etoileChoisi):	
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
-			if etoileChoisi.typeEtoile == TypeEtoile.czin:
-				return Etoile(TypeEtoile.czin, self)
-			if etoileChoisi.typeEtoile == TypeEtoile.mereCzin:
-				return Etoile(TypeEtoile.mereCzin, self)
-			if etoileChoisi.typeEtoile == TypeEtoile.gubru:
-				return Etoile(TypeEtoile.gubru, self)
-			if etoileChoisi.typeEtoile == TypeEtoile.mereGubru:
-				return Etoile(TypeEtoile.mereGubru, self)
-			if etoileChoisi.typeEtoile == TypeEtoile.indep:
-				return Etoile(TypeEtoile.indep, self)
+			return Etoile(TypeEtoile.indep, self)
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
 			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
 			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
@@ -240,13 +231,9 @@ class Jeu():
 #Besoin dune variable pour le temps qui sincremente
 class Humain():
 	def __init__(self, etoileMere, parent):
-		self.parent = parent
+		self.jeu = parent
 		self.etoileMere = etoileMere
 		self.flottes = []
-		
-		#A FAIRE DANS LA VUE ???
-		#self.estHumain#besoin de verification pour determiner si humain ou non
-		#self.enVoyage#selon le choix du joueur a verifier
 		
 	def deplacementFlotte(self, etoileDepart, etoileChoisi, nombreVaisseau):
 		self.flottes.append(Flotte(etoileDepart,etoileChoisi,nombreVaisseau))
