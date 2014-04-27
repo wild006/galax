@@ -205,15 +205,18 @@ class Vue():
 			elif self.etoileArrivee==self.etoileDepart:
 				self.etoileArrivee=None
 			elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
-				self.parent.Humain.deplacementFlotte(etoileDepart,etoileArrivee,self.sliderDeplacement.get())
+				self.parent.Humain.deplacementFlotte(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
 				
 				
 		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
 			self.labelEtoileProprioResultat.config(text= "Gubru")
 			if etoile.nombreVaisseau==None:
 				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
+			elif etoile.nombreVaisseau==0:
+				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
 			else:
 				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+				
 			if etoile.nombreUsine==None:
 				self.labelEtoileManuResultat.config(text="Aucune Info.")
 			else:
@@ -222,6 +225,8 @@ class Vue():
 			#self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.labelDestinationProprioResultat.config(text=etoile.typeEtoile)
+				self.labelDestinationManuResultat.config(text=etoile.nombreUsine)
+				self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 			#self.etoileDepart=None
 			#self.etoileArrivee=None
 			
@@ -230,12 +235,19 @@ class Vue():
 			self.labelEtoileProprioResultat.config(text= "Czin")
 			if etoile.nombreVaisseau==None:
 				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
+			elif etoile.nombreVaisseau==0:
+				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
 			else:
 				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+				
 			if etoile.nombreUsine==None:
 				self.labelEtoileManuResultat.config(text="Aucune Info.")
 			else:
 				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+				self.labelDestinationProprioResultat.config(text=etoile.typeEtoile)
+				self.labelDestinationManuResultat.config(text=etoile.nombreUsine)
+				self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 			#self.etoileDepart=None
 			#self.etoileArrivee=None
 			
@@ -244,12 +256,19 @@ class Vue():
 			self.labelEtoileProprioResultat.config(text= "Ind\xE9pendant")
 			if etoile.nombreVaisseau==None:
 				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
+			elif etoile.nombreVaisseau==0:
+				self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
 			else:
 				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+				
 			if etoile.nombreUsine==None:
 				self.labelEtoileManuResultat.config(text="Aucune Info.")
 			else:
 				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+				self.labelDestinationProprioResultat.config(text=etoile.typeEtoile)
+				self.labelDestinationManuResultat.config(text=etoile.nombreUsine)
+				self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 			#self.etoileDepart=None
 			#self.etoileArrivee=None
 			
