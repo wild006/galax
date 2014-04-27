@@ -220,14 +220,14 @@ class Vue():
 			if self.etoileArrivee==self.etoileDepart:
 				self.etoileArrivee=None
 			elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
-				self.parent.Humain.deplacementFlotte(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
+				self.parent.getHumain(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
 				
 				
 		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
 			self.labelEtoileProprioResultat.config(text= "Gubru")
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
-				self.parent.Humain.deplacementFlotte(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
+				self.parent.getHumain(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Gubru")
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
@@ -258,7 +258,7 @@ class Vue():
 			self.labelEtoileProprioResultat.config(text= "Czin")
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
-				self.parent.Humain.deplacementFlotte(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
+				self.parent.getHumain(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Czin")
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
@@ -287,7 +287,7 @@ class Vue():
 			self.labelEtoileProprioResultat.config(text= "Ind\xE9pendant")
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
-				self.parent.Humain.deplacementFlotte(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
+				self.parent.getHumain(self.etoileDepart,self.etoileArrivee,self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Ind\xE9pendant")
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
