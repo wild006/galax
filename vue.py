@@ -137,7 +137,7 @@ class Vue():
 		
 		
 		
-		b1=Button(self.cadreFlotte,text="Faire D\xE9placement")
+		b1=Button(self.cadreFlotte,text="Faire D\xE9placement", command= self.deplacementHumain)
 		b1.pack()
 		
 		b2=Button(self.cadreCommande,text="Prochain Tour",width=12, command= self.prochainTour)
@@ -157,7 +157,13 @@ class Vue():
 		
 		self.cadreLobby.pack_forget()
 		self.cadrePartie.pack()
-	
+		
+	def deplacementHumain(self):
+		if self.etoileDepart != None and self.etoileArrivee != None:
+			self.parent.deplacementHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
+			self.labelEtoileVaisseauResultat.config(text=self.etoileDepart.nombreVaisseau)
+			self.sliderDeplacement.config(to=self.etoileDepart.nombreVaisseau)
+			
 	def prochainTour(self):
 		self.parent.changementTour()	
 		self.labelTemps.config(text=self.parent.getTemps())
@@ -198,6 +204,9 @@ class Vue():
 				etoile = self.parent.getEtoile(x,y)
 		except:
 			pass
+		print("eoitle ", etoile)
+		#print("etoileDepaat", self.etoileDepart.posX, " ", self.etoileDepart.posY)
+		#print("etoilearrivee", self.etoileArrivee.posX, " ", self.etoileArrivee.posY)
 		if etoile==None :
 			self.etoileDepart=None#detecte toujours a nul
 			self.etoileArrivee=None
@@ -223,14 +232,14 @@ class Vue():
 			if self.etoileArrivee != None:
 				if self.etoileArrivee==self.etoileDepart:
 					self.etoileArrivee=None
-				elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
-					self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
+				#elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
+				#	self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				
 				
 		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
-				self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
+				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Gubru")
 				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour les informations requises de l'etoile d'arrivee
 				if etoile.nombreUsine==None:
@@ -262,7 +271,7 @@ class Vue():
 		elif etoile.typeEtoile==3 or etoile.typeEtoile==7:
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
-				self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
+				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Czin")
 				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
 				if etoile.nombreUsine==None:
@@ -292,7 +301,7 @@ class Vue():
 		elif etoile.typeEtoile==4:
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
-				self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
+				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Ind\xE9pendant")
 				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
 				if etoile.nombreUsine==None:

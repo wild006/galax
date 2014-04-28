@@ -497,7 +497,7 @@ class Etoile():
 	
 
 class Flotte():
-	def __init__(self,etoileDepart,etoileArrivee,nombreVaisseau): 
+	def __init__(self,etoileDepart,etoileArrivee,nombreVaisseau):
 		self.positionInitialeX=etoileDepart.posX
 		self.positionInitialeY=etoileDepart.posY
 		self.positionFinalX=etoileArrivee.posX
@@ -508,6 +508,7 @@ class Flotte():
 		self.distanceY=0
 		self.nbAnnee=0
 		self.nombreVaisseau=nombreVaisseau
+		etoileDepart.nombreVaisseau -= nombreVaisseau
 		#self.nombreVaisseauDefenseur=None
 		self.calculerTempsVoyage()
 		#self.force=self.nombreVaisseauDefenseur/self.nombreVaisseau

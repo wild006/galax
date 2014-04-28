@@ -43,7 +43,7 @@ class Controleur():
     def getListeEtoile(self):
         return self.j.listeEtoiles
     
-    def getHumain(self,etoileDepart,etoileChoisi,nombreVaisseau):#Pour le deplacement des flottes dans la vue
+    def deplacementHumain(self,etoileDepart,etoileChoisi,nombreVaisseau):#Pour le deplacement des flottes dans la vue
         return self.j.humain.deplacementFlotte(etoileDepart, etoileChoisi, nombreVaisseau)
     
     def getGrandeurJeuX(self):
