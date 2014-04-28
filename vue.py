@@ -204,9 +204,7 @@ class Vue():
 				etoile = self.parent.getEtoile(x,y)
 		except:
 			pass
-		print("eoitle ", etoile)
-		#print("etoileDepaat", self.etoileDepart.posX, " ", self.etoileDepart.posY)
-		#print("etoilearrivee", self.etoileArrivee.posX, " ", self.etoileArrivee.posY)
+
 		if etoile==None :
 			self.etoileDepart=None#detecte toujours a nul
 			self.etoileArrivee=None

@@ -33,6 +33,9 @@ class Modele():
 		self.grandeurJeuY = 20
 		self.espacementEtoileMereX = 5
 		self.espacementEtoileMereY = 5
+	
+	def commencerJeu(self):
+		self.j = Jeu(self)
  
 class Jeu():
 	def __init__(self, parent):
