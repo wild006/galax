@@ -228,11 +228,11 @@ class Vue():
 				
 				
 		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
-			self.labelEtoileProprioResultat.config(text= "Gubru")
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
 				self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Gubru")
+				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour les informations requises de l'etoile d'arrivee
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
 				else:
@@ -242,6 +242,7 @@ class Vue():
 				else:
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 			else:
+				self.labelEtoileProprioResultat.config(text= "Gubru")
 				if etoile.nombreVaisseau==None or etoile.nombreVaisseau==0:
 					self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
 				else:
@@ -259,11 +260,11 @@ class Vue():
 			
 			
 		elif etoile.typeEtoile==3 or etoile.typeEtoile==7:
-			self.labelEtoileProprioResultat.config(text= "Czin")
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
 				self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Czin")
+				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
 				else:
@@ -273,6 +274,7 @@ class Vue():
 				else:
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 			else:
+				self.labelEtoileProprioResultat.config(text= "Czin")
 				if etoile.nombreVaisseau==None or etoile.nombreVaisseau==0:
 					self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
 				else:
@@ -288,11 +290,11 @@ class Vue():
 			
 			
 		elif etoile.typeEtoile==4:
-			self.labelEtoileProprioResultat.config(text= "Ind\xE9pendant")
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
 				self.etoileArrivee=etoile
 				self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Ind\xE9pendant")
+				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
 				else:
@@ -302,6 +304,7 @@ class Vue():
 				else:
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 			else:
+				self.labelEtoileProprioResultat.config(text= "Ind\xE9pendant")
 				if etoile.nombreVaisseau==None or etoile.nombreVaisseau==0:
 					self.labelEtoileVaisseauResultat.config(text="Aucune Info.")
 				else:
