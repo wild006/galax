@@ -494,7 +494,6 @@ class Etoile():
 	
 	def creationFlotte(self, etoileArrivee, nbVaisseau):
 		if self.nombreVaisseau - nbVaisseau >= 0:
-			self.nombreVaisseau -= nbVaisseau
 			return Flotte(self, etoileArrivee, nbVaisseau)
 		#A FAIRE: Voir si il y a assez de vaisseaux sur l'etoile... (controle)
 	
