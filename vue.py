@@ -192,7 +192,10 @@ class Vue():
 		try:
 			x = math.floor((self.canevas.coords(id)[0]/(800/self.parent.getGrandeurJeuX())))
 			y = math.floor((self.canevas.coords(id)[1]/(800/self.parent.getGrandeurJeuY())))
-			etoile = self.parent.getInfoEtoile(x,y)
+			if self.etoileDepart == None:
+				etoile = self.parent.getInfoEtoile(x,y)
+			else:
+				etoile = self.parent.getEtoile(x,y)
 		except:
 			pass
 		if etoile==None :

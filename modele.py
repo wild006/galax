@@ -81,17 +81,17 @@ class Jeu():
 				nouvelleEtoile.posY = etoileChoisi.posY
 				return nouvelleEtoile
 			if etoileChoisi.typeEtoile == TypeEtoile.gubru:
-				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile = Etoile(TypeEtoile.gubru, self)
 				nouvelleEtoile.posX = etoileChoisi.posX
 				nouvelleEtoile.posY = etoileChoisi.posY
 				return nouvelleEtoile
 			if etoileChoisi.typeEtoile == TypeEtoile.mereGubru:
-				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile = Etoile(TypeEtoile.gubru, self)
 				nouvelleEtoile.posX = etoileChoisi.posX
 				nouvelleEtoile.posY = etoileChoisi.posY
 				return nouvelleEtoile
 			if etoileChoisi.typeEtoile == TypeEtoile.indep:
-				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
+				nouvelleEtoile = Etoile(TypeEtoile.indep, self)
 				nouvelleEtoile.posX = etoileChoisi.posX
 				nouvelleEtoile.posY = etoileChoisi.posY
 				return nouvelleEtoile
@@ -292,6 +292,7 @@ class Czin():
 				self.mode = ModeCzin.rassemblementForces
 				print("premier if")
 			if self.etoileMere.typeEtoile != TypeEtoile.mereCzin:
+				print("deuxieme if")
 				if self.base.typeEtoile == TypeEtoile.czin:
 					self.base.typeEtoile = TypeEtoile.mereCzin
 					self.etoileMere = self.base
@@ -306,7 +307,7 @@ class Czin():
 						self.base = None
 						self.mode = None
 					
-				print("deuxieme if")
+				
 			#self.calculerGrappes()#faire une fois.?.
 			if self.mode == ModeCzin.rassemblementForces:
 				self.rassemblementBase()
