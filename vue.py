@@ -163,18 +163,31 @@ class Vue():
 			self.parent.deplacementHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 			self.labelEtoileVaisseauResultat.config(text=self.etoileDepart.nombreVaisseau)
 			self.sliderDeplacement.config(to=self.etoileDepart.nombreVaisseau)
+			self.updateEtoile()
 			
 	def prochainTour(self):
 		self.parent.changementTour()	
 		self.labelTemps.config(text=self.parent.getTemps())
 		self.updateEtoile()
+		
+	def trouverImageInit(self,etoile):
+		if etoile.typeEtoile == 2 or etoile.typeEtoile == 6:
+			image = Image.open("etoile_gubru.jpg")
+		elif etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
+			image = Image.open("etoile_humain.jpg")
+		elif etoile.typeEtoile == 3 or etoile.typeEtoile == 7:
+			image = Image.open("etoile_czin.jpg")
+		elif etoile.typeEtoile == 4:
+			image = Image.open("etoile_ind.jpg")
+		
+		return image
 	
 	def updateEtoile(self):
 		try:
 			self.canevas.delete("etoile")
 		except:
 			pass
-		compteur = 0
+		self.compteur = 0
 		self.photo = []
 		for etoile in self.parent.getListeEtoile():
 			#print(self.canevas.winfo_width())
@@ -188,8 +201,17 @@ class Vue():
 			elif etoile.typeEtoile == 4:
 				image = Image.open("etoile_ind.jpg")
 			self.photo.append(ImageTk.PhotoImage(image))
-			self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[compteur], tags="etoile")
-			compteur += 1   
+			self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+			self.compteur += 1
+		self.labelEtoileProprioResultat.config(text="")
+		self.labelEtoileVaisseauResultat.config(text="")
+		self.labelEtoileManuResultat.config(text="")
+		self.labelDestinationProprioResultat.config(text="")
+		self.labelDestinationManuResultat.config(text="")
+		self.labelDestinationVaisseauResultat.config(text="")
+		
+		self.etoileDepart = None
+		self.etoileArrivee = None
 	
 	def clickCanevas(self,event):	#capturing click in a window
 		id = self.canevas.find_withtag("current")
@@ -209,25 +231,38 @@ class Vue():
 			pass
 
 		if etoile==None :
-			self.etoileDepart=None#detecte toujours a nul
-			self.etoileArrivee=None
-			self.labelEtoileProprioResultat.config(text="")
-			self.labelEtoileVaisseauResultat.config(text="")
-			self.labelEtoileManuResultat.config(text="")
-			self.labelDestinationProprioResultat.config(text="")
-			self.labelDestinationManuResultat.config(text="")
-			self.labelDestinationVaisseauResultat.config(text="")
+			self.updateEtoile()
 			#verifier si etoileDepart est = a none
 		elif etoile.typeEtoile==1 or etoile.typeEtoile==5:
 			if self.etoileDepart == None:#premier click
 				self.etoileDepart=etoile
-			else:#deuxieme click
-				self.etoileArrivee = etoile
+				image = Image.open("etoile_humain2.jpg")
+				self.photo.append(ImageTk.PhotoImage(image))
+				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+				self.compteur += 1
 				
-			self.sliderDeplacement.config(to=etoile.nombreVaisseau)
-			self.labelEtoileProprioResultat.config(text= "Humain")
-			self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
-			self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+				self.sliderDeplacement.config(to=etoile.nombreVaisseau)
+				self.labelEtoileProprioResultat.config(text= "Humain")
+				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
+				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
+			else:#deuxieme click
+				if etoile != self.etoileDepart:
+					if(self.etoileArrivee != None):
+						image = self.trouverImageInit(self.etoileArrivee)
+						self.photo.append(ImageTk.PhotoImage(image))
+						self.canevas.create_image(self.etoileArrivee.posX*(800/self.parent.getGrandeurJeuX())+20,self.etoileArrivee.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+						self.compteur += 1
+					self.etoileArrivee = etoile
+					image = Image.open("etoile_humain3.jpg")
+					self.photo.append(ImageTk.PhotoImage(image))
+					self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+					self.compteur += 1
+					
+					self.labelDestinationProprioResultat.config(text= "Humain")
+					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
+					self.labelDestinationManuResultat.config(text=etoile.nombreUsine)
+				
+			
 			#if self.etoileArrivee==None:
 			#	self.etoileDepart=None
 			if self.etoileArrivee != None:
@@ -239,7 +274,16 @@ class Vue():
 				
 		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+				if(self.etoileArrivee != None):
+					image = self.trouverImageInit(self.etoileArrivee)
+					self.photo.append(ImageTk.PhotoImage(image))
+					self.canevas.create_image(self.etoileArrivee.posX*(800/self.parent.getGrandeurJeuX())+20,self.etoileArrivee.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+					self.compteur += 1
 				self.etoileArrivee=etoile
+				image = Image.open("etoile_gubru3.jpg")
+				self.photo.append(ImageTk.PhotoImage(image))
+				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+				self.compteur += 1
 				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Gubru")
 				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour les informations requises de l'etoile d'arrivee
@@ -271,7 +315,16 @@ class Vue():
 			
 		elif etoile.typeEtoile==3 or etoile.typeEtoile==7:
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+				if(self.etoileArrivee != None):
+					image = self.trouverImageInit(self.etoileArrivee)
+					self.photo.append(ImageTk.PhotoImage(image))
+					self.canevas.create_image(self.etoileArrivee.posX*(800/self.parent.getGrandeurJeuX())+20,self.etoileArrivee.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+					self.compteur += 1
 				self.etoileArrivee=etoile
+				image = Image.open("etoile_czin3.jpg")
+				self.photo.append(ImageTk.PhotoImage(image))
+				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+				self.compteur += 1
 				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Czin")
 				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
@@ -301,7 +354,16 @@ class Vue():
 			
 		elif etoile.typeEtoile==4:
 			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+				if(self.etoileArrivee != None):
+					image = self.trouverImageInit(self.etoileArrivee)
+					self.photo.append(ImageTk.PhotoImage(image))
+					self.canevas.create_image(self.etoileArrivee.posX*(800/self.parent.getGrandeurJeuX())+20,self.etoileArrivee.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+					self.compteur += 1
 				self.etoileArrivee=etoile
+				image = Image.open("etoile_ind3.jpg")
+				self.photo.append(ImageTk.PhotoImage(image))
+				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
+				self.compteur += 1
 				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Ind\xE9pendant")
 				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
