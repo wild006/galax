@@ -94,7 +94,10 @@ class Controleur():
         for flotte in self.m.j.gubru.flottes:
             #print("Gubru ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee:", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
              print("Gubru ", " annee:", flotte.nbAnnee, "Position: ", "[", flotte.etoileArrivee.posX, ",", flotte.etoileArrivee.posY, "]","nbVaisseaux:", flotte.nombreVaisseau)
- 
+    
+    def finPartie(self, humainGagnant):
+        self.v.finPartie(humainGagnant)
+    
     def getTemps(self):
         return int(self.m.j.tempsCourant)
             

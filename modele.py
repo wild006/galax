@@ -186,7 +186,18 @@ class Jeu():
 				break
 		if self.mortHumaine == True:
 			print("FIN DE LA PARTIE")
+			self.parent.parent.finPartie(False)
+		mortCivilisation = True
+		for etoile in self.listeEtoiles:
+			if etoile.typeEtoile == TypeEtoile.mereCzin or etoile.typeEtoile == TypeEtoile.czin or etoile.typeEtoile == TypeEtoile.mereGubru or etoile.typeEtoile == TypeEtoile.gubru:
+				mortCivilisation = False
+		if len(self.czin.flottes) > 0 or len(self.gubru.flottes) > 0:
+			mortCivilisation = False
+		if mortCivilisation == True:
+			print("FIN DE LA PARTIE")
+			self.parent.parent.finPartie(True)
 			#Partie terminer
+		
 		#manufactures
 		for etoile in self.listeEtoiles:
 			etoile.creerVaisseau()

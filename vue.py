@@ -137,13 +137,13 @@ class Vue():
 		
 		
 		
-		b1=Button(self.cadreFlotte,text="Faire D\xE9placement", command= self.deplacementHumain)
-		b1.pack()
+		self.b1=Button(self.cadreFlotte,text="Faire D\xE9placement", command= self.deplacementHumain)
+		self.b1.pack()
 		
-		b2=Button(self.cadreCommande,text="Prochain Tour",width=12, command= self.prochainTour)
-		b2.pack()
-		b3=Button(self.cadreCommande,text="Quitter",width=12,command=self.initFermer)
-		b3.pack()
+		self.b2=Button(self.cadreCommande,text="Prochain Tour",width=12, command= self.prochainTour)
+		self.b2.pack()
+		self.b3=Button(self.cadreCommande,text="Quitter",width=12,command=self.initFermer)
+		self.b3.pack()
 		
 		
 		
@@ -471,6 +471,18 @@ class Vue():
 	def initMenu(self):#Petit bug pour le retour au menu principal
 		
 		try:
+			self.canevas.pack_forget()
+		except:
+			pass
+		try:
+			self.popUp.destroy()
+		except:
+			pass
+		try:
+			self.cadrePartie.pack_forget()
+		except:
+			pass
+		try:
 			self.cadrePartieHighScore.pack_forget()
 			self.labelLogo.pack_forget()
 		except:
@@ -479,6 +491,18 @@ class Vue():
 			except:
 				pass #si on a pas packer highscore...
 	
-		self.cadreLobby.pack()
-		#self.initLobby()
+		self.initLobby()
+		
+	def finPartie(self, humainGagnant):
+		self.popUp = Toplevel(self.root)
+		#self.popUp.wm_overrideredirect(True)
+		#self.popUp.protocol("WM_DELETE_WINDOW", self.updateHighScore)
+		if humainGagnant == True:
+			Label(self.popUp, text="Fin de la partie ! Vous avez gagne !", padx = 250, pady= 15).pack()
+		else:
+			Label(self.popUp, text="Fin de la partie ! Vous avez perdu !", padx = 250, pady= 15).pack()
+		self.b1.destroy()
+		self.b2.destroy()
+		self.b3.destroy()
+		Button(self.popUp, text="Retour menu", command=self.initMenu).pack()
 		
