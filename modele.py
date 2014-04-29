@@ -73,36 +73,16 @@ class Jeu():
 	
 	def infoEtoile(self, etoileChoisi):	
 		if etoileChoisi.IntelligenceHumain == NiveauIntelligence.aucun :
-			if etoileChoisi.typeEtoile == TypeEtoile.czin:
-				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
-				nouvelleEtoile.posX = etoileChoisi.posX
-				nouvelleEtoile.posY = etoileChoisi.posY
-				return nouvelleEtoile
-			if etoileChoisi.typeEtoile == TypeEtoile.mereCzin:
-				nouvelleEtoile = Etoile(TypeEtoile.czin, self)
-				nouvelleEtoile.posX = etoileChoisi.posX
-				nouvelleEtoile.posY = etoileChoisi.posY
-				return nouvelleEtoile
-			if etoileChoisi.typeEtoile == TypeEtoile.gubru:
-				nouvelleEtoile = Etoile(TypeEtoile.gubru, self)
-				nouvelleEtoile.posX = etoileChoisi.posX
-				nouvelleEtoile.posY = etoileChoisi.posY
-				return nouvelleEtoile
-			if etoileChoisi.typeEtoile == TypeEtoile.mereGubru:
-				nouvelleEtoile = Etoile(TypeEtoile.gubru, self)
-				nouvelleEtoile.posX = etoileChoisi.posX
-				nouvelleEtoile.posY = etoileChoisi.posY
-				return nouvelleEtoile
-			if etoileChoisi.typeEtoile == TypeEtoile.indep:
-				nouvelleEtoile = Etoile(TypeEtoile.indep, self)
-				nouvelleEtoile.posX = etoileChoisi.posX
-				nouvelleEtoile.posY = etoileChoisi.posY
-				return nouvelleEtoile
+			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
+			nouvelleEtoile.posX = etoileChoisi.posX
+			nouvelleEtoile.posY = etoileChoisi.posY
+			nouvelleEtoile.nombreVaisseau = None
+			return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.premier :
 			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
 			nouvelleEtoile.posX = etoileChoisi.posX
 			nouvelleEtoile.posY = etoileChoisi.posY
-			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseau
+			nouvelleEtoile.nombreVaisseau = etoileChoisi.nombreVaisseauConnu
 			return nouvelleEtoile
 		elif etoileChoisi.IntelligenceHumain == NiveauIntelligence.deuxieme :
 			nouvelleEtoile = Etoile(etoileChoisi.typeEtoile, self)
@@ -131,15 +111,20 @@ class Jeu():
 			for flotte in self.humain.flottes:
 				flotte.nbAnnee -= 0.1
 				if flotte.nbAnnee <= 0:
+					if flotte.etoileArrivee.IntelligenceHumain < NiveauIntelligence.troisieme:
+						flotte.etoileArrivee.IntelligenceHumain +=1
+						flotte.etoileArrivee.nombreVaisseauConnu = flotte.etoileArrivee.nombreVaisseau
 					if flotte.etoileArrivee.nombreVaisseau>=1 and (flotte.etoileArrivee.typeEtoile != TypeEtoile.humain and flotte.etoileArrivee.typeEtoile != TypeEtoile.mereHumain): #Combat
 						if self.attaqueEnCours(flotte) != flotte:
 							if flotte.etoileArrivee.typeEtoile != TypeEtoile.mereHumain:
 								flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
+							flotte.etoileArrivee.IntelligenceHumain = NiveauIntelligence.troisieme
 							flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
 							
 					else:
 						if flotte.etoileArrivee.typeEtoile != TypeEtoile.mereHumain:
 							flotte.etoileArrivee.typeEtoile = TypeEtoile.humain
+						flotte.etoileArrivee.IntelligenceHumain = NiveauIntelligence.troisieme
 						flotte.etoileArrivee.nombreVaisseau += flotte.nombreVaisseau
 						
 					flotteASupp.append(flotte)
@@ -456,6 +441,7 @@ class Etoile():
 		self.distanceAutreEtoile = None #Pour pouvoir classer les etoiles avec leur distance
 		self.nombreUsine = None
 		self.nombreVaisseau = 0
+		self.nombreVaisseauConnu = None #Pour niveau intelligence
 		self.typeEtoile = typeEtoileAttribue
 
 	def initialiserEtoile(self):
