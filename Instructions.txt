@@ -1,23 +1,23 @@
-Jeu de dalek
+GALAX
 ------------
 
 Le but est simple, éliminer les Gubrus, les Czins et les Indépendants de la 
 surface de la voie lactée.
 
-Pour se faire, vous devrez utilisé votre étoile-mère qui contient à la base 100 vaisseaux
-et 10 manufactures de vaisseaux pour investir les autres étoiles.
+Pour se faire, vous devrez utiliser votre étoile-mère qui contient au départ 100 vaisseaux
+et 10 manufactures de vaisseaux pour envahir les autres étoiles.
 
-Les gubrus et les czins commencent aussi, tout comme vous, avec une une étoile-mère ayant
+Les Gubrus et les Czins commencent aussi, tout comme vous, avec une étoile-mère ayant
 les mêmes caractéristiques que la votre.
 
-Utiliser la souris pour naviguer à travers les étoiles et le curseur du nombre de vaisseaux
-pour finaliser vos déplacements intergalactiques.
+Utiliser la souris pour naviguer à travers les étoiles et le curseur de déplacement pour vaisseaux
+afin de finaliser vos déplacements intergalactiques.
 
 Aussi, il est possible de faire simplement un transfert de flottes entre deux étoiles 
-humaines à l'aide du même système d'attaque ennemi.
+humaines à l'aide du même système.
 
-Vos manufactures créent de façon aléatoires( entre 0 et 6) vos si précieux vaisseaux.
+Vos manufactures créent de façons aléatoires (entre 0 et 6) vos si précieux vaisseaux.
 
-Le cercle vert autour d'une étoile humaine indique qu'elle est sélectionné comme l'étoile
+Le cercle vert autour d'une étoile humaine indique qu'elle est sélectionnée comme l'étoile
 de départ et le cercle rouge autour d'une étoile indique la destination des flottes.
 
