@@ -1,3 +1,7 @@
+#Francois Genest
+#Julien Metivier
+#Mathias Perreault-Guimond
+
 from tkinter import *
 import math
 from PIL import Image, ImageTk 
@@ -22,18 +26,13 @@ class Vue():
 		self.photoGalax = ImageTk.PhotoImage(self.logoGalax)
 		self.labelLogo = Label(self.cadreLobby,image=self.photoGalax)
 		self.labelLogo.pack()
-		#self.canevas=Canvas(self.cadreMain,width=800,height=800)
-		#self.canevas.create_image(400,300,image=self.photoGalax)
-		#self.canevas.pack()
 		
 		b1=Button(self.cadreLobby,text="Commencer partie",width=15,command=self.initPartie)
 		b1.pack()
 		b2=Button(self.cadreLobby,text="Options",width=15,command=self.initOption)
 		b2.pack()
-		b3=Button(self.cadreLobby,text="HighScore",width=15,command=self.initHighScore)
+		b3=Button(self.cadreLobby,text="Quitter",width=15,command=self.initFermer)
 		b3.pack()
-		b4=Button(self.cadreLobby,text="Quitter",width=15,command=self.initFermer)
-		b4.pack()
 
 		self.cadreLobby.pack()
 
@@ -51,7 +50,6 @@ class Vue():
 		self.cadreJeu.grid(column=0,row=0)
 		self.cadreFlotte.grid(column=0,row=1)
 		self.cadreInfo.grid(column=1,row=0,sticky=N)
-		#self.cadreInfo.grid(column=2,row=0)#appelle des functions pour resultat 
 		self.cadreCommande.grid(column=1,row=1,columnspan=2)
 		
 		self.canevas=Canvas(self.cadreJeu,width=800,height=800,bg="black")
@@ -83,7 +81,7 @@ class Vue():
 		labelIndep=Label(self.cadreInfo,text="Ind\xE9pendant",relief=GROOVE,width=15)
 		labelIndep.grid(column=0,row=5)
 		
-		labelEtoile=Label(self.cadreInfo,text="Etoiles",relief=SOLID,width=15)#e accent aigue majuscule
+		labelEtoile=Label(self.cadreInfo,text="\xC9toiles",relief=SOLID,width=15)
 		labelEtoile.grid(column=0,row=6,pady=16)
 		labelProprio=Label(self.cadreInfo,text="Propri\xE9taire",relief=GROOVE,width=15)
 		labelProprio.grid(column=0,row=7)
@@ -104,13 +102,13 @@ class Vue():
 		
 		labelInfoResultat=Label(self.cadreInfo)
 		labelInfoResultat.grid(column=1,row=1,pady=16)
-		self.labelHumainResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelHumainResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelHumainResultat.grid(column=1,row=2)
-		self.labelGubruResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelGubruResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelGubruResultat.grid(column=1,row=3)
-		self.labelCzinResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelCzinResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelCzinResultat.grid(column=1,row=4)
-		self.labelIndepResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)#changer text pour les fonctions qui montre le resultat
+		self.labelIndepResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelIndepResultat.grid(column=1,row=5)
 		
 		labelEtoileResultat=Label(self.cadreInfo)
@@ -139,21 +137,13 @@ class Vue():
 		
 		self.b1=Button(self.cadreFlotte,text="Faire D\xE9placement", command= self.deplacementHumain)
 		self.b1.pack()
-		
 		self.b2=Button(self.cadreCommande,text="Prochain Tour",width=12, command= self.prochainTour)
 		self.b2.pack()
 		self.b3=Button(self.cadreCommande,text="Quitter",width=12,command=self.initFermer)
 		self.b3.pack()
 		
 		
-		
-		#self.canevas.create_oval(0, 0, 100, 100)
-		#print(self.parent.getListeEtoile())
 		self.updateEtoile()
-			#self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+10,etoile.posY*(800/self.parent.getGrandeurJeuY())+10,image=photo)
-			#(etoile.posX*(800/self.parent.getGrandeurJeuX())+10, etoile.posY*(800/self.parent.getGrandeurJeuY())+10, etoile.posX*(800/self.parent.getGrandeurJeuX())+20, etoile.posY*(800/self.parent.getGrandeurJeuY()) +20)
-			#A FAIRE : Afficher selon le x et y des etoiles dans liste etoile
-			#A FAIRE: BIEN AFFICHER LES ETOILES
 		
 		self.cadreLobby.pack_forget()
 		self.cadrePartie.pack()
@@ -190,8 +180,6 @@ class Vue():
 		self.compteur = 0
 		self.photo = []
 		for etoile in self.parent.getListeEtoile():
-			#print(self.canevas.winfo_width())
-			#print(self.canevas.winfo_height())
 			if etoile.typeEtoile == 2 or etoile.typeEtoile == 6:
 				image = Image.open("etoile_gubru.jpg")
 			elif etoile.typeEtoile == 1 or etoile.typeEtoile == 5:
@@ -213,18 +201,13 @@ class Vue():
 		self.etoileDepart = None
 		self.etoileArrivee = None
 	
-	def clickCanevas(self,event):	#capturing click in a window
+	def clickCanevas(self,event):
 		id = self.canevas.find_withtag("current")
 		etoile = None
 		print(self.canevas.coords(id))
 		try:
 			x = math.floor((self.canevas.coords(id)[0]/(800/self.parent.getGrandeurJeuX())))
 			y = math.floor((self.canevas.coords(id)[1]/(800/self.parent.getGrandeurJeuY())))
-			#if self.etoileDepart == None:
-			#	etoile = self.parent.getInfoEtoile(x,y)
-			#else:
-			#	etoile = self.parent.getEtoile(x,y)
-			print("AFFICHAGE !!! ", x, " ", y)
 			etoile = self.parent.getInfoEtoile(x,y)
 			print(etoile)
 		except:
@@ -232,9 +215,8 @@ class Vue():
 
 		if etoile==None :
 			self.updateEtoile()
-			#verifier si etoileDepart est = a none
 		elif etoile.typeEtoile==1 or etoile.typeEtoile==5:
-			if self.etoileDepart == None:#premier click
+			if self.etoileDepart == None:
 				self.etoileDepart=etoile
 				image = Image.open("etoile_humain2.jpg")
 				self.photo.append(ImageTk.PhotoImage(image))
@@ -245,7 +227,7 @@ class Vue():
 				self.labelEtoileProprioResultat.config(text= "Humain")
 				self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)
 				self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
-			else:#deuxieme click
+			else:
 				if etoile != self.etoileDepart:
 					if(self.etoileArrivee != None):
 						image = self.trouverImageInit(self.etoileArrivee)
@@ -263,17 +245,13 @@ class Vue():
 					self.labelDestinationManuResultat.config(text=etoile.nombreUsine)
 				
 			
-			#if self.etoileArrivee==None:
-			#	self.etoileDepart=None
 			if self.etoileArrivee != None:
 				if self.etoileArrivee==self.etoileDepart:
 					self.etoileArrivee=None
-				#elif self.etoileArrivee.typeEtoile==1 or self.etoileArrivee.typeEtoile==5:
-				#	self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
-				
+
 				
 		elif etoile.typeEtoile==2 or etoile.typeEtoile==6 :
-			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+			if self.etoileDepart !=None:
 				if(self.etoileArrivee != None):
 					image = self.trouverImageInit(self.etoileArrivee)
 					self.photo.append(ImageTk.PhotoImage(image))
@@ -284,9 +262,8 @@ class Vue():
 				self.photo.append(ImageTk.PhotoImage(image))
 				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
 				self.compteur += 1
-				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Gubru")
-				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour les informations requises de l'etoile d'arrivee
+				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
 				else:
@@ -306,15 +283,9 @@ class Vue():
 					self.labelEtoileManuResultat.config(text="Aucune Info.")
 				else:
 					self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
-			#self.labelEtoileVaisseauResultat.config(text=etoile.nombreVaisseau)#niveau d'intelligence
-			#self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
-			
-			#self.etoileDepart=None
-			#self.etoileArrivee=None
-			
-			
+					
 		elif etoile.typeEtoile==3 or etoile.typeEtoile==7:
-			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+			if self.etoileDepart !=None:
 				if(self.etoileArrivee != None):
 					image = self.trouverImageInit(self.etoileArrivee)
 					self.photo.append(ImageTk.PhotoImage(image))
@@ -325,9 +296,8 @@ class Vue():
 				self.photo.append(ImageTk.PhotoImage(image))
 				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
 				self.compteur += 1
-				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Czin")
-				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
+				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
 				else:
@@ -348,12 +318,8 @@ class Vue():
 				else:
 					self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
 			
-			#self.etoileDepart=None
-			#self.etoileArrivee=None
-			
-			
 		elif etoile.typeEtoile==4:
-			if self.etoileDepart !=None:#verifier si on a clicker sur une etoile humaine en premier
+			if self.etoileDepart !=None:
 				if(self.etoileArrivee != None):
 					image = self.trouverImageInit(self.etoileArrivee)
 					self.photo.append(ImageTk.PhotoImage(image))
@@ -364,9 +330,8 @@ class Vue():
 				self.photo.append(ImageTk.PhotoImage(image))
 				self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
 				self.compteur += 1
-				#self.parent.getHumain(self.parent.getEtoile(self.etoileDepart.posX,self.etoileDepart.posY) ,self.parent.getEtoile(self.etoileArrivee.posX,self.etoileArrivee.posY),self.sliderDeplacement.get())
 				self.labelDestinationProprioResultat.config(text="Ind\xE9pendant")
-				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)#Pour avoir seulement les informations a afficher
+				etoile = self.parent.getInfoEtoile(self.etoileArrivee.posX, self.etoileArrivee.posY)
 				if etoile.nombreUsine==None:
 					self.labelDestinationManuResultat.config(text="Aucune Info.")
 				else:
@@ -386,12 +351,6 @@ class Vue():
 					self.labelEtoileManuResultat.config(text="Aucune Info.")
 				else:
 					self.labelEtoileManuResultat.config(text=etoile.nombreUsine)
-			
-	
-			
-		#frame = Frame(root, width=100, height=100)
-		#frame.bind("<Button-1>", callback)
-		#frame.pack()
 		
 	def initOption(self):
 		self.canevas=Canvas(self.root,width=800,height=600,bg="white")
@@ -401,75 +360,32 @@ class Vue():
 		self.background_label = Label(self.canevas, image=self.background_images)
 		self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 		
-		
 		self.logoGalax = Image.open("logo.jpg") 
 		self.photoGalax = ImageTk.PhotoImage(self.logoGalax)
 		self.labelLogo = Label(self.canevas,image=self.photoGalax)
 		self.labelLogo.pack()
 		
-		labelDifficulte=Label(self.canevas,text="Difficult\xE9e",relief=SOLID,width=15)
+		labelDifficulte=Label(self.canevas,text="Difficult\xE9e",relief=SOLID,width=15,height=2)
 		labelDifficulte.pack(padx=5,side=LEFT)
-		labelFacile=Label(self.canevas,text="Facile",relief=GROOVE,width=15)#remplacer par un boutton
-		labelFacile.pack(padx=1,side=LEFT)
-		labelIntermediaire=Label(self.canevas,text="Interm\xE9diaire",relief=GROOVE,width=15)#remplacer par un boutton
-		labelIntermediaire.pack(padx=1,side=LEFT)
-		labelDifficile=Label(self.canevas,text="Difficile",relief=GROOVE,width=15)#remplacer par un boutton
-		labelDifficile.pack(padx=1,side=LEFT)
-		
-		b=Button(self.canevas,text="Quitter",width=15,command=self.initFermer)
-		b.pack()
-		b1=Button(self.canevas,text="Menu Principal",width=15,command=self.initMenu)
-		b1.pack()
+		b1=Button(self.canevas,text="Facile",relief=GROOVE,width=15)
+		b1.pack(padx=1,side=LEFT)
+		b2=Button(self.canevas,text="Interm\xE9diaire",relief=GROOVE,width=15)
+		b2.pack(padx=1,side=LEFT)
+		b3=Button(self.canevas,text="Difficile",relief=GROOVE,width=15)
+		b3.pack(padx=1,side=LEFT)
+		b4=Button(self.canevas,text="Quitter",width=15,command=self.initFermer)
+		b4.pack()
+		b5=Button(self.canevas,text="Menu Principal",width=15,command=self.initMenu)
+		b5.pack()
 		
 		self.cadreLobby.pack_forget()
 		self.canevas.pack()
-		
-	def initHighScore(self):
-		self.cadrePartieHighScore=Frame(self.root)
-
-		self.background=Image.open("background.jpg")#Agrandir selon la fenetre
-		self.background_images=ImageTk.PhotoImage(self.background)
-		self.background_label = Label(self.cadrePartieHighScore, image=self.background_images)
-		self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-		
-		self.logoGalax = Image.open("logo.jpg") 
-		self.photoGalax = ImageTk.PhotoImage(self.logoGalax)
-		self.labelLogo = Label(self.cadrePartieHighScore,image=self.photoGalax)
-		self.labelLogo.grid(column=0,row=0,columnspan=2)
-		#self.canevas.grid(column=0,row=0,columnspan=2)
-		
-
-		
-		labelTitre=Label(self.cadrePartieHighScore,text="HIGHSCORE",bg="red",width=20)
-		labelTitre.grid(column=0,row=1,columnspan=2)
-		
-		labelNom=Label(self.cadrePartieHighScore,text="NOM",bg="blue",fg="white",relief=SOLID,width=18)
-		labelNom.grid(column=0,row=2,pady=8)
-		
-		for i in range (0,5):
-			labelNomScore=Label(self.cadrePartieHighScore,text="NOM D'UN JOUEUR",relief=GROOVE,width=18)#inserer la fonction pour les noms
-			labelNomScore.grid(column=0,row=3+i)
-			
-		labelHighScore=Label(self.cadrePartieHighScore,text="SCORE",bg="blue",fg="white",relief=SOLID,width=18)
-		labelHighScore.grid(column=1,row=2,pady=8)
-		
-		for i in range (0,5):
-			labelScore=Label(self.cadrePartieHighScore,text="SCORE DU JOUEUR",relief=GROOVE,width=18)#inserer la fonction pour les scores
-			labelScore.grid(column=1,row=3+i)
-			
-		b=Button(self.cadrePartieHighScore,text="Quitter",width=15,command=self.initFermer)
-		b.grid(column=0,row=9,columnspan=2)
-		b1=Button(self.cadrePartieHighScore,text="Menu Principal",width=15,command=self.initMenu)
-		b1.grid(column=0,row=10,columnspan=2)
-		
-		self.cadreLobby.pack_forget()
-		self.cadrePartieHighScore.pack()
+	
 
 	def initFermer(self):
 		self.root.destroy()
 		
-	def initMenu(self):#Petit bug pour le retour au menu principal
-		
+	def initMenu(self):
 		try:
 			self.canevas.pack_forget()
 		except:
@@ -481,22 +397,11 @@ class Vue():
 		try:
 			self.cadrePartie.pack_forget()
 		except:
-			pass
-		try:
-			self.cadrePartieHighScore.pack_forget()
-			self.labelLogo.pack_forget()
-		except:
-			try:
-				self.canevas.pack_forget()
-			except:
-				pass #si on a pas packer highscore...
-	
+			pass	
 		self.initLobby()
 		
 	def finPartie(self, humainGagnant):
 		self.popUp = Toplevel(self.root)
-		#self.popUp.wm_overrideredirect(True)
-		#self.popUp.protocol("WM_DELETE_WINDOW", self.updateHighScore)
 		if humainGagnant == True:
 			Label(self.popUp, text="Fin de la partie ! Vous avez gagne !", padx = 250, pady= 15).pack()
 		else:
