@@ -4,6 +4,7 @@
 
 from modele import *
 from vue import *
+import math
 
 class Controleur():
     def __init__(self):
@@ -17,6 +18,9 @@ class Controleur():
     def getListeEtoile(self):
         return self.m.j.listeEtoiles
     
+    def getFlottesHumaines(self):
+        return self.m.j.humain.flottes
+    
     def deplacementHumain(self,etoileDepart,etoileChoisi,nombreVaisseau):#Pour le deplacement des flottes dans la vue
         return self.m.j.humain.deplacementFlotte(etoileDepart, etoileChoisi, nombreVaisseau)
     
@@ -25,6 +29,11 @@ class Controleur():
     
     def getGrandeurJeuY(self):
         return self.m.grandeurJeuY
+    
+    def getDistance(self, etoileDepart, etoileArrivee):
+       # return math.trunc(Jeu.calculerDistance(etoileDepart.posX, etoileDepart.posY, etoileArrivee.posX, etoileArrivee.posY))
+       flotteTemp = Flotte(etoileDepart, etoileArrivee, 0)
+       return math.ceil(flotteTemp.nbAnnee)
     
     def getInfoEtoile(self,x,y):
         etoileRechercher = None
@@ -48,23 +57,19 @@ class Controleur():
     
     def changementTour(self):
         self.m.j.changementDeTour()
-        print("Temps", self.m.j.tempsCourant)
-        i = 1
-        for etoile in self.m.j.listeEtoiles:
-            if etoile.typeEtoile == 1:
-                print("Humain  ", "nbVaisseaux:", etoile.nombreVaisseau)
-            elif etoile.typeEtoile == 2:
-                print("Gubru  " ,"Position: ", "[", etoile.posX, ",", etoile.posY, "]","nbVaisseaux:", etoile.nombreVaisseau)
-            elif etoile.typeEtoile == 3:
-                print("Czin  " ,"Position: ", "[", etoile.posX, ",", etoile.posY, "]","nbVaisseaux:", etoile.nombreVaisseau)
-            elif etoile.typeEtoile == 4:
-                print("ind", etoile.nombreVaisseau)
-        for flotte in self.m.j.czin.flottes:
-            print("Czin ", flotte.positionInitialeX, " ",flotte.positionInitialeY, " ",flotte.etoileArrivee.posX, " ", flotte.etoileArrivee.posY, " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
-            print("Czin ", " annee", flotte.nbAnnee, "nbVaisseaux:", flotte.nombreVaisseau)
-        for flotte in self.m.j.gubru.flottes:
-            print("Gubru ", " annee:", flotte.nbAnnee, "Position: ", "[", flotte.etoileArrivee.posX, ",", flotte.etoileArrivee.posY, "]","nbVaisseaux:", flotte.nombreVaisseau)
     
+    def changerDifficulteFacile(self):
+        self.m.difficulte = 1
+    
+    def changerDifficulteInter(self):
+        self.m.difficulte = 2
+    
+    def changerDifficulteDifficile(self):
+        self.m.difficulte = 3
+    
+    def getDifficulte(self):
+        return self.m.difficulte
+        
     def finPartie(self, humainGagnant):
         self.v.finPartie(humainGagnant)
     

@@ -37,6 +37,7 @@ class Modele():
 		self.grandeurJeuY = 20
 		self.espacementEtoileMereX = 5
 		self.espacementEtoileMereY = 5
+		self.difficulte = 2 # Normal
 	
 	def commencerJeu(self):
 		self.j = Jeu(self)

@@ -128,6 +128,11 @@ class Vue():
 		self.labelDestinationVaisseauResultat.grid(column=1,row=12)
 		self.labelDestinationManuResultat=Label(self.cadreInfo,text="",relief=GROOVE,width=15)
 		self.labelDestinationManuResultat.grid(column=1,row=13)
+		self.labelDistanceEtoile = Label(self.cadreInfo,text="",width=50)
+		self.labelDistanceEtoile.grid(column=0,row=14)
+		
+		self.labelNbFlottes = Label(self.cadreCommande, text= "Flotte(s) : 0")
+		self.labelNbFlottes.pack()
 		
 		self.canevas.bind("<Button-1>", self.clickCanevas)
 		self.labelTemps = Label(self.cadreCommande,text=self.parent.getTemps(),relief=GROOVE,width=15)
@@ -154,6 +159,7 @@ class Vue():
 			self.labelEtoileVaisseauResultat.config(text=self.etoileDepart.nombreVaisseau)
 			self.sliderDeplacement.config(to=self.etoileDepart.nombreVaisseau)
 			self.updateEtoile()
+			self.labelDistanceEtoile.config(text="")
 			
 	def prochainTour(self):
 		self.parent.changementTour()	
@@ -197,6 +203,8 @@ class Vue():
 		self.labelDestinationProprioResultat.config(text="")
 		self.labelDestinationManuResultat.config(text="")
 		self.labelDestinationVaisseauResultat.config(text="")
+		texteNbFlottes = "Flotte(s) : " + str(len(self.parent.getFlottesHumaines())) 
+		self.labelNbFlottes.config(text = texteNbFlottes)
 		
 		self.etoileDepart = None
 		self.etoileArrivee = None
@@ -215,6 +223,7 @@ class Vue():
 
 		if etoile==None :
 			self.updateEtoile()
+			self.labelDistanceEtoile.config(text="")
 		elif etoile.typeEtoile==1 or etoile.typeEtoile==5:
 			if self.etoileDepart == None:
 				self.etoileDepart=etoile
@@ -243,6 +252,7 @@ class Vue():
 					self.labelDestinationProprioResultat.config(text= "Humain")
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
 					self.labelDestinationManuResultat.config(text=etoile.nombreUsine)
+					self.labelDistanceEtoile.config(text="Distance entre les deux \xE9toiles: " + str(self.parent.getDistance(self.etoileDepart, self.etoileArrivee)))
 				
 			
 			if self.etoileArrivee != None:
@@ -272,6 +282,7 @@ class Vue():
 					self.labelDestinationVaisseauResultat.config(text="Aucune Info.")
 				else:
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
+				self.labelDistanceEtoile.config(text="Distance entre les deux \xE9toiles: " + str(self.parent.getDistance(self.etoileDepart, self.etoileArrivee)))
 			else:
 				self.labelEtoileProprioResultat.config(text= "Gubru")
 				if etoile.nombreVaisseau==None or etoile.nombreVaisseau==0:
@@ -306,6 +317,7 @@ class Vue():
 					self.labelDestinationVaisseauResultat.config(text="Aucune Info.")
 				else:
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
+				self.labelDistanceEtoile.config(text="Distance entre les deux \xE9toiles: " + str(self.parent.getDistance(self.etoileDepart, self.etoileArrivee)))
 			else:
 				self.labelEtoileProprioResultat.config(text= "Czin")
 				if etoile.nombreVaisseau==None or etoile.nombreVaisseau==0:
@@ -340,6 +352,7 @@ class Vue():
 					self.labelDestinationVaisseauResultat.config(text="Aucune Info.")
 				else:
 					self.labelDestinationVaisseauResultat.config(text=etoile.nombreVaisseau)
+				self.labelDistanceEtoile.config(text="Distance entre les deux \xE9toiles: " + str(self.parent.getDistance(self.etoileDepart, self.etoileArrivee)))
 			else:
 				self.labelEtoileProprioResultat.config(text= "Ind\xE9pendant")
 				if etoile.nombreVaisseau==None or etoile.nombreVaisseau==0:
@@ -365,13 +378,14 @@ class Vue():
 		self.labelLogo = Label(self.canevas,image=self.photoGalax)
 		self.labelLogo.pack()
 		
-		labelDifficulte=Label(self.canevas,text="Difficult\xE9e",relief=SOLID,width=15,height=2)
-		labelDifficulte.pack(padx=5,side=LEFT)
-		b1=Button(self.canevas,text="Facile",relief=GROOVE,width=15)
+		self.labelDifficulte=Label(self.canevas,text="Difficult\xE9 ",relief=SOLID,width=20,height=2)
+		self.labelDifficulte.pack(padx=5,side=LEFT)
+		self.updateLabelDifficulte()
+		b1=Button(self.canevas,text="Facile",relief=GROOVE,width=15, command=self.changerDifficulteFacile)
 		b1.pack(padx=1,side=LEFT)
-		b2=Button(self.canevas,text="Interm\xE9diaire",relief=GROOVE,width=15)
+		b2=Button(self.canevas,text="Interm\xE9diaire",relief=GROOVE,width=15, command = self.changerDifficulteInter)
 		b2.pack(padx=1,side=LEFT)
-		b3=Button(self.canevas,text="Difficile",relief=GROOVE,width=15)
+		b3=Button(self.canevas,text="Difficile",relief=GROOVE,width=15, command = self.changerDifficulteDifficile)
 		b3.pack(padx=1,side=LEFT)
 		b4=Button(self.canevas,text="Quitter",width=15,command=self.initFermer)
 		b4.pack()
@@ -381,7 +395,26 @@ class Vue():
 		self.cadreLobby.pack_forget()
 		self.canevas.pack()
 	
-
+	def updateLabelDifficulte(self):
+		if self.parent.getDifficulte() == 1:
+			self.labelDifficulte.config(text="Difficult\xE9: Facile")
+		elif self.parent.getDifficulte() == 2:
+			self.labelDifficulte.config(text="Difficult\xE9: Interm\xE9diaire")
+		elif self.parent.getDifficulte() == 3:
+			self.labelDifficulte.config(text="Difficult\xE9: Difficile")
+	
+	def changerDifficulteFacile(self):
+		self.parent.changerDifficulteFacile()
+		self.updateLabelDifficulte()
+		
+	def changerDifficulteInter(self): 
+		self.parent.changerDifficulteInter()
+		self.updateLabelDifficulte()
+		
+	def changerDifficulteDifficile(self):
+		self.parent.changerDifficulteDifficile()
+		self.updateLabelDifficulte()
+		
 	def initFermer(self):
 		self.root.destroy()
 		
