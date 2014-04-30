@@ -11,6 +11,8 @@ class Vue():
 	def __init__(self, parent):
 		self.parent = parent
 		self.root=Tk()
+		self.root.iconbitmap(default='iconhumain.ico')
+		self.root.wm_title("GALAX")
 		self.initLobby()
 
 	def initLobby(self):
