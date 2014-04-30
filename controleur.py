@@ -31,7 +31,6 @@ class Controleur():
         return self.m.grandeurJeuY
     
     def getDistance(self, etoileDepart, etoileArrivee):
-       # return math.trunc(Jeu.calculerDistance(etoileDepart.posX, etoileDepart.posY, etoileArrivee.posX, etoileArrivee.posY))
        flotteTemp = Flotte(etoileDepart, etoileArrivee, 0)
        return math.ceil(flotteTemp.nbAnnee)
     
