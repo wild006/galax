@@ -133,7 +133,7 @@ class Vue():
 		self.labelDistanceEtoile = Label(self.cadreInfo,text="",width=50)
 		self.labelDistanceEtoile.grid(column=0,row=14)
 		
-		self.labelNbFlottes = Label(self.cadreCommande, text= "Flotte(s) : 0")
+		self.labelNbFlottes = Label(self.cadreCommande, text= "Flotte(s) en d\xE9placement  : 0")
 		self.labelNbFlottes.pack()
 		
 		self.canevas.bind("<Button-1>", self.clickCanevas)
@@ -168,6 +168,14 @@ class Vue():
 		self.labelTemps.config(text=self.parent.getTemps())
 		self.updateEtoile()
 		
+	def updateNombrePlaneteVisiter(self):
+		nombrePlaneteVisiter = 0
+		for etoile in self.parent.getListeEtoile():
+			if etoile.IntelligenceHumain != 1:
+				nombrePlaneteVisiter += 1
+				
+		return nombrePlaneteVisiter
+		
 	def trouverImageInit(self,etoile):
 		if etoile.typeEtoile == 2 or etoile.typeEtoile == 6:
 			image = Image.open("etoile_gubru.jpg")
@@ -199,13 +207,18 @@ class Vue():
 			self.photo.append(ImageTk.PhotoImage(image))
 			self.canevas.create_image(etoile.posX*(800/self.parent.getGrandeurJeuX())+20,etoile.posY*(800/self.parent.getGrandeurJeuY())+20, image=self.photo[self.compteur], tags="etoile")
 			self.compteur += 1
+			
+		if self.updateNombrePlaneteVisiter() >= 10:
+			self.labelHumainResultat.config(text= len(self.parent.getFlottesHumaines()))
+			self.labelGubruResultat.config(text = len(self.parent.getFlottesGubru()))
+			self.labelCzinResultat.config(text = len(self.parent.getFlottesCzin()))
 		self.labelEtoileProprioResultat.config(text="")
 		self.labelEtoileVaisseauResultat.config(text="")
 		self.labelEtoileManuResultat.config(text="")
 		self.labelDestinationProprioResultat.config(text="")
 		self.labelDestinationManuResultat.config(text="")
 		self.labelDestinationVaisseauResultat.config(text="")
-		texteNbFlottes = "Flotte(s) : " + str(len(self.parent.getFlottesHumaines())) 
+		texteNbFlottes = "Flotte(s) en d\xE9placement  : " + str(len(self.parent.getFlottesHumaines())) 
 		self.labelNbFlottes.config(text = texteNbFlottes)
 		
 		self.etoileDepart = None

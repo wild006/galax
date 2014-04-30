@@ -21,6 +21,12 @@ class Controleur():
     def getFlottesHumaines(self):
         return self.m.j.humain.flottes
     
+    def getFlottesGubru(self):
+        return self.m.j.gubru.flottes
+    
+    def getFlottesCzin(self):
+        return self.m.j.czin.flottes
+    
     def deplacementHumain(self,etoileDepart,etoileChoisi,nombreVaisseau):#Pour le deplacement des flottes dans la vue
         return self.m.j.humain.deplacementFlotte(etoileDepart, etoileChoisi, nombreVaisseau)
     
